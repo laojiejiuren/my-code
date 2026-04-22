@@ -1,6 +1,6 @@
 module decoder(
     input [1:0] cin,
-    output [3:0] cout
+    output reg [3:0] cout
 );
     always @(*) begin
         case(cin)

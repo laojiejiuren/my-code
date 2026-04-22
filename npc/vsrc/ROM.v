@@ -1,6 +1,6 @@
 module ROM(
     input [2:0]select,
-    output [7:0] out
+    output reg [7:0] out
 );
     wire [7:0] mem[7:0];
     assign mem[0] = 8'h8a;

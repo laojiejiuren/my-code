@@ -1,11 +1,11 @@
 module RAM(
     input clk,
     input reset,
-
-    input [7:0] wdata;
+    input we,
+    input [7:0] wdata,
     input[1:0] R1,
     input[1:0] R2,
-    input[1:0] we,
+    input[1:0] waddr,
 
     output [7:0] data1,
     output [7:0] data2
@@ -20,7 +20,8 @@ module RAM(
             mem[3] <= 8'h00;
         end
         else begin
-            mem[we] <= wdata;
+            if(we)
+                mem[waddr] <= wdata;
         end
     end
 

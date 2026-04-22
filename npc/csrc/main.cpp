@@ -1,27 +1,40 @@
 #include <stdio.h>
-#include <verilated.h>
-#include <verilater_fst_c.h>
-#include <Vtop.h>
+#include <nvboard.h>
+#include "Vtop.h"
 
 vluint64_t main_time = 0;
+void nvboard_bind_all_pins(Vtop* top);
 
 int main(int argc,char** argv) 
 {
   //要先初始化verilator->实例化顶层模块->初始化波形->正式开始仿真
-  Verilated::commanArgs(argc,argv);
+  Verilated::commandArgs(argc,argv);
+
   Vtop * top = new Vtop;
 
-  verilaterFstC * tfp = new VerilatedFstC;
-  top->trace(tfp,99);
-  tfp->open("wave.fst");
 
-  while(main_time <= 10000)
+  nvboard_bind_all_pins(top);
+  nvboard_init();
+
+  top->clk = 0;
+  top->reset = 1;
+  for (int i = 0; i < 10; i++) 
   {
     top->clk = !top->clk;
     top->eval();
-    tfp->dump(main_time++);
   }
-  tfp->close();
+    top->reset = 0; 
+
+  while(1)
+  {
+    top->clk = !top->clk;
+    printf("R2:%02x\n",top->ram_mem2);
+    nvboard_update();
+    //if(top->ram_mem2 == 55)
+      //break;
+    top->eval();
+  }
+   nvboard_quit();
   delete top;
   
   return 0;
