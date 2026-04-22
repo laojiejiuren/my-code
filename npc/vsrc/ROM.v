@@ -14,14 +14,14 @@ module ROM(
 
     always @(*) begin
         case(select)
-        4'b000:out = mem[0];
-        4'b001:out = mem[1];
-        4'b010:out = mem[2];
-        4'b011:out = mem[3];
-        4'b100:out = mem[4];
-        4'b101:out = mem[5];
-        4'b110:out = mem[6];
-        4'b111:out = mem[7];
+        3'b000:out = mem[0];
+        3'b001:out = mem[1];
+        3'b010:out = mem[2];
+        3'b011:out = mem[3];
+        3'b100:out = mem[4];
+        3'b101:out = mem[5];
+        3'b110:out = mem[6];
+        3'b111:out = mem[7];
         endcase
     end
 

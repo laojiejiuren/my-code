@@ -4,5 +4,5 @@ module add(
 
     output [7:0] sum
 );
-assign sum = A + b;
+assign sum = A + B;
 endmodule

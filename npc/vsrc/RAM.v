@@ -20,12 +20,11 @@ module RAM(
             mem[3] <= 8'h00;
         end
         else begin
-            if(we != 2'b00)
-                mem[we] <= wdata;
+            mem[we] <= wdata;
         end
     end
 
-    assign data1 = R1;
-    assign data2 = R2
+    assign data1 = mem[R1];
+    assign data2 = mem[R2];
 
 endmodule

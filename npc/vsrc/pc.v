@@ -1,4 +1,4 @@
-module (
+module pc(
     input clk,
     input reset,
     input jump,
