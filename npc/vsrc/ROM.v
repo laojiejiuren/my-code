@@ -10,7 +10,7 @@ module ROM(
     assign mem[4] = 8'h17;
     assign mem[5] = 8'h29;
     assign mem[6] = 8'hd1;
-    assign mem[7] = 8'hdf;
+    assign mem[7] = 8'h42;
 
     always @(*) begin
         case(select)

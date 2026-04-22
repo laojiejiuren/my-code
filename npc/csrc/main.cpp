@@ -28,7 +28,7 @@ int main(int argc,char** argv)
   while(1)
   {
     top->clk = !top->clk;
-    printf("R2:%02x\n",top->ram_mem2);
+    printf("R2:%02x\n",top->out);
     nvboard_update();
     //if(top->ram_mem2 == 55)
       //break;
