@@ -84,7 +84,7 @@ static int cmd_info(char *args)
     return 0;
   }
 
-  if(arg == 'r')
+  if(strcmp(arg,"r") == 0)
     isa_reg_display();
   else 
     printf("Please enter info r\n");
