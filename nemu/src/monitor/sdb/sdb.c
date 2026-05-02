@@ -116,8 +116,9 @@ static int cmd_x(char *args)
 
   for(int i = 0; i < n; ++i)
   {
-    word_t out_addr = vaddr_read(addr + i * 4,4);
-    printf("0x%08x : %08x\n",addr + i * 4,out_addr);
+    vaddr_t next_addr = addr + i * 4;
+    word_t out_data = vaddr_read(next_addr,4);
+    printf("0x%08x : %08x\n",next_addr,out_data);
   }
 
   return 0;
