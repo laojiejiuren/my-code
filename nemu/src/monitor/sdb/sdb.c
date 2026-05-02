@@ -74,7 +74,23 @@ static int cmd_si(char *args)
   return 0;
 }
 
+static int cmd_info(char *args)
+{
+  char *arg = strtok(NULL," ");
 
+  if(arg==NULL)
+  {
+    printf("NO INPUT.Please enter info r\n");
+    return 0;
+  }
+
+  if(arg == 'r')
+    isa_reg_display();
+  else 
+    printf("Please enter info r\n");
+
+  return 0;
+}
 
 static struct {
   const char *name;
@@ -85,7 +101,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   {"si", "Step one or N instructions",cmd_si},
-  //{"info","Printf registers",cmd_info},
+  {"info","Printf registers",cmd_info},
   //{"x","Scan memory: x N EXPR",cmd_x},
 
   /* TODO: Add more commands */
