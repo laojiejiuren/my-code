@@ -119,8 +119,8 @@ static bool make_token(char *e) {
           }
           case '+':case '-':case '*':case '/':case '(':case ')':
           {
-            tokens[nr_token].type = substr_start;
-            nr_token++:
+            tokens[nr_token].type = rules[i].token_type;
+            nr_token++;
           }      
           default: TODO();
         }
