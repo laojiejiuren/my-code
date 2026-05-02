@@ -22,7 +22,7 @@
 
 enum {
   TK_NOTYPE = 256, TK_EQ,
-
+  TK_NUM,
   /* TODO: Add more token types */
 
 };
@@ -38,6 +38,12 @@ static struct rule {
 
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
+  {"\\-", '-'},
+  {"\\*", '*'},
+  {"\\/", '/'},
+  {"\\(", '('},
+  {"\\)", ')'},
+  {"[0-9]+",TK_NUM},
   {"==", TK_EQ},        // equal
 };
 
@@ -95,6 +101,7 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
+
           default: TODO();
         }
 
