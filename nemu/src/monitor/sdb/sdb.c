@@ -65,7 +65,7 @@ static int cmd_si(char *args)
     n = atoi(arg);
     if(n < 0)
     {
-      printf("Input is EROOR!!!");
+      printf("Input is EROOR!!!\n");
       return 0;
     }
   }
