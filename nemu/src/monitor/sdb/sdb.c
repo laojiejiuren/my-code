@@ -75,6 +75,7 @@ static int cmd_si(char *args)
 }
 
 
+
 static struct {
   const char *name;
   const char *description;
