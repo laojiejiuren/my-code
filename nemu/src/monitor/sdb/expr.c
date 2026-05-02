@@ -101,7 +101,27 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
-
+          case TK_NOTYPE:
+            break;
+          case TK_NUM://要处理溢出的情况
+          {
+            if(substr_len > 32 || nr_token > 32)
+            {
+              printf("Overflow ! ! !\n");
+              return false;
+            }
+            else
+            {
+              strcpy(tokens[nr_token].str,substr_start);
+              tokens[nr_token].type = TK_NUM;
+              nr_token++;
+            }
+          }
+          case '+':case '-':case '*':case '/':case '(':case ')':
+          {
+            tokens[nr_token].type = substr_start;
+            nr_token++:
+          }      
           default: TODO();
         }
 
