@@ -55,6 +55,26 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+static int cmd_si(char *args)
+{
+  char *arg = strtok(NULL," ");
+  
+  int n = 1;//默认执行一步
+  if(arg != NULL)
+  {
+    n = atoi(arg);
+    if(n < 0)
+    {
+      printf("Input is EROOR!!!");
+      return 0;
+    }
+  }
+  
+  cpu_exec(n);
+  return 0;
+}
+
+
 static struct {
   const char *name;
   const char *description;
@@ -63,6 +83,9 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
+  {"si", "Step one or N instructions",cmd_si},
+  //{"info","Printf registers",cmd_info},
+  //{"x","Scan memory: x N EXPR",cmd_x},
 
   /* TODO: Add more commands */
 
