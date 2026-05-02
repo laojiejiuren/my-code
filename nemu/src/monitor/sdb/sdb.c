@@ -92,6 +92,36 @@ static int cmd_info(char *args)
   return 0;
 }
 
+static int cmd_x(char *args)
+{
+  char *arg1 = strtok(NULL," ");//用来存储要输出的N
+  char *arg2 = strtok(NULL," ");//用来存储表达式，目前是一个地址
+
+  if(arg1 == NULL || arg2 == NULL)
+  {
+    printf("Please enter x N EXPR\n");
+    return 0;
+  }
+
+  int n = atoi(arg1);
+  if(n < 0)
+  {
+    printf("N must be positive\n");
+    return 0;
+  }
+
+  //将字符串转换成vaddr_t类型
+  vaddr_t addr = strtoul(arg2,NULL,16);
+
+  for(int i = 0; i < n; ++i)
+  {
+    word_t out_addr = vaddr_read(addr + 4,4);
+    printf("%0x\n",out_addr);
+  }
+
+  return 0;
+}
+
 static struct {
   const char *name;
   const char *description;
@@ -102,7 +132,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   {"si", "Step one or N instructions",cmd_si},
   {"info","Printf registers",cmd_info},
-  //{"x","Scan memory: x N EXPR",cmd_x},
+  {"x","Scan memory: x N EXPR",cmd_x},
 
   /* TODO: Add more commands */
 
