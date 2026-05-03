@@ -200,9 +200,9 @@ static uint32_t eval(int p,int q)
 
       //处理内部出现括号的情况
       if(tokens[i].type == '(')
-        base++,continue;
+        {base++;continue;}
       else if(tokens[i].type == ')')
-        base--,continue;
+        {base--;continue;}
 
       //处理优先级以及op的位置
       else if(base == 0)
@@ -257,7 +257,7 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-
+  eval(2,3);
   /* TODO: Insert codes to evaluate the expression. */
   TODO();
 
