@@ -141,10 +141,7 @@ static bool make_token(char *e) {
 
 static int check_parentheses(int p,int q)
 {
-  if(e == NULL || e[q] == '\0')
-    return false;
-
-  if(tokens[p].type || tokens[q].type != ')')//没有被一个括号包裹直接错误
+  if(tokens[p].type != '(' || tokens[q].type != ')')//没有被一个括号包裹直接错误
     return false;
 
   int base = 0;
@@ -160,6 +157,9 @@ static int check_parentheses(int p,int q)
     if (base == 0 && i != q - 1) //没有到最后一个括号之前就完成了匹配，也被认为是错误
       return false;
   }
+  if(base != 0)
+    return false;
+
   return true;
 }
 
