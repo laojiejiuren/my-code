@@ -139,6 +139,30 @@ static bool make_token(char *e) {
   return true;
 }
 
+static int check_parentheses(char *e)
+{
+  if(e == NULL || e[0] == '\0')
+    return false;
+
+  int n = strlen(e);
+  if(e[0] != '(' || e[n-1] != ')')//没有被一个括号包裹直接错误
+    return false;
+
+  int base = 0;
+  for(int i = 0; i < n; ++i)
+  {
+    if(e[i] == '(')
+      base++;
+    else if(e[i] == ')')
+      base--;
+
+    if(base < 0)
+      return false;
+    if (base == 0 && i != n - 1) //没有到最后一个括号之前就完成了匹配，也被认为是错误
+      return false;
+  }
+  return true;
+}
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
