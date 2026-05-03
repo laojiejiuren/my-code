@@ -19,7 +19,7 @@
 #include <readline/history.h>
 #include "sdb.h"
 #include <memory/vaddr.h>
-
+#include <utils.h>
 static int is_batch_mode = false;
 
 void init_regex();
@@ -48,9 +48,9 @@ static int cmd_c(char *args) {
   return 0;
 }
 
-
 static int cmd_q(char *args) {
-  exit(0);
+  nemu_state.state = NEMU_QUIT;
+  return -1;
 }
 
 static int cmd_help(char *args);
