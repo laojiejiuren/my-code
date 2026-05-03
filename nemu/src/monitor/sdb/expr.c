@@ -116,12 +116,14 @@ static bool make_token(char *e) {
               tokens[nr_token].type = TK_NUM;
               nr_token++;
             }
+            break;
           }
           case '+':case '-':case '*':case '/':case '(':case ')':
           {
             strcpy(tokens[nr_token].str,substr_start);
             tokens[nr_token].type = rules[i].token_type;
             nr_token++;
+            break;
           }      
           default: TODO();
         }
@@ -145,7 +147,7 @@ static int check_parentheses(int p,int q)
     return false;
 
   int base = 0;
-  for(int i = p; i < q; ++i)
+  for(int i = p; i <= q; ++i)
   {
     if(tokens[i].type == '(')
       base++;
@@ -154,13 +156,100 @@ static int check_parentheses(int p,int q)
 
     if(base < 0)
       return false;
-    if (base == 0 && i != q - 1) //没有到最后一个括号之前就完成了匹配，也被认为是错误
+    if (base == 0 && i != q) //没有到最后一个括号之前就完成了匹配，也被认为是错误
       return false;
   }
   if(base != 0)
     return false;
 
   return true;
+}
+
+static uint32_t eval(int p,int q)
+{
+  if(p > q)
+  {
+    printf("ERROR:p > q\n");
+    return 0;
+  }
+
+  else if(p == q)
+  {
+    if(tokens[p].type != TK_NUM)
+    {
+      printf("NOT NUMBER\n");
+      return 0;
+    }
+    return strtoul(tokens[p].str,NULL,10);
+  }
+  else if(check_parentheses(p,q))
+    return eval(p+1,q-1);
+
+  else
+  {
+    //先找主运算符
+    int op = -1;//记录主运算符位置
+    int now = 0;
+    int old = 1024;
+
+    int base = 0;
+    for(int i = p; i <= q; ++i)
+    {
+      if(tokens[i].type == TK_NUM)
+        continue;
+
+      //处理内部出现括号的情况
+      if(tokens[i].type == '(')
+        base++,continue;
+      else if(tokens[i].type == ')')
+        base--,continue;
+
+      //处理优先级以及op的位置
+      else if(base == 0)
+      {
+        if(tokens[i].type == '+' || tokens[i].type == '-')
+          now = 1;
+        else if(tokens[i].type == '*' || tokens[i].type == '/')
+          now = 2;
+
+        if(old > now || (old == now && i > op))
+        {
+          old = now;
+          op = i;
+        }
+      }
+    }
+
+    if(op == -1)
+    {
+      printf("NO main operator\n");
+      return 0;
+    }
+
+    //再求值
+    uint32_t val1 = eval(p,op - 1);
+    uint32_t val2 = eval(op + 1,q);
+    switch(tokens[op].type)
+    {
+      case '+': return val1 + val2;
+      case '-': return val1 - val2;
+      case '*': return val1 * val2;
+      case '/': 
+      {
+        if(val2 == 0)
+        {
+          printf("The divisor cannot be zero\n");
+          return 0;
+        }
+        return val1 / val2;
+      }
+      default: 
+      {
+        printf("EROOR\n");
+        return 0;
+      }
+    }
+  }
 }
 
 word_t expr(char *e, bool *success) {
