@@ -75,7 +75,7 @@ static char gen_rand_op()//用于生成随机运算符
 
 static void gen_rand_expr_my(int dep)
 {
-  if(dep > Depth || id > = MAX_SIZE - 11)
+  if(dep > Depth || id >= MAX_SIZE - 11)
   {
     return;
   }
