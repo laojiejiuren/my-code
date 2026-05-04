@@ -244,6 +244,7 @@ static uint32_t eval(int p,int q)
         if(val2 == 0)
         {
           printf("The divisor cannot be zero\n");
+          eval_ok = false;
           return 0;
         }
         return val1 / val2;
