@@ -108,7 +108,7 @@ static void gen_rand_expr_my(int dep)
       if(id < MAX_SIZE - 1) buf[id++] = tmp;
       gen_space();
 
-      if(strcmp(tmp,'/') == 0)
+      if(tmp == '/')
         gen_nzeronum();
       else gen_rand_expr_my(dep + 1);
     }
