@@ -271,5 +271,5 @@ word_t expr(char *e, bool *success) {
   uint32_t result = eval(0, nr_token - 1);
   *success = eval_ok;
 
-  return 0;
+  return result;
 }
