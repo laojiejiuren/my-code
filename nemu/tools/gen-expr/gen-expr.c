@@ -47,8 +47,8 @@ static void gen_space()
   {
     int cnt = choose(4);//0~3个空格
     for(int i = 0; i < cnt; ++i)
-      if((id + i) < MAX_SIZE - 1)
-        buf[i + id] = ' ';
+      if((id) < MAX_SIZE - 1)
+        buf[id++] = ' ';
   }
 }
 
