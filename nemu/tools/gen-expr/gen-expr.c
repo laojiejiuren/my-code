@@ -31,7 +31,48 @@ static char *code_format =
 "  return 0; "
 "}";
 
-static void gen_rand_expr() {
+#define MAX_SIZE 65536
+#define Depth 5
+static int id;
+
+static uint32_t choose(uint32_t n)
+{
+  return rand() % n;
+}
+
+static void gen_space()
+{
+
+}
+
+static void gen_num()//用于生成随机数字
+{
+  uint32_t num = (uint32_t)rand();
+  int cnt = snprintf(buf + id,MAX_SIZE - id,"%u",num);
+  if(cnt > 0) id += cnt;//因为snprintf在出现错误时会返回负值
+}
+
+static void gen_nzeronum()
+{
+  uint32_t num = (uint32_t)rand() + 1;
+  int cnt = snprintf(buf + id,MAX_SIZE - id,"%u",num);
+  if(cnt > 0) id += cnt;
+}
+
+static void gen_rand_op()//用于生成随机运算符
+{
+  char tmp[] = {'+','-','*','/'};
+  int idx = choose(4);
+
+}
+
+static void gen_rand_expr_my(int dep)
+{
+}
+
+static void gen_rand_expr() //生成表达式
+{
+  id = 0;
   buf[0] = '\0';
 }
 
