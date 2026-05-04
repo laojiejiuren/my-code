@@ -165,11 +165,14 @@ static int check_parentheses(int p,int q)
   return true;
 }
 
+static bool eval_ok = true;
+
 static uint32_t eval(int p,int q)
 {
   if(p > q)
   {
     printf("ERROR:p > q\n");
+    eval_ok = false;
     return 0;
   }
 
@@ -178,6 +181,7 @@ static uint32_t eval(int p,int q)
     if(tokens[p].type != TK_NUM)
     {
       printf("NOT NUMBER\n");
+      eval_ok = false;
       return 0;
     }
     return strtoul(tokens[p].str,NULL,10);
@@ -223,6 +227,7 @@ static uint32_t eval(int p,int q)
     if(op == -1)
     {
       printf("NO main operator\n");
+      eval_ok = false;
       return 0;
     }
 
@@ -246,6 +251,7 @@ static uint32_t eval(int p,int q)
       default: 
       {
         printf("EROOR\n");
+        eval_ok = false;
         return 0;
       }
     }
@@ -259,6 +265,10 @@ word_t expr(char *e, bool *success) {
   }
   /* TODO: Insert codes to evaluate the expression. */
   TODO();
+
+  eval_ok = true;
+  uint32_t result = eval(0, nr_token - 1);
+  *success = eval_ok;
 
   return 0;
 }
