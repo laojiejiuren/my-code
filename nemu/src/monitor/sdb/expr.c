@@ -105,14 +105,15 @@ static bool make_token(char *e) {
             break;
           case TK_NUM://要处理溢出的情况
           {
-            if(substr_len > 32 || nr_token > 65536)
+            if(substr_len >= 32 || nr_token >= 65536)
             {
               printf("Overflow ! ! !\n");
               return false;
             }
             else
             {
-              strcpy(tokens[nr_token].str,substr_start);
+              strncpy(tokens[nr_token].str, substr_start, substr_len);
+              tokens[nr_token].str[substr_len] = '\0';
               tokens[nr_token].type = TK_NUM;
               nr_token++;
             }
@@ -120,7 +121,8 @@ static bool make_token(char *e) {
           }
           case '+':case '-':case '*':case '/':case '(':case ')':
           {
-            strcpy(tokens[nr_token].str,substr_start);
+            tokens[nr_token].str[0] = substr_start[0];
+            tokens[nr_token].str[1] = '\0';
             tokens[nr_token].type = rules[i].token_type;
             nr_token++;
             break;
