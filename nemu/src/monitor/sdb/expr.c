@@ -105,7 +105,7 @@ static bool make_token(char *e) {
             break;
           case TK_NUM://要处理溢出的情况
           {
-            if(substr_len > 32 || nr_token > 32)
+            if(substr_len > 32 || nr_token > 65536)
             {
               printf("Overflow ! ! !\n");
               return false;
@@ -257,7 +257,6 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-  eval(2,4);
   /* TODO: Insert codes to evaluate the expression. */
   TODO();
 
