@@ -42,7 +42,14 @@ static uint32_t choose(uint32_t n)
 
 static void gen_space()
 {
-
+  int check = choose(2);//为1就输入空格，为0就不输入
+  if(check)
+  {
+    int cnt = choose(4);//0~3个空格
+    for(int i = 0; i < cnt; ++i)
+      if((id + i) < MAX_SIZE - 1)
+        buf[i + id] = ' ';
+  }
 }
 
 static void gen_num()//用于生成随机数字
@@ -59,21 +66,61 @@ static void gen_nzeronum()
   if(cnt > 0) id += cnt;
 }
 
-static void gen_rand_op()//用于生成随机运算符
+static char gen_rand_op()//用于生成随机运算符
 {
   char tmp[] = {'+','-','*','/'};
   int idx = choose(4);
-
+  return tmp[idx];
 }
 
 static void gen_rand_expr_my(int dep)
 {
+  if(dep > Depth || id > = MAX_SIZE - 11)
+  {
+    return;
+  }
+    
+  switch(choose(3))
+  {
+    case 0://数字
+    {
+      gen_space();
+      gen_num();
+      gen_space();
+      break;
+    }
+    case 1://括号
+    {
+      gen_space();
+      if(id < MAX_SIZE - 1) buf[id++] = '(';
+      gen_space();
+      gen_rand_expr_my(dep + 1);
+      gen_space();
+      if(id < MAX_SIZE - 1) buf[id++] = ')';
+      break;
+    }
+    default:
+    {
+      gen_rand_expr_my(dep + 1);
+
+      gen_space();
+      char tmp = gen_rand_op();
+      if(id < MAX_SIZE - 1) buf[id++] = tmp;
+      gen_space();
+
+      if(strcmp(tmp,'/') == 0)
+        gen_nzeronum();
+      else gen_rand_expr_my(dep + 1);
+    }
+  }
 }
 
 static void gen_rand_expr() //生成表达式
 {
   id = 0;
   buf[0] = '\0';
+  gen_rand_expr_my(0);
+  buf[id] = '\0';
 }
 
 int main(int argc, char *argv[]) {
