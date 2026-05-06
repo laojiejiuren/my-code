@@ -65,7 +65,7 @@ static void expr_test(char *filename)
     }
   }
   fclose(fp);
-  printf("Test: Total:%d,Passed:%d",total,passed);
+  printf("Test: Total:%d,Passed:%d\n",total,passed);
 }
 
 int main(int argc, char *argv[]) {
