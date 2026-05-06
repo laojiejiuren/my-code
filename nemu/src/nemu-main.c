@@ -41,7 +41,7 @@ static void expr_test(char *filename)
     //我需要从buf中取出第一个字符是一个结果，再取出表达式给expr进行计算，然后再比较两个值是否相等
     uint32_t tmp;
     int idx;
-    if(sscanf(buf,"%u %n",%tmp,%idx) != 1)
+    if(sscanf(buf,"%u %n",&tmp,&idx) != 1)
       continue;
 
     char * expr_str = buf + idx;
@@ -53,7 +53,7 @@ static void expr_test(char *filename)
       len--;
     }
 
-    word_t result = expr(expr_str,success);
+    word_t result = expr(expr_str,&success);
     total++;
 
     if(success && result == tmp)
@@ -61,7 +61,7 @@ static void expr_test(char *filename)
     else
     {
       printf("FAIL: expected %u, got %u (success=%d) for: %s\n",
-             expected, (unsigned)result, success, expr_str);
+             tmp, (unsigned)result, success, expr_str);
     }
 
     fclose(fp);
