@@ -76,9 +76,10 @@ int main(int argc, char *argv[]) {
   if(argc >= 2 && strcmp(argv[1], "tools/gen-expr/input") == 0)
   {
     char *filename = argv[1];
+    init_regex();
     expr_test(filename);
     return 0;
-  } 
+  }
   init_monitor(argc, argv);
 #endif
 
