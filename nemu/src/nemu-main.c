@@ -63,11 +63,9 @@ static void expr_test(char *filename)
       printf("FAIL: expected %u, got %u (success=%d) for: %s\n",
              tmp, (unsigned)result, success, expr_str);
     }
-
-    fclose(fp);
-    printf("Test: Total:%d,Passed:%d",total,passed);
   }
-
+  fclose(fp);
+  printf("Test: Total:%d,Passed:%d",total,passed);
 }
 
 int main(int argc, char *argv[]) {
