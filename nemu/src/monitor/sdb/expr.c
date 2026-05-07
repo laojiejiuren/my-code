@@ -22,7 +22,7 @@
 
 enum {
   TK_NOTYPE = 256, TK_EQ,
-  TK_NUM,
+  TK_NUM,DEREF,
   /* TODO: Add more token types */
 
 };
@@ -45,6 +45,7 @@ static struct rule {
   {"\\)", ')'},
   {"[0-9]+u",TK_NUM},
   {"==", TK_EQ},        // equal
+  {},
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -270,10 +271,10 @@ word_t expr(char *e, bool *success) {
   //TODO();
 
 
-  for (i = 0; i < nr_token; i ++) 
-    if (tokens[i].type == '*' && (i == 0 || tokens[i - 1].type == certain type) )
+  for (int i = 0; i < nr_token; i ++) 
+    if (tokens[i].type == '*' && (i == 0 || tokens[i - 1].type == TK_NUM) )
       tokens[i].type = DEREF;
-    
+
   eval_ok = true;
   uint32_t result = eval(0, nr_token - 1);
   *success = eval_ok;
