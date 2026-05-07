@@ -26,7 +26,7 @@ static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format =
 "#include <stdio.h>\n"
 "int main() { "
-"  unsigned result = (unsigned)(%s); "
+"  unsigned result = %s; "
 "  printf(\"%%u\", result); "
 "  return 0; "
 "}";
@@ -55,14 +55,14 @@ static void gen_space()
 static void gen_num()//用于生成随机数字
 {
   uint32_t num = choose(100);
-  int cnt = snprintf(buf + id,MAX_SIZE - id,"%u",num);
+  int cnt = snprintf(buf + id,MAX_SIZE - id,"%uu",num);
   if(cnt > 0) id += cnt;//因为snprintf在出现错误时会返回负值
 }
 
 static void gen_nzeronum()
 {
   uint32_t num = choose(99) + 1;
-  int cnt = snprintf(buf + id,MAX_SIZE - id,"%u",num);
+  int cnt = snprintf(buf + id,MAX_SIZE - id,"%uu",num);
   if(cnt > 0) id += cnt;
 }
 
