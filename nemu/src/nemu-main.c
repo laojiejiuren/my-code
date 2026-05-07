@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 #ifdef CONFIG_TARGET_AM
   am_init_monitor();
 #else
-  if(argc >= 2 && strcmp(argv[1], "tools/gen-expr/input1") == 0)
+  if(argc >= 2 && strcmp(argv[1], "tools/gen-expr/input") == 0)
   {
     char *filename = argv[1];
     init_regex();
