@@ -49,7 +49,7 @@ static struct rule {
   {"0x[0-9A-Fa-f]",HEX},
   {"\\$",REGNAME},
   {"&&",AND},
-  {"!=",TK_NEQ},
+  {"!=",TK_NEQ}
 };
 
 #define NR_REGEX ARRLEN(rules)
