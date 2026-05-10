@@ -213,13 +213,22 @@ static uint32_t eval(int p,int q)
 
   else if(p == q)
   {
-    if(tokens[p].type != TK_NUM)
+    if(tokens[p].type == TK_NUM)
+      return strtoul(tokens[p].str,NULL,10);
+    else if(tokens[p].type == HEX)
+      return strtoul(tokens[p].str,NULL,16);
+    else if(tokens[p].type == REGNAME)
     {
-      printf("NOT NUMBER\n");
-      eval_ok = false;
-      return 0;
+      bool success = false;
+      word_t val = isa_reg_str2val(tokens[p].str,&success);
+      if(!success)
+      {
+        printf("unknown regname:%s\n",tokens[p].str);
+        eval_ok = false;
+        return 0;
+      }
+      else return val;
     }
-    return strtoul(tokens[p].str,NULL,10);
   }
   else if(check_parentheses(p,q))
     return eval(p+1,q-1);
@@ -234,7 +243,8 @@ static uint32_t eval(int p,int q)
     int base = 0;
     for(int i = p; i <= q; ++i)
     {
-      if(tokens[i].type == TK_NUM)
+      if(tokens[i].type == TK_NUM || tokens[i].type == HEX || tokens[i].type == REGNAME || 
+         tokens[i].type == DEREF)
         continue;
 
       //处理内部出现括号的情况
