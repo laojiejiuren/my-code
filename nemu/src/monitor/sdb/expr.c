@@ -341,14 +341,14 @@ word_t expr(char *e, bool *success) {
   for (int i = 0; i < nr_token; i ++) 
     if (tokens[i].type == '*' && (i == 0 || tokens[i - 1].type == '(' || tokens[i - 1].type == '+'||
         tokens[i - 1].type == '-' || tokens[i - 1].type == '*' || tokens[i - 1].type == '/' ||
-        tokens[i - 1].type == TK_NEQ || tokens[i - 1].type == AND || tokens[i - 1].type == TK_EQ) ||
-        tokens[i - 1].type == DEREF)
+        tokens[i - 1].type == TK_NEQ || tokens[i - 1].type == AND || tokens[i - 1].type == TK_EQ ||
+        tokens[i - 1].type == DEREF))
       tokens[i].type = DEREF;
   for (int i = 0; i < nr_token; i ++) 
     if (tokens[i].type == '-' && (i == 0 || tokens[i - 1].type == '(' || tokens[i - 1].type == '+'||
         tokens[i - 1].type == '-' || tokens[i - 1].type == '*' || tokens[i - 1].type == '/' ||
-        tokens[i - 1].type == TK_NEQ || tokens[i - 1].type == AND || tokens[i - 1].type == TK_EQ) || 
-        tokens[i - 1].type == NEG )
+        tokens[i - 1].type == TK_NEQ || tokens[i - 1].type == AND || tokens[i - 1].type == TK_EQ || 
+        tokens[i - 1].type == NEG ))
       tokens[i].type = NEG;
 
   eval_ok = true;

@@ -123,6 +123,21 @@ static int cmd_x(char *args)
   return 0;
 }
 
+static int cmd_p(char *args)
+{
+  char *arg = strtok(NULL," ");
+
+  bool success;
+  word_t val = expr(arg,&success);
+  if(!success)
+  {
+    printf("eval ERROR\n");
+    return 0;
+  }
+  printf("expr :%s  val: %u",arg,val);
+  return 0;
+}
+
 static struct {
   const char *name;
   const char *description;
@@ -134,7 +149,7 @@ static struct {
   {"si", "Step one or N instructions",cmd_si},
   {"info","Printf registers",cmd_info},
   {"x","Scan memory: x N EXPR",cmd_x},
-
+  {"p","Expression Evaluation",cmd_p},
   /* TODO: Add more commands */
 
 };
