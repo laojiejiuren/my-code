@@ -134,7 +134,7 @@ static int cmd_p(char *args)
     printf("eval ERROR\n");
     return 0;
   }
-  printf("expr :%s  val: %u",arg,val);
+  printf("expr :%s  val: %u\n",arg,val);
   return 0;
 }
 
