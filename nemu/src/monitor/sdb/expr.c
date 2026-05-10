@@ -254,12 +254,16 @@ static uint32_t eval(int p,int q)
         {base--;continue;}
 
       //处理优先级以及op的位置
-      else if(base == 0)
+      if(base == 0)//优先级越小，就越后面处理
       {
-        if(tokens[i].type == '+' || tokens[i].type == '-')
+        if(tokens[i].type == AND)
           now = 1;
-        else if(tokens[i].type == '*' || tokens[i].type == '/')
+        else if(tokens[i].type == TK_EQ || tokens[i].type == TK_NEQ)
           now = 2;
+        else if(tokens[i].type == '+' || tokens[i].type == '-')
+          now = 3;
+        else if(tokens[i].type == '*' || tokens[i].type == '/')
+          now = 4;
 
         if(old > now || (old == now && i > op))
         {
