@@ -23,7 +23,7 @@
 enum {
   TK_NOTYPE = 256, TK_EQ,
   TK_NUM,DEREF,HEX,REGNAME,
-  AND,TK_NEQ,
+  AND,TK_NEQ,NEG,
   /* TODO: Add more token types */
 
 };
@@ -250,7 +250,7 @@ static uint32_t eval(int p,int q)
     for(int i = p; i <= q; ++i)
     {
       if(tokens[i].type == TK_NUM || tokens[i].type == HEX || tokens[i].type == REGNAME || 
-         tokens[i].type == DEREF)
+         tokens[i].type == DEREF || tokens[i].type == NEG)
         continue;
 
       //处理内部出现括号的情况
@@ -287,7 +287,12 @@ static uint32_t eval(int p,int q)
         if(eval_ok == false) return 0;
         return vaddr_read(addr,4);
       }
-
+      if(tokens[p].type == NEG)
+      {
+        uint32_t val = eval(p + 1,q);
+        if(eval_ok == false) return 0;
+        return -val;
+      }
       printf("NO main operator\n");
       eval_ok = false;
       return 0;
@@ -336,8 +341,15 @@ word_t expr(char *e, bool *success) {
   for (int i = 0; i < nr_token; i ++) 
     if (tokens[i].type == '*' && (i == 0 || tokens[i - 1].type == '(' || tokens[i - 1].type == '+'||
         tokens[i - 1].type == '-' || tokens[i - 1].type == '*' || tokens[i - 1].type == '/' ||
-        tokens[i - 1].type == TK_NEQ || tokens[i - 1].type == AND || tokens[i - 1].type == TK_EQ) )
+        tokens[i - 1].type == TK_NEQ || tokens[i - 1].type == AND || tokens[i - 1].type == TK_EQ) ||
+        tokens[i - 1].type == DEREF)
       tokens[i].type = DEREF;
+  for (int i = 0; i < nr_token; i ++) 
+    if (tokens[i].type == '-' && (i == 0 || tokens[i - 1].type == '(' || tokens[i - 1].type == '+'||
+        tokens[i - 1].type == '-' || tokens[i - 1].type == '*' || tokens[i - 1].type == '/' ||
+        tokens[i - 1].type == TK_NEQ || tokens[i - 1].type == AND || tokens[i - 1].type == TK_EQ) || 
+        tokens[i - 1].type == NEG )
+      tokens[i].type = NEG;
 
   eval_ok = true;
   uint32_t result = eval(0, nr_token - 1);
