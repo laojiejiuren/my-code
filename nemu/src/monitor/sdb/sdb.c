@@ -20,6 +20,7 @@
 #include "sdb.h"
 #include <memory/vaddr.h>
 #include <utils.h>
+#include <regex.h>
 static int is_batch_mode = false;
 
 void init_regex();
@@ -128,6 +129,7 @@ static int cmd_p(char *args)
   char *arg = strtok(NULL," ");
 
   bool success;
+  init_regex();
   word_t val = expr(arg,&success);
   if(!success)
   {
