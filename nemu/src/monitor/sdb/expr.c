@@ -47,7 +47,7 @@ static struct rule {
   {"[0-9]+u",TK_NUM},
   {"==", TK_EQ},        // equal
   {"0x[0-9A-Fa-f]+",HEX},
-  {"\\$[0-9A-Za-z]+",REGNAME},
+  {"\\$[$0-9A-Za-z]+",REGNAME},
   {"&&",AND},
   {"!=",TK_NEQ}
 };
