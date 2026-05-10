@@ -126,6 +126,32 @@ static bool make_token(char *e) {
             }
             break;
           }
+
+          case REGNAME:
+          {
+            if(substr_len - 1 >= 32 || nr_token >= 65536)
+            {
+              printf("Overflow! ! !\n");
+              return false;
+            }
+            strncpy(tokens[nr_token].str,substr_start + 1,substr_len - 1);
+            tokens[nr_token].str[substr_len - 1] = '\0';
+            tokens[nr_token].type = REGNAME;
+            nr_token++;
+            break;
+          }
+
+          case AND:
+          case TK_EQ:
+          case TK_NEQ:
+          {
+            strncpy(tokens[nr_token].str,substr_start,substr_len);
+            tokens[nr_token].str[substr_len] = '\0';
+            tokens[nr_token].type = rules[i].token_type;
+            nr_token++;
+            break;
+          }
+
           case '+':case '-':case '*':case '/':case '(':case ')':
           {
             tokens[nr_token].str[0] = substr_start[0];
