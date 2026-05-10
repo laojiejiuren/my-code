@@ -121,7 +121,7 @@ static bool make_token(char *e) {
             {
               strncpy(tokens[nr_token].str, substr_start, substr_len);
               tokens[nr_token].str[substr_len] = '\0';
-              tokens[nr_token].type = TK_NUM;
+              tokens[nr_token].type = rules[i].token_type;
               nr_token++;
             }
             break;
@@ -229,6 +229,12 @@ static uint32_t eval(int p,int q)
       }
       else return val;
     }
+    else 
+    {
+      printf("NO VAL\n");
+      eval_ok = false;
+      return 0;
+    }
   }
   else if(check_parentheses(p,q))
     return eval(p+1,q-1);
@@ -279,7 +285,7 @@ static uint32_t eval(int p,int q)
       {
         uint32_t addr = eval(p + 1,q);
         if(eval_ok == false) return 0;
-        return vadde_read(addr,4);
+        return vaddr_read(addr,4);
       }
 
       printf("NO main operator\n");
