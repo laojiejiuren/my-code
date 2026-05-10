@@ -129,7 +129,6 @@ static int cmd_p(char *args)
   char *arg = strtok(NULL," ");
 
   bool success;
-  init_regex();
   word_t val = expr(arg,&success);
   if(!success)
   {
