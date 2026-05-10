@@ -108,7 +108,9 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
           case TK_NOTYPE:
             break;
+
           case TK_NUM://要处理溢出的情况
+          case HEX:
           {
             if(substr_len >= 32 || nr_token >= 65536)
             {
@@ -276,8 +278,9 @@ word_t expr(char *e, bool *success) {
 
 
   for (int i = 0; i < nr_token; i ++) 
-    if (tokens[i].type == '*' && (i == 0 || tokens[i - 1].type == '(' || tokens[i - 1].type == '+'
-        tokens[i - 1].type == '-' || tokens[i - 1].type == '*' || tokens[i - 1].type == '/') )
+    if (tokens[i].type == '*' && (i == 0 || tokens[i - 1].type == '(' || tokens[i - 1].type == '+'||
+        tokens[i - 1].type == '-' || tokens[i - 1].type == '*' || tokens[i - 1].type == '/' ||
+        tokens[i - 1].type == TK_NEQ || tokens[i - 1].type == AND || tokens[i - 1].type == TK_EQ) )
       tokens[i].type = DEREF;
 
   eval_ok = true;
