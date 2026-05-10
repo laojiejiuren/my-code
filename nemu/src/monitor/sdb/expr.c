@@ -273,8 +273,15 @@ static uint32_t eval(int p,int q)
       }
     }
 
-    if(op == -1)
+    if(op == -1)//当不是+-*/时就可以判断是否是解引用的情况
     {
+      if(tokens[p].type == DEREF)
+      {
+        uint32_t addr = eval(p + 1,q);
+        if(eval_ok == false) return 0;
+        return vadde_read(addr,4);
+      }
+
       printf("NO main operator\n");
       eval_ok = false;
       return 0;
@@ -298,6 +305,9 @@ static uint32_t eval(int p,int q)
         }
         return val1 / val2;
       }
+      case TK_EQ : return val1 == val2;
+      case TK_NEQ : return val1 != val2;
+      case AND : return val1 && val2;
       default: 
       {
         printf("EROOR\n");
