@@ -17,11 +17,13 @@
 #include "sdb.h"
 
 #define NR_WP 32
-
+#define MAX_SIZE 256
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
 
+  char expr_str[MAX_SIZE];
+  word_t val;
   /* TODO: Add more members if necessary */
 
 } WP;
@@ -39,5 +41,57 @@ void init_wp_pool() {
   head = NULL;
   free_ = wp_pool;
 }
+
+WP* new_wp(char *ch)
+{
+  if(free_ == NULL)
+    assert(0);
+  WP* tmp = free_;
+  free_ = free_ -> next;//将节点后移
+
+  //将传入的表达式写入
+  int i;
+  for(i = 0;i < MAX_SIZE && ch[i] != '\0'; ++i)
+    tmp->expr_str[i] = ch[i];
+
+  tmp->expr_str[i] = '\0';
+
+  bool flag;
+  word_t val = expr(tmp->expr_str,&flag);
+
+  if(!flag) assert(0);
+  tmp->val = val;
+
+  tmp->next = head;//头插法
+  head = tmp;
+  return head;
+}
+
+void free_wp(WP *wp)
+{
+  if(wp == NULL)
+    return;
+
+  if(wp == head)
+  {
+    WP * tmp = head;
+    head = head->next;
+
+    tmp->next = free_;
+    free_ = tmp;
+  }
+  else
+  {
+    WP * p = head;
+    while(p != NULL && p->next != wp)
+      p = p->next;
+
+    //现在p->next = wp的前一个节点
+    p->next = wp->next;
+    wp->next = free_;
+    free_ = wp;
+  }
+}
+
 /* TODO: Implement the functionality of watchpoint */
 
