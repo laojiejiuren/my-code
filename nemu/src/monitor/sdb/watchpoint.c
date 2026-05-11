@@ -12,7 +12,8 @@
 *
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
-
+// head用于组织使用中的监视点结构
+// free_用于组织空闲的监视点结构
 #include "sdb.h"
 
 #define NR_WP 32
@@ -38,6 +39,5 @@ void init_wp_pool() {
   head = NULL;
   free_ = wp_pool;
 }
-
 /* TODO: Implement the functionality of watchpoint */
 
