@@ -166,8 +166,8 @@ static int cmd_d(char *args)
     return 0;
   }
 
-  int id = atoi(arg);
-  delete_wp(id);
+  uint32_t id = strtoul(arg,NULL,10);
+  delete_wp((int)id);
 
   return 0;
 }
