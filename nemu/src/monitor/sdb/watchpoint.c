@@ -122,5 +122,18 @@ void delete_wp(int id)
   printf("Be deleted watchpoint is :%d %s\n",p->NO,p->expr_str);
 }
 
-/* TODO: Implement the functionality of watchpoint */
+bool check_wp()
+{
+  WP * p = head;
+  bool flag = true;
+  bool success;
+  while(p != NULL)
+  {
+    word_t tmp = expr(p->expr_str,&success);
 
+    if(tmp != p->val)
+      flag = false;
+  }
+  return flag;
+}
+/* TODO: Implement the functionality of watchpoint */

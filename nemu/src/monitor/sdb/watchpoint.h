@@ -16,5 +16,5 @@ void show_wp();
 WP* new_wp(char *ch);
 void free_wp(WP *wp);
 void delete_wp(int id);
-
+bool check_wp();
 #endif
