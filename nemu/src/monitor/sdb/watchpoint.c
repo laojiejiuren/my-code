@@ -90,7 +90,30 @@ void free_wp(WP *wp)
     p->next = wp->next;
     wp->next = free_;
     free_ = wp;
+  } 
+}
+
+void show_wp()
+{
+  WP * p = head;
+  while(!p)
+  {
+    printf("watchpoint:%d %s %u\n",p->NO,p->expr_str,p->val);
+    p = p->necxt;
   }
+}
+
+void delete_wp(int id)
+{
+  if(id < 0 || id >= 32)
+    assert(0);
+
+  WP * p = head;
+  while(!p && p->NO != id)
+    p = p->next;
+  free_wp(p);
+
+  printf("Be deleted watchpoint is :%d %s\n",p->NO,p->expr_str);
 }
 
 /* TODO: Implement the functionality of watchpoint */
