@@ -70,7 +70,7 @@ WP* new_wp(char *ch)
 void free_wp(WP *wp)
 {
   if(wp == NULL)
-    return;
+    assert(0);
 
   if(wp == head)
   {
@@ -112,11 +112,11 @@ void delete_wp(int id)
   while(p != NULL && p->NO != id)
     p = p->next;
 
-  if(p == NULL)
+  /*if(p == NULL)
   {
     printf("NO watchpoint\n");
     return;
-  }
+  }*/
   free_wp(p);
 
   printf("Be deleted watchpoint is :%d %s\n",p->NO,p->expr_str);
