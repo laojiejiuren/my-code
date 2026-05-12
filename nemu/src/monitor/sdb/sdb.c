@@ -140,6 +140,38 @@ static int cmd_p(char *args)
   return 0;
 }
 
+static int cmd_w(char *args)
+{
+  char *arg = strtok(NULL," ");
+
+  if(arg == NULL)
+  {
+    printf("Please enter w EXPR\n");
+    return 0;
+  }
+
+  WP * wp = new_wp(arg);
+  wp = wp->next;
+  printf("Add watchpoint is %d %s\n",wp->NO,wp->expr_str);
+  return 0;
+}
+
+static int cmd_d(char *args)
+{
+  char arg = strrok(NULL," ");
+
+  if(arg == NULL)
+  {
+    printf("Please enter d N\n");
+    return 0;
+  }
+
+  int id = strtol(arg);
+  delete_wp(id);
+  
+  return 0;
+}
+
 static struct {
   const char *name;
   const char *description;
@@ -152,6 +184,8 @@ static struct {
   {"info","Printf registers",cmd_info},
   {"x","Scan memory: x N EXPR",cmd_x},
   {"p","Expression Evaluation",cmd_p},
+  {"w","",cmd_w},
+  {"d","Delete watchpoint",cmd_d},
   /* TODO: Add more commands */
 
 };
