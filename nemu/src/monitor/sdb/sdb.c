@@ -20,11 +20,12 @@
 #include "sdb.h"
 #include <memory/vaddr.h>
 #include <utils.h>
+#include "watchpoint.h"
 static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
-void show_wp();
+
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
   static char *line_read = NULL;
@@ -158,7 +159,7 @@ static int cmd_w(char *args)
 
 static int cmd_d(char *args)
 {
-  char arg = strrok(NULL," ");
+  char *arg = strok(NULL," ");
 
   if(arg == NULL)
   {
@@ -166,9 +167,9 @@ static int cmd_d(char *args)
     return 0;
   }
 
-  int id = strtol(arg);
+  int id = strtoi(arg);
   delete_wp(id);
-  
+
   return 0;
 }
 
