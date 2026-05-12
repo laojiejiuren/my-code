@@ -159,7 +159,7 @@ static int cmd_w(char *args)
 
 static int cmd_d(char *args)
 {
-  char *arg = strok(NULL," ");
+  char *arg = strtok(NULL," ");
 
   if(arg == NULL)
   {
@@ -167,7 +167,7 @@ static int cmd_d(char *args)
     return 0;
   }
 
-  int id = strtoi(arg);
+  int id = atoi(arg);
   delete_wp(id);
 
   return 0;
