@@ -44,7 +44,7 @@ void init_wp_pool() {
 
 WP* new_wp(char *ch)
 {
-  if(free_ == NULL)
+  if(free_ == NULL)//没有空闲
     assert(0);
   WP* tmp = free_;
   free_ = free_ -> next;//将节点后移
