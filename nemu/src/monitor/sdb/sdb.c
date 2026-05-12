@@ -86,8 +86,10 @@ static int cmd_info(char *args)
 
   if(strcmp(arg,"r") == 0)
     isa_reg_display();
-  else 
-    printf("Please enter info r\n");
+  else if(strcmp(arg,"w") == 0)
+    show_wp();
+  else
+    printf("Please enter info r or w\n");
 
   return 0;
 }
