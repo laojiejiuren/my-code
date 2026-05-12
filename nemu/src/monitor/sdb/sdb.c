@@ -166,7 +166,14 @@ static int cmd_d(char *args)
     return 0;
   }
 
-  uint32_t id = strtoul(arg,NULL,10);
+  char * flag;
+  uint32_t id = strtoul(arg,&flag,10);
+
+  if(*flag != '\0')
+  {
+    printf("Please enter a valid string:d N\n");
+    return 0;
+  }
   delete_wp((int)id);
 
   return 0;
