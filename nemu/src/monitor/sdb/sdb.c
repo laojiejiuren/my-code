@@ -120,7 +120,7 @@ static int cmd_x(char *args)
   {
     vaddr_t next_addr = addr + i * 4;
     word_t out_data = vaddr_read(next_addr,4);
-    printf("0x%08x : %d\n",next_addr,out_data);
+    printf("0x%08x : %0x\n",next_addr,out_data);
   }
 
   return 0;
