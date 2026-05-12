@@ -111,6 +111,7 @@ void delete_wp(int id)
   WP * p = head;
   while(p != NULL && p->NO != id)
     p = p->next;
+
   if(p == NULL)
   {
     printf("NO watchpoint\n");
