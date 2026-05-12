@@ -80,7 +80,7 @@ static int cmd_info(char *args)
 
   if(arg==NULL)
   {
-    printf("NO INPUT.Please enter info r\n");
+    printf("NO INPUT.Please enter info r or w\n");
     return 0;
   }
 
