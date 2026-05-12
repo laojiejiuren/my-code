@@ -99,7 +99,7 @@ void show_wp()
   while(!p)
   {
     printf("watchpoint:%d %s %u\n",p->NO,p->expr_str,p->val);
-    p = p->necxt;
+    p = p->next;
   }
 }
 
