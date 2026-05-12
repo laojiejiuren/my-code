@@ -188,11 +188,11 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   {"si", "Step one or N instructions",cmd_si},
-  {"info","Printf registers",cmd_info},
+  {"info","Printf registers: info r or w",cmd_info},
   {"x","Scan memory: x N EXPR",cmd_x},
-  {"p","Expression Evaluation",cmd_p},
-  {"w","Add watchpoint",cmd_w},
-  {"d","Delete watchpoint",cmd_d},
+  {"p","Expression Evaluation: p EXPR",cmd_p},
+  {"w","Add watchpoint: w EXPR",cmd_w},
+  {"d","Delete watchpoint: d N",cmd_d},
   /* TODO: Add more commands */
 
 };
