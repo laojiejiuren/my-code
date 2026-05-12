@@ -96,7 +96,7 @@ void free_wp(WP *wp)
 void show_wp()
 {
   WP * p = head;
-  while(!p)
+  while(p != NULL)
   {
     printf("watchpoint:%d %s %u\n",p->NO,p->expr_str,p->val);
     p = p->next;
@@ -109,7 +109,7 @@ void delete_wp(int id)
     assert(0);
 
   WP * p = head;
-  while(!p && p->NO != id)
+  while(p != NULL && p->NO != id)
     p = p->next;
   free_wp(p);
 
