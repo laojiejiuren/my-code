@@ -191,7 +191,7 @@ static struct {
   {"info","Printf registers",cmd_info},
   {"x","Scan memory: x N EXPR",cmd_x},
   {"p","Expression Evaluation",cmd_p},
-  {"w","",cmd_w},
+  {"w","Add watchpoint",cmd_w},
   {"d","Delete watchpoint",cmd_d},
   /* TODO: Add more commands */
 
