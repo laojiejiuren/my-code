@@ -152,6 +152,7 @@ static int cmd_w(char *args)
   }
 
   WP * wp = new_wp(arg);
+  wp = wp->next;
   printf("Add watchpoint is %d %s\n",wp->NO,wp->expr_str);
   return 0;
 }
