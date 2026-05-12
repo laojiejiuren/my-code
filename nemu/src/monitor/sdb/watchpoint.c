@@ -132,7 +132,13 @@ bool check_wp()
     word_t tmp = expr(p->expr_str,&success);
 
     if(tmp != p->val)
+    {
       flag = false;
+      printf("ERROR WATCHPOINT:%d %s\n",p->NO,p->expr_str);
+      printf("Old val is %d\n",p->val);
+      printf("New val is %d\n",tmp);
+    }
+    p = p->next;
   }
   return flag;
 }
