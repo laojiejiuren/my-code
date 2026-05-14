@@ -134,30 +134,32 @@ static int cmd_x(char *args)
 
 static int cmd_p(char *args)
 {
-  char *arg = strtok(NULL," ");
-
-  bool success;
-  word_t val = expr(arg,&success);
-  if(!success)
-  {
-    printf("eval ERROR\n");
-    return 0;
-  }
-  printf("expr :%s  val: %u\n",arg,val);
-  return 0;
-}
-
-static int cmd_w(char *args)
-{
-  char *arg = strtok(NULL," ");
-
-  if(arg == NULL)
+  if(args == NULL)
   {
     printf("Please enter w EXPR\n");
     return 0;
   }
 
-  WP * wp = new_wp(arg);
+  bool success;
+  word_t val = expr(args,&success);
+  if(!success)
+  {
+    printf("eval ERROR\n");
+    return 0;
+  }
+  printf("expr :%s  val: %u\n",args,val);
+  return 0;
+}
+
+static int cmd_w(char *args)
+{
+  if(args == NULL)
+  {
+    printf("Please enter w EXPR\n");
+    return 0;
+  }
+
+  WP * wp = new_wp(args);
   printf("Add watchpoint is %d %s\n",wp->NO,wp->expr_str);
   return 0;
 }
