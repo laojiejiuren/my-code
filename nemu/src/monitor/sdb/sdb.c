@@ -98,7 +98,7 @@ static int cmd_info(char *args)
 static int cmd_x(char *args)
 {
   char *arg1 = strtok(NULL," ");//用来存储要输出的N
-  char *arg2 = strtok(NULL," ");//用来存储表达式，目前是一个地址
+  char *arg2 = args + strlen(arg1) + 1;//用来存储表达式，目前是一个地址
 
   if(arg1 == NULL || arg2 == NULL)
   {
