@@ -113,7 +113,7 @@ static int cmd_x(char *args)
     return 0;
   }
 
-  bool * flag = false;
+  bool flag = false;
   vaddr_t val = expr(arg2,&flag);
   if(!flag)
   {
