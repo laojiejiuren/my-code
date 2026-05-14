@@ -113,12 +113,18 @@ static int cmd_x(char *args)
     return 0;
   }
 
+  bool * flag = false;
+  vaddr_t val = expr(arg2,&flag);
+  if(!flag)
+  {
+    printf("ERROR EXPR at cmd_x\n");
+    return 0;
+  }
   //将字符串转换成vaddr_t类型
-  vaddr_t addr = strtoul(arg2,NULL,16);
 
   for(int i = 0; i < n; ++i)
   {
-    vaddr_t next_addr = addr + i * 4;
+    vaddr_t next_addr = val + i * 4;
     word_t out_data = vaddr_read(next_addr,4);
     printf("0x%08x : %08x\n",next_addr,out_data);
   }
