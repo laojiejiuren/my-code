@@ -122,7 +122,7 @@ static int cmd_x(char *args)
   }
   //将字符串转换成vaddr_t类型
 
-  for(int i = 0; i <= n; ++i)
+  for(int i = 0; i < n; ++i)
   {
     vaddr_t next_addr = val + i * 4;
     word_t out_data = vaddr_read(next_addr,4);
