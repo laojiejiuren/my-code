@@ -137,6 +137,7 @@ bool check_wp()
       printf("ERROR WATCHPOINT:%d %s\n",p->NO,p->expr_str);
       printf("Old val is %u\n",p->val);
       printf("New val is %u\n",tmp);
+      p->val = tmp;
     }
     p = p->next;
   }
