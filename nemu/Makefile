@@ -62,3 +62,10 @@ else
 # Include rules to build NEMU
 include $(NEMU_HOME)/scripts/native.mk
 endif
+
+# Count lines of code in .c and .h files
+count:
+	@echo "Total lines in .c and .h files under nemu/:"
+	@find $(NEMU_HOME) -type f \( -name "*.c" -o -name "*.h" \) -exec cat {} + | wc -l
+	@echo "Non-blank lines in .c and .h files under nemu/:"
+	@find $(NEMU_HOME) -type f \( -name "*.c" -o -name "*.h" \) -exec grep -v '^\s*$$' {} + | wc -l
