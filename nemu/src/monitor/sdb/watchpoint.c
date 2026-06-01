@@ -98,7 +98,7 @@ void show_wp()
   WP * p = head;
   while(p != NULL)
   {
-    printf("watchpoint:%d %s %u\n",p->NO,p->expr_str,p->val);
+    printf("watchpoint:%d %s %u(0x%08x)\n",p->NO,p->expr_str,p->val,p->val);
     p = p->next;
   }
 }
