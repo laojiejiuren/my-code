@@ -44,7 +44,7 @@ ifeq ($(SAVE_TEMPS),1)
 $(OBJ_DIR)/%.i: %.c
 	@echo + CC $<
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -c -o $@ $<
+	@$(CC) $(CFLAGS) -c -i $@ $<
 	$(call call_fixdep, $(@:.o=.d), $@)
 endif
 
