@@ -46,10 +46,7 @@ $(OBJ_DIR)/%.i: %.c
 	@echo + CC $<
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -E -o $@ $<
-	$(call call_fixdep, $(@:.i=.d), $@)
-
-# 让 .o 依赖 .i，这样 make 才会触发 .i 的构建
-$(OBJ_DIR)/%.o: $(OBJ_DIR)/%.i
+# $(call call_fixdep, $(@:.i=.d), $@)
 endif
 
 
