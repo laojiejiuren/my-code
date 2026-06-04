@@ -46,7 +46,7 @@ $(OBJ_DIR)/%.i: %.c
 	@echo + CC $<
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -E -o $@ $<
-	$(call call_fixdep, $(@:.o=.d), $@)
+	$(call call_fixdep, $(@:.i=.d), $@)
 endif
 
 # Depencies
