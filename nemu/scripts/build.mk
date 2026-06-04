@@ -33,6 +33,9 @@ $(OBJ_DIR)/%.o: %.c
 	@echo + CC $<
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c -o $@ $<
+ifeq ($(SAVE_TEMPS),true)
+	@$(CC) $(CFLAGS) -E -o $(@:.o=.i) $<
+endif
 	$(call call_fixdep, $(@:.o=.d), $@)
 
 $(OBJ_DIR)/%.o: %.cc
@@ -40,15 +43,6 @@ $(OBJ_DIR)/%.o: %.cc
 	@mkdir -p $(dir $@)
 	@$(CXX) $(CFLAGS) $(CXXFLAGS) -c -o $@ $<
 	$(call call_fixdep, $(@:.o=.d), $@)
-
-ifeq ($(SAVE_TEMPS),true)
-$(OBJ_DIR)/%.i: %.c
-	@echo + CC $<
-	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -E -o $@ $<
-# $(call call_fixdep, $(@:.i=.d), $@)
-endif
-
 
 # Depencies
 -include $(OBJS:.o=.d)
