@@ -23,7 +23,7 @@ endif
 LD := $(CXX)
 INCLUDES = $(addprefix -I, $(INC_PATH))
 CFLAGS  := -O2 -MMD -Wall -Werror -g $(INCLUDES) $(CFLAGS)
-ifeq($(SAVA_TMPS),1)
+ifeq ($(SAVA_TMPS),1)
 CFLAGS += -save-temp=obj
 endif
 LDFLAGS := -O2 $(LDFLAGS)
