@@ -26,6 +26,7 @@ CFLAGS  := -O2 -MMD -Wall -Werror -g $(INCLUDES) $(CFLAGS)
 ifeq ($(SAVE_TEMPS),1)
 CFLAGS += -save-temps=obj
 endif
+
 LDFLAGS := -O2 $(LDFLAGS)
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
