@@ -23,10 +23,6 @@ endif
 LD := $(CXX)
 INCLUDES = $(addprefix -I, $(INC_PATH))
 CFLAGS  := -O2 -MMD -Wall -Werror -g $(INCLUDES) $(CFLAGS)
-ifeq ($(SAVE_TEMPS),1)
-CFLAGS += -save-temps=obj
-endif
-
 LDFLAGS := -O2 $(LDFLAGS)
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o) $(CXXSRC:%.cc=$(OBJ_DIR)/%.o)
@@ -43,6 +39,14 @@ $(OBJ_DIR)/%.o: %.cc
 	@mkdir -p $(dir $@)
 	@$(CXX) $(CFLAGS) $(CXXFLAGS) -c -o $@ $<
 	$(call call_fixdep, $(@:.o=.d), $@)
+
+ifeq ($(SAVE_TEMPS),1)
+$(OBJ_DIR)/%.i: %.c
+	@echo + CC $<
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -c -o $@ $<
+	$(call call_fixdep, $(@:.o=.d), $@)
+endif
 
 # Depencies
 -include $(OBJS:.o=.d)
