@@ -33,9 +33,6 @@ $(OBJ_DIR)/%.o: %.c
 	@echo + CC $<
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c -o $@ $<
-ifeq ($(SAVE_TEMPS),true)
-	@$(CC) $(CFLAGS) -E -o $(@:.o=.i) $<
-endif
 	$(call call_fixdep, $(@:.o=.d), $@)
 
 $(OBJ_DIR)/%.o: %.cc
