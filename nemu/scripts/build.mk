@@ -44,6 +44,12 @@ $(OBJ_DIR)/%.o: %.cc
 # Depencies
 -include $(OBJS:.o=.d)
 
+ifeq ($(SAVE_TEMPS),true)
+.PHONY: preprocess
+preproces:$(OBJS:.o=.i)
+endif
+
+
 # Some convenient rules
 
 .PHONY: app clean
