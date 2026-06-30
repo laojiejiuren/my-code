@@ -85,10 +85,17 @@ static int cmd_info(char *args)
     return 0;
   }
 
+  bool flag = false;
+  word_t val = isa_reg_str2val(arg,&flag);
+
   if(strcmp(arg,"r") == 0)
     isa_reg_display();
   else if(strcmp(arg,"w") == 0)
     show_wp();
+  else if(flag)
+  {
+    printf("%-3s: 0x%08x \n",arg,val);
+  }
   else
     printf("Please enter info r or w\n");
 
