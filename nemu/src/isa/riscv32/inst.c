@@ -24,7 +24,7 @@
 
 enum {
   TYPE_I, TYPE_U, TYPE_S,
-  TYPE_N, TYPE_J,// none
+  TYPE_N, TYPE_J, TYPE_B,// none
 };
 
 #define src1R() do { *src1 = R(rs1); } while (0)
@@ -38,6 +38,12 @@ enum {
                     (BITS(i, 20, 20) << 11) | \
                     (BITS(i, 30, 21) << 1)),21);\
 } while(0)
+#define immB() do {                           \
+    in64_t val = (BITS(i,31,31) << 12) | (BITS(i,7,7) << 11) |  \
+                (BITS(i,30,25) << 6) | (BITS(i,11,8) << 1);     \
+    *imm = SEXT(val,13);                                        \
+} while(0)
+
 
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
   uint32_t i = s->isa.inst;
@@ -49,6 +55,7 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
     case TYPE_U:                   immU(); break;
     case TYPE_S: src1R(); src2R(); immS(); break;
     case TYPE_J:                   immJ(); break;
+    case TYPE_B:                   immB(); break;
     case TYPE_N: break;
     default: panic("unsupported type = %d", type);
   }
@@ -79,6 +86,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? ??? ????? 01101 11", lui    , U, R(rd) = imm);
   INSTPAT("0100000 ????? ????? 000 ????? 01100 11", sub    , N, R(rd) = src1 - src2);
   INSTPAT("??????? ????? ????? 011 ????? 00100 11", sltiu  , I, R(rd) = src1 == 0 ? 0 : 1);
+  INSTPAT("??????? ????? ????? 000 ????? 11000 11", beq    , B, if(src1 == src2) {s->dnpc = s->pc + imm;});
 
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
