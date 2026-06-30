@@ -39,7 +39,7 @@ enum {
                     (BITS(i, 30, 21) << 1)),21);\
 } while(0)
 #define immB() do {                           \
-    in64_t val = (BITS(i,31,31) << 12) | (BITS(i,7,7) << 11) |  \
+    int64_t val = (BITS(i,31,31) << 12) | (BITS(i,7,7) << 11) |  \
                 (BITS(i,30,25) << 6) | (BITS(i,11,8) << 1);     \
     *imm = SEXT(val,13);                                        \
 } while(0)
