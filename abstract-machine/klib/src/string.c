@@ -18,11 +18,19 @@ size_t strlen(const char *s) {
   }
 
   return str;
-  panic("Not implemented");
 }
 
 char *strcpy(char *dst, const char *src) {
-  panic("Not implemented");
+
+  while(*src != '\0')
+  {
+    *dst = *src;
+    src++;
+    dst++;
+  }
+  *dst = '\0';
+
+  //panic("Not implemented");
 }
 
 char *strncpy(char *dst, const char *src, size_t n) {
