@@ -5,6 +5,19 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 size_t strlen(const char *s) {
+  if(s = NULL)
+  {
+    panic("This is an empty string.");
+    return -1;
+  }
+  size_t cnt = 0;
+  while(*str != '\0')
+  {
+    cnt++;
+    str++;
+  }
+
+  return str;
   panic("Not implemented");
 }
 
