@@ -68,7 +68,16 @@ char *strcat(char *dst, const char *src) {
 }
 
 int strcmp(const char *s1, const char *s2) {
-  panic("Not implemented");
+  while((*s1 == *s2) && *s1 && *s2)
+	{
+		s1++;
+		s2++;
+	}
+	int val = (unsigned char)*s1 - (unsigned char)*s2;
+	if(val > 0) return 1;
+	else if(val == 0) return 0;
+	else return -1;
+  //panic("Not implemented");
 }
 
 int strncmp(const char *s1, const char *s2, size_t n) {
