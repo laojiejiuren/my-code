@@ -84,22 +84,22 @@ int strncmp(const char *s1, const char *s2, size_t n) {
 		return 0;
 		
 	int n_tmp = n;
-	size_t cnt1 = strlen(s1);
-	size_t cnt2 = strlen(s2);
-	
-	int tmp1;
-  while (n_tmp && *s1 && (*s1 == *s2))
+	int val;
+  for(int i=n_tmp;i > 0; --i)
   {
-    tmp1 = (unsigned char)*s1 - (unsigned char)*s2;
-    s1++;
-    s2++;
-    n_tmp--;
-  }
-    
-  int val;
-  if(n > cnt1 || n > cnt2) 
-	  val = (unsigned char)*s1 - (unsigned char)*s2;
-  else if(n <= cnt1 && n <= cnt2) val = tmp1;
+    if(!*s1 || !*s2)
+    {
+    	val = (unsigned char)*s1 - (unsigned char)*s2;
+    	break;
+		}
+		if(*s1 != *s2)
+		{
+			val = (unsigned char)*s1 - (unsigned char)*s2;
+			break;
+		}
+		else val = 0;
+		s1++;s2++;
+	}
     
   if (val > 0) return 1;
   else if (val == 0) return 0;
