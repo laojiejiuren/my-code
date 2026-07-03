@@ -70,8 +70,7 @@ char *strcat(char *dst, const char *src) {
 int strcmp(const char *s1, const char *s2) {
   while((*s1 == *s2) && *s1 && *s2)
 	{
-		s1++;
-		s2++;
+		s1++;s2++;
 	}
 	int val = (unsigned char)*s1 - (unsigned char)*s2;
 	if(val > 0) return 1;
@@ -81,7 +80,31 @@ int strcmp(const char *s1, const char *s2) {
 }
 
 int strncmp(const char *s1, const char *s2, size_t n) {
-  panic("Not implemented");
+	if(n == 0)
+		return 0;
+		
+	int n_tmp = n;
+	size_t cnt1 = strlen(s1);
+	size_t cnt2 = strlen(s2);
+	
+	int tmp1;
+  while (n_tmp && *s1 && (*s1 == *s2))
+  {
+    tmp1 = (unsigned char)*s1 - (unsigned char)*s2;
+    s1++;
+    s2++;
+    n_tmp--;
+  }
+    
+  int val;
+  if(n > cnt1 || n > cnt2) 
+	  val = (unsigned char)*s1 - (unsigned char)*s2;
+  else if(n <= cnt1 && n <= cnt2) val = tmp1;
+    
+  if (val > 0) return 1;
+  else if (val == 0) return 0;
+  else return -1;
+  //panic("Not implemented");
 }
 
 void *memset(void *s, int c, size_t n) {
