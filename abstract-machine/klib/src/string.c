@@ -5,19 +5,19 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 size_t strlen(const char *s) {
-  if(s = NULL)
+  if(s == NULL)
   {
     panic("This is an empty string.");
     return -1;
   }
   size_t cnt = 0;
-  while(*str != '\0')
+  while(*s != '\0')
   {
     cnt++;
-    str++;
+    s++;
   }
 
-  return str;
+  return cnt;
 }
 
 char *strcpy(char *dst, const char *src) {
@@ -34,7 +34,20 @@ char *strcpy(char *dst, const char *src) {
 }
 
 char *strncpy(char *dst, const char *src, size_t n) {
-  panic("Not implemented");
+  size_t n_tmp = strlen(src);//获取src的长度，如果长度大于n就直接复制，如果小于n就复制n-n_tmp
+    
+  if(n_tmp < n)
+  {
+    for(size_t i = 0; i < n_tmp; ++i)
+    	dst[i] = src[i];
+    for(size_t j = n - n_tmp - 1; j < n; ++j)
+    	dst[j] = '\0';
+  }
+  else if(n_tmp >= n)
+  {
+  	for(size_t p = 0; p < n; ++p)
+  		dst[p] = src[p];
+  }
 }
 
 char *strcat(char *dst, const char *src) {
