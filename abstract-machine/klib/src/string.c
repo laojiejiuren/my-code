@@ -29,7 +29,8 @@ char *strcpy(char *dst, const char *src) {
     dst++;
   }
   *dst = '\0';
-
+  
+  return dst;
   //panic("Not implemented");
 }
 
@@ -48,6 +49,7 @@ char *strncpy(char *dst, const char *src, size_t n) {
   	for(size_t p = 0; p < n; ++p)
   		dst[p] = src[p];
   }
+  return dst;
 }
 
 char *strcat(char *dst, const char *src) {
