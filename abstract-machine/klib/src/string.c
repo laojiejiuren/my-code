@@ -140,11 +140,12 @@ int memcmp(const void *s1, const void *s2, size_t n) {
   }
   
   if(n == 0) return 0;
-  int val = (unsigned char)*d1 - (unsigned char)*d2;
+  return (unsigned char)*d1 - (unsigned char)*d2;
 
-  if (val == 0) return 0;
+  /*if (val == 0) return 0;
   else if (val < 0) return -1;
   else return 1;
+  */
 }
 
 #endif
