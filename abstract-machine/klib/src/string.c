@@ -139,7 +139,7 @@ int memcmp(const void *s1, const void *s2, size_t n) {
     n--;
   }
   
-  if(n == -1) return 0;
+  if(n == 0) return 0;
   int val = (unsigned char)*d1 - (unsigned char)*d2;
 
   if (val == 0) return 0;
