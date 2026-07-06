@@ -133,9 +133,10 @@ int memcmp(const void *s1, const void *s2, size_t n) {
   const unsigned char* d1 = (const unsigned char*)s1;
   const unsigned char* d2 = (const unsigned char*)s2;
 
-  while (n-- && *d1 == *d2)
+  while (n && *d1 == *d2)
   {
     d1++; d2++;
+    n--;
   }
   
   if(n == -1) return 0;
