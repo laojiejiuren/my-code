@@ -98,25 +98,24 @@ void *memset(void *s, int c, size_t n) {
 		*tmp = (unsigned char)c;
 		tmp++;
 	}
+  return s;
 }
 
 void* memmove(void* dst, const void* src, size_t n) {
-	unsigned char* tmp1 = (unsigned char*)dst;
-	unsigned char* tmp2 = (unsigned char*)src;
+	unsigned char* d = (unsigned char*)dst;
+	unsigned char* s = (const unsigned char*)src;
 
-	unsigned char* p = malloc(n * sizeof(dst));
-	size_t tmp_n = n;
-	size_t i = 0;
-	while (tmp_n--)
-	{
-		p[i] = tmp2[i];
-		i++;
-	}
-
-	while (n--)
-	{
-		*tmp1++ = *p++;
-	}
+    if (d < s)
+    {
+      while (n--)
+        *d++ = *s++;
+    }
+    else if (d > s)
+    {
+      while (n--)
+        *(d + n) = *(s + n);
+    }
+    return dst;
 }
 
 void *memcpy(void *out, const void *in, size_t n) {
