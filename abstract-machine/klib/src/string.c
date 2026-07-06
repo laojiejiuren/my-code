@@ -112,7 +112,7 @@ void* memmove(void* dst, const void* src, size_t n) {
     }
     else if (d > s)
     {
-      while (n--)
+      while (n--)//刚好能够避免下标从0开始的误差
         *(d + n) = *(s + n);
     }
     return dst;
