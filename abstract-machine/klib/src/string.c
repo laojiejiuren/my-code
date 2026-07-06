@@ -100,8 +100,23 @@ void *memset(void *s, int c, size_t n) {
 	}
 }
 
-void *memmove(void *dst, const void *src, size_t n) {
-  panic("Not implemented");
+void* memmove(void* dst, const void* src, size_t n) {
+	unsigned char* tmp1 = (unsigned char*)dst;
+	unsigned char* tmp2 = (unsigned char*)src;
+
+	unsigned char* p = malloc(n * sizeof(dst));
+	size_t tmp_n = n;
+	size_t i = 0;
+	while (tmp_n--)
+	{
+		p[i] = tmp2[i];
+		i++;
+	}
+
+	while (n--)
+	{
+		*tmp1++ = *p++;
+	}
 }
 
 void *memcpy(void *out, const void *in, size_t n) {
