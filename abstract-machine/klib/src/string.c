@@ -103,7 +103,7 @@ void *memset(void *s, int c, size_t n) {
 
 void* memmove(void* dst, const void* src, size_t n) {
 	unsigned char* d = (unsigned char*)dst;
-	unsigned char* s = (const unsigned char*)src;
+	const unsigned char* s = (const unsigned char*)src;
 
     if (d < s)
     {
@@ -120,7 +120,7 @@ void* memmove(void* dst, const void* src, size_t n) {
 
 void *memcpy(void *out, const void *in, size_t n) {
   unsigned char* d = (unsigned char*)out;
-  unsigned char* s = (const unsigned char*)in;
+  const unsigned char* s = (const unsigned char*)in;
 
   while (n--)
   {
@@ -130,11 +130,15 @@ void *memcpy(void *out, const void *in, size_t n) {
 }
 
 int memcmp(const void *s1, const void *s2, size_t n) {
-  while(n-- && *s1 == *s2)
+  const unsigned char* d1 = (const unsigned char*)s1;
+  const unsigned char* d2 = (const unsigned char*)s2;
+
+
+  while (n-- && *d1 == *d2)
   {
-    s1++;s2++
+    d1++; d2++;
   }
-  return (unsigned char)*s1 - (unsigned char)*s2;
+  return (unsigned char)*d1 - (unsigned char)*d2;
 }
 
 #endif
