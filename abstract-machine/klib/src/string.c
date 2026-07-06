@@ -5,11 +5,6 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 size_t strlen(const char *s) {
-  if(s == NULL)
-  {
-    panic("This is an empty string.");
-    return -1;
-  }
   size_t cnt = 0;
   while(*s != '\0')
   {
@@ -21,7 +16,7 @@ size_t strlen(const char *s) {
 }
 
 char *strcpy(char *dst, const char *src) {
-
+  char * res = dst;
   while(*src != '\0')
   {
     *dst = *src;
@@ -30,8 +25,7 @@ char *strcpy(char *dst, const char *src) {
   }
   *dst = '\0';
 
-  return dst;
-  //panic("Not implemented");
+  return res;
 }
 
 char *strncpy(char *dst, const char *src, size_t n) {
@@ -41,7 +35,7 @@ char *strncpy(char *dst, const char *src, size_t n) {
   {
     for(size_t i = 0; i < n_tmp; ++i)
     	dst[i] = src[i];
-    for(size_t j = n - n_tmp - 1; j < n; ++j)
+    for(size_t j = n_tmp; j < n; ++j)
     	dst[j] = '\0';
   }
   else if(n_tmp >= n)
@@ -63,8 +57,6 @@ char *strcat(char *dst, const char *src) {
 	}
 	dst[m] = '\0';
 	return dst;
-  
-  //panic("Not implemented");
 }
 
 int strcmp(const char *s1, const char *s2) {
@@ -72,20 +64,16 @@ int strcmp(const char *s1, const char *s2) {
 	{
 		s1++;s2++;
 	}
-	int val = (unsigned char)*s1 - (unsigned char)*s2;
-	if(val > 0) return 1;
-	else if(val == 0) return 0;
-	else return -1;
-  //panic("Not implemented");
+  return (unsigned char)*s1 - (unsigned char)*s2;
 }
 
 int strncmp(const char *s1, const char *s2, size_t n) {
 	if(n == 0)
 		return 0;
 		
-	int n_tmp = n;
-	int val;
-  for(int i=n_tmp;i > 0; --i)
+	size_t n_tmp = n;
+	int val = 0;
+  for(size_t i = n_tmp;i > 0; --i)
   {
     if(!*s1 || !*s2)
     {
@@ -100,11 +88,7 @@ int strncmp(const char *s1, const char *s2, size_t n) {
 		else val = 0;
 		s1++;s2++;
 	}
-    
-  if (val > 0) return 1;
-  else if (val == 0) return 0;
-  else return -1;
-  //panic("Not implemented");
+  return val;
 }
 
 void *memset(void *s, int c, size_t n) {
