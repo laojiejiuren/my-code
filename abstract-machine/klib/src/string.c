@@ -130,7 +130,11 @@ void *memcpy(void *out, const void *in, size_t n) {
 }
 
 int memcmp(const void *s1, const void *s2, size_t n) {
-  panic("Not implemented");
+  while(n-- && *s1 == *s2)
+  {
+    s1++;s2++
+  }
+  return (unsigned char)*s1 - (unsigned char)*s2;
 }
 
 #endif
