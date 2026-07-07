@@ -73,6 +73,7 @@ int sprintf(char *out, const char *fmt, ...) {
     }
     tmp++;
   }
+  *out = '\0';
   va_end(ap);
   return cnt;
 }
