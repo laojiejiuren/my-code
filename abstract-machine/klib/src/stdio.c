@@ -27,19 +27,31 @@ int sprintf(char *out, const char *fmt, ...) {
       if(*tmp == 'd')
       {
         int num = va_arg(ap, int);
-        char tmp[20] = {};
+        char buf[20] = {};
         int id = 0;
+
+        if(num == 0)
+        {
+          *out++ = '0';
+          cnt++;
+        }
+        else if(num < 0)
+        {
+          *out++ = '-';
+          cnt++;
+          num = -num;
+        }
 
         while (num)
         {
-          tmp[id++] = (num % 10) + '0';
+          buf[id++] = (num % 10) + '0';
           num /= 10;
           cnt++;
         }
 
         for (int i = id - 1; i >= 0; --i)
         {
-          *out = tmp[i];
+          *out = buf[i];
           out++;
         }
       }
@@ -54,9 +66,9 @@ int sprintf(char *out, const char *fmt, ...) {
         }
       }
     }
-    else if (*tmp == ' ')
+    else
     {
-      *out++ = ' ';
+      *out++ = *tmp;
       cnt++;
     }
     tmp++;
