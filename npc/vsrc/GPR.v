@@ -18,15 +18,11 @@ module GPR(
     always@(*) begin
         if(rs1_raddr == 0)
             rs1_rdata = 0;
-        else if(rs1_raddr == reg_waddr && reg_wen) 
-            rs1_rdata = reg_wdata;
         else rs1_rdata = gpr[rs1_raddr];
     end
     always@(*) begin
         if(rs2_raddr == 0)
             rs2_rdata = 0;
-        else if(rs2_raddr == reg_waddr && reg_wen) 
-            rs2_rdata = reg_wdata;
         else rs2_rdata = gpr[rs2_raddr];
     end
     
