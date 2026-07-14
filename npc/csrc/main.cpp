@@ -4,7 +4,11 @@
 #include <vector>
 
 vluint64_t main_time = 0;
-vector<uint32_t> mem(256,0);
+vector<uint32_t> mem(256,0) = {
+  0x00100a93,
+  0x00200a93,
+  0x00300a93,
+};
 
 int main(int argc,char** argv) 
 {
