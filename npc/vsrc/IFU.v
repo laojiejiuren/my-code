@@ -1,4 +1,4 @@
-module IFU(
+/*module IFU(
     input clk,
     input rst,
 
@@ -11,3 +11,4 @@ module IFU(
     assign inst = pmem_read[pc[31:2]];
 
 endmodule
+*/

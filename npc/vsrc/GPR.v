@@ -1,6 +1,5 @@
 module GPR(
     input clk,
-    input rst,
 
     //写入
     input [4:0] reg_waddr,
@@ -33,10 +32,8 @@ module GPR(
     
     //要写入数据时
     always@(posedge clk) begin
-        if(!rst) begin
-            if(reg_waddr != 0 && reg_wen)
-                gpr[reg_waddr] = reg_wdata;
-        end
+        if(reg_waddr != 0 && reg_wen)
+            gpr[reg_waddr] <= reg_wdata;
     end
 
 endmodule

@@ -14,26 +14,22 @@ int main(int argc,char** argv)
   Vtop * top = new Vtop;
 
   top->clk = 0;
-  top->reset = 1;
+  top->rst = 1;
   for (int i = 0; i < 10; i++) 
   {
     top->clk = !top->clk;
     top->eval();
   }
-    top->reset = 0; 
+    top->rst = 0; 
 
   while(1)
   {
+    top->inst = pmem_read(top->pc);
+    top->eval();
     top->clk = !top->clk;
-    printf("R2:%02x\n",top->out);
+    //printf("R2:%02x\n",top->out);
     top->eval();
   }
   delete top;
   return 0;
-}
-while (???) {
-  ...
-  top->inst = pmem_read(top->pc);
-  top->eval();
-  ...
 }

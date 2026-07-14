@@ -24,7 +24,7 @@ module IDU(
 
     wire[31:0] rs1_rdata;
     wire[31:0] rs2_rdata;
-    GPR u_gpr(.clk(clk),.rst(rst),.reg_waddr(reg_waddr_wb),.reg_wdata(reg_wdata_wb),
+    GPR u_gpr(.clk(clk),.reg_waddr(reg_waddr_wb),.reg_wdata(reg_wdata_wb),
             .reg_wen(reg_wen_wb),.rs1_raddr(inst[19:15]),.rs2_raddr(inst[24:20]),
             .rs1_rdata(rs1_rdata),.rs2_rdata(rs1_rdata)
             );
