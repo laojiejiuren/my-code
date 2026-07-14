@@ -10,7 +10,9 @@ module GPR(
     input [4:0] rs1_raddr,
     input [4:0] rs2_raddr,
     output reg [31:0] rs1_rdata,
-    output reg [31:0] rs2_rdata
+    output reg [31:0] rs2_rdata,
+    
+    output [31:0] data
 );
     reg [31:0] gpr[32];
 
@@ -32,4 +34,5 @@ module GPR(
             gpr[reg_waddr] <= reg_wdata;
     end
 
+    assign data = gpr[21];
 endmodule

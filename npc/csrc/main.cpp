@@ -21,12 +21,12 @@ extern "C" void halt()
 
 int main(int argc,char** argv) 
 {
-  mem[0] = 0x01400513;
-  mem[1] = 0x010000e7;
-  mem[2] = 0x00c000e7;
-  mem[3] = 0x00100073;
-  mem[4] = 0x00a50513;
-  mem[5] = 0x00008067;
+  mem[0] = 0x00100a93;
+  mem[1] = 0x002a8a93;
+  mem[2] = 0x003a8a93;
+  mem[3] = 0x004a8a93;
+  mem[4] = 0x005a8a93;
+  mem[5] = 0x006a8a93;
 
   //要先初始化verilator->实例化顶层模块->初始化波形->正式开始仿真
   Verilated::commandArgs(argc,argv);
@@ -48,6 +48,7 @@ int main(int argc,char** argv)
   {
     top->inst = pmem_read(top->pc);
     printf("pc:%02x\n",top->pc);
+    printf("s5:%d\n",top->data_out);
     top->clk = !top->clk;
     top->eval();
   }

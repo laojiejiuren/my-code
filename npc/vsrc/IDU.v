@@ -13,7 +13,9 @@ module IDU(
     output reg [2:0] alu_op,
     output reg [4:0] reg_waddr,
     output reg [31:0] operand1, 
-    output reg [31:0] operand2
+    output reg [31:0] operand2,
+
+    output [31:0] data 
 );
 
     wire[6:0] opcode = inst[6:0];
@@ -28,7 +30,7 @@ module IDU(
     wire[31:0] rs2_rdata;
     GPR u_gpr(.clk(clk),.reg_waddr(reg_waddr_wb),.reg_wdata(reg_wdata_wb),
             .reg_wen(reg_wen_wb),.rs1_raddr(rs1),.rs2_raddr(rs2),
-            .rs1_rdata(rs1_rdata),.rs2_rdata(rs2_rdata)
+            .rs1_rdata(rs1_rdata),.rs2_rdata(rs2_rdata),.data(data)
             );
 
     wire [31:0] imm_i = 32'($signed(inst[31:20]));
@@ -36,12 +38,15 @@ module IDU(
     wire [31:0] imm_s = 32'($signed({inst[31:25],inst[11:7]}));
 
     parameter [6:0] RISCV32I_I = 7'b0010011;
+    parameter [6:0] RISCV32I_R = 7'b0110011;
+    parameter [6:0] RISCV32I_U = 7'b0110111;
     parameter [6:0] RISCV32I_tiao = 7'b1100111;
     parameter [6:0] RISCV32I_sys = 7'b1110011;
 
     
     parameter [2:0] RISCV32I_addi = 3'b000;
     parameter [2:0] RISCV32I_jalr = 3'b000;
+    parameter [2:0] RISCV32I_add = 3'b000;
     parameter [11:0] RISCV32I_ebreak = 12'b000000000001;
 
     always@(*)begin
@@ -75,6 +80,38 @@ module IDU(
 
             end
             endcase
+        end
+
+        RISCV32I_R:begin
+            case(funct3)
+            RISCV32I_add:begin
+                operand1 = rs1_rdata;
+                operand2 = rs2_rdata;
+                reg_waddr = rd;
+                reg_wen = 1;
+                jump = 0;
+                alu_op = 3'b000;
+            end
+
+            default:begin
+                operand2 = 32'b0;
+                operand1 = 32'b0;
+                reg_waddr = 5'b0;
+                jump = 0;
+                reg_wen = 0;
+                alu_op = 3'b111;
+
+            end
+            endcase
+        end
+
+        RISCV32I_U:begin
+            operand1 = imm_u;
+            operand2 = 32'b0;
+            reg_waddr = rd;
+            reg_wen = 1;
+            jump = 0;
+            alu_op = 3'b111;
         end
 
         RISCV32I_tiao: begin
@@ -111,7 +148,6 @@ module IDU(
             end
             endcase
         end
-
 
         default:begin
             operand2 = 32'b0;
