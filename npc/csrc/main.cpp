@@ -14,9 +14,12 @@ uint32_t pmem_read(uint32_t addr)
 
 int main(int argc,char** argv) 
 {
-  mem[0] = 0x00100a93;
-  mem[1] = 0x00200a93;
-  mem[2] = 0x00300a93;
+  mem[0] = 0x01400513;
+  mem[1] = 0x010000e7;
+  mem[2] = 0x00c000e7;
+  mem[3] = 0x00c00067;
+  mem[4] = 0x00a50513;
+  mem[5] = 0x00008067;
 
   //要先初始化verilator->实例化顶层模块->初始化波形->正式开始仿真
   Verilated::commandArgs(argc,argv);
@@ -32,13 +35,13 @@ int main(int argc,char** argv)
   }
     top->rst = 0; 
 
-  int n=10;
+  int n=50;
 
   while(n--)
   {
     top->inst = pmem_read(top->pc);
+    printf("pc:%02x\n",top->pc);
     top->clk = !top->clk;
-    printf("s5:%02x\n",top->pc);
     top->eval();
   }
   delete top;
