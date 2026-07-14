@@ -9,8 +9,8 @@ module GPR(
     //读取
     input [4:0] rs1_raddr,
     input [4:0] rs2_raddr,
-    output [31:0] rs1_rdata,
-    output [31:0] rs2_rdata
+    output reg [31:0] rs1_rdata,
+    output reg [31:0] rs2_rdata
 );
     reg [31:0] gpr[32];
 

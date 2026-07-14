@@ -6,13 +6,13 @@ module IDU(
 
     input [4:0] reg_waddr_wb,
     input [31:0] reg_wdata_wb,
-    input reg_wen_wb
+    input reg_wen_wb,
 
-    output reg_wen,
-    output [2:0] alu_op,
-    output [4:0] reg_waddr,
-    output [31:0] operand1, 
-    output [31:0] opeeran2
+    output reg reg_wen,
+    output reg [2:0] alu_op,
+    output reg [4:0] reg_waddr,
+    output reg [31:0] operand1, 
+    output reg [31:0] operand2
 );
 
     wire[6:0] opcode = inst[6:0];
@@ -52,9 +52,26 @@ module IDU(
                 alu_op = 3'b000;
             end
 
+
+            default: begin
+                operand2 = 32'b0;
+                operand1 = 32'b0;
+                reg_waddr = 5'b0;
+                reg_wen = 0;
+                alu_op = 3'b000;
+
+            end
             endcase
         end
 
+        default:begin
+            operand2 = 32'b0;
+            operand1 = 32'b0;
+            reg_waddr = 5'b0;
+            reg_wen = 0;
+            alu_op = 3'b000;
+
+        end
         endcase
     end
 
