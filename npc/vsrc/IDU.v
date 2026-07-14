@@ -22,6 +22,7 @@ module IDU(
     wire[4:0] rs1 = inst[19:15];
     wire[4:0] rs2 = inst[24:20];
     wire[6:0] funct7 = inst[31:25];
+    wire[11:0] funct12 = inst[31:20];
 
     wire[31:0] rs1_rdata;
     wire[31:0] rs2_rdata;
@@ -36,10 +37,12 @@ module IDU(
 
     parameter [6:0] RISCV32I_I = 7'b0010011;
     parameter [6:0] RISCV32I_tiao = 7'b1100111;
+    parameter [6:0] RISCV32I_sys = 7'b1110011;
 
     
     parameter [2:0] RISCV32I_addi = 3'b000;
     parameter [2:0] RISCV32I_jalr = 3'b000;
+    parameter [11:0] RISCV32I_ebreak = 12'b000000000001;
 
     always@(*)begin
         operand1 = 32'b0;
@@ -98,7 +101,16 @@ module IDU(
             endcase
 
         end
-
+        
+        RISCV32I_sys:begin
+            case(funct12)
+            RISCV32I_ebreak:begin
+                halt();
+            end
+            default:begin
+            end
+            endcase
+        end
 
 
         default:begin

@@ -1,6 +1,8 @@
 #include <stdio.h>
 //#include <nvboard.h>
 #include "Vtop.h"
+#include "svdpi.h"
+#include "Vtop__Dpi.h"
 #include <vector>
 using namespace std;
 
@@ -12,12 +14,17 @@ uint32_t pmem_read(uint32_t addr)
   return mem[addr >> 2];
 }
 
+extern "C" void halt()
+{
+  exit(0);
+}
+
 int main(int argc,char** argv) 
 {
   mem[0] = 0x01400513;
   mem[1] = 0x010000e7;
   mem[2] = 0x00c000e7;
-  mem[3] = 0x00c00067;
+  mem[3] = 0x00100073;
   mem[4] = 0x00a50513;
   mem[5] = 0x00008067;
 
@@ -33,7 +40,7 @@ int main(int argc,char** argv)
     top->clk = !top->clk;
     top->eval();
   }
-    top->rst = 0; 
+  top->rst = 0; 
 
   int n=50;
 
