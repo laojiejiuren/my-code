@@ -67,7 +67,7 @@ int main(int argc,char** argv)
 
   fread(mem.data(),1,SIZE,F);
   fclose(F);
-  mem[1220] = 0x00100073;
+  mem[0x224 >> 2] = 0x00100073; 
   //要先初始化verilator->实例化顶层模块->初始化波形->正式开始仿真
   Verilated::commandArgs(argc,argv);
 
@@ -82,14 +82,11 @@ int main(int argc,char** argv)
   }
   top->rst = 0; 
 
-  int n=50;
+  int n=12000;
 
-  while(n--)
+  while(1)
   {
-    printf("pc=0x%08x a0=%d\n",top->pc,top->data_out);
-    top->clk = !top->clk;
-    top->eval();
-    printf("pc=0x%08x a0=%d\n",top->pc,top->data_out);
+    printf("a0: %02x\n",top->data_out);
     top->clk = !top->clk;
     top->eval();
   }

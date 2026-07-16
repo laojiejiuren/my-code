@@ -14,6 +14,7 @@ module LSU(
     reg[7:0] wmask;
     reg[31:0] wdata_tmp;
 
+    //sw,sb指令是将rs2的值的低n位写入内存,相当于要做选择的是Q2的字节
     always @(*) begin
         wdata_tmp = wdata;
         case(store_type)
@@ -44,7 +45,8 @@ module LSU(
         default:wmask = 8'h0f;
         endcase
     end
-
+    //lw,lbu指令是将imm_i + Q1 内存地址的值的第n个字节存入rd
+    //那么要做选择字节的应该是内存数据
     always@(*) begin
         if(ren) begin
             data_mem = pmem_read(raddr);
