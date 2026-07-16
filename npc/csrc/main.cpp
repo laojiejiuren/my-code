@@ -1,4 +1,5 @@
 #define MAX_SIZE (8 * 1024 * 1024)
+#define BASE_ADDR 0x80000000
 #include <stdio.h>
 //#include <nvboard.h>
 #include "Vtop.h"
@@ -12,13 +13,16 @@ vector<uint32_t> mem(MAX_SIZE,0);
 
 extern "C" int pmem_read(int raddr)
 {
-  uint32_t addr = raddr & ~0x3u;
+  uint32_t addr = (raddr & ~0x3u) - BASE_ADDR;
+  if(addr >= MAX_SIZE * 4) return 1;
   return mem[addr >> 2];
 }
 //0x12345678
 extern "C" void pmem_write(int waddr,int wdata,char wmask)
 {
-  uint32_t id =  (waddr & ~0x3u) >> 2;
+  uint32_t addr =  (waddr & ~0x3u) - BASE_ADDR;
+  if(addr >= MAX_SIZE * 4) return;
+  uint32_t id = addr >> 2;
   uint32_t old_data = mem[id];
 
   uint32_t new_data = old_data;
@@ -44,14 +48,14 @@ int main(int argc,char** argv)
   if(argc < 2)
   {
     printf("NO FILE\n");
-    return 1;
+    //return 1;
   }
 
   FILE * F = fopen(argv[1],"rb");
   if(F == NULL )
   {
     printf("ERROR: Failed to open file\n");
-    return 1;
+    //return 1;
   }
 
   fseek(F,0,SEEK_END);
@@ -62,7 +66,7 @@ int main(int argc,char** argv)
   {
     printf("ERROR: File too large. SIZE:%ld",SIZE);
     fclose(F);
-    return 1;
+    //return 1;
   }
 
   fread(mem.data(),1,SIZE,F);
