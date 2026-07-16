@@ -34,5 +34,5 @@ module GPR(
             gpr[reg_waddr] <= reg_wdata;
     end
 
-    assign data = gpr[21];
+    assign data = gpr[10];
 endmodule

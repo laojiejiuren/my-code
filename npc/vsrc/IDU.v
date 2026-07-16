@@ -9,9 +9,14 @@ module IDU(
     input reg_wen_wb,
 
     output reg reg_wen,
+    output reg mem_ren, 
+    output reg mem_wen,
+    output reg lbu, 
     output reg jump, 
     output reg [2:0] alu_op,
+    output reg [1:0] store_type,
     output reg [4:0] reg_waddr,
+    output reg [31:0] Q2,
     output reg [31:0] operand1, 
     output reg [31:0] operand2,
 
@@ -34,12 +39,14 @@ module IDU(
             );
 
     wire [31:0] imm_i = 32'($signed(inst[31:20]));
-    wire [31:0] imm_u = 32'($unsigned(inst[31:12]));
+    wire [31:0] imm_u = 32'({inst[31:12],12'b0});
     wire [31:0] imm_s = 32'($signed({inst[31:25],inst[11:7]}));
 
     parameter [6:0] RISCV32I_I = 7'b0010011;
     parameter [6:0] RISCV32I_R = 7'b0110011;
     parameter [6:0] RISCV32I_U = 7'b0110111;
+    parameter [6:0] RISCV32I_load = 7'b0000011;
+    parameter [6:0] RISCV32I_store = 7'b0100011;
     parameter [6:0] RISCV32I_tiao = 7'b1100111;
     parameter [6:0] RISCV32I_sys = 7'b1110011;
 
@@ -47,14 +54,23 @@ module IDU(
     parameter [2:0] RISCV32I_addi = 3'b000;
     parameter [2:0] RISCV32I_jalr = 3'b000;
     parameter [2:0] RISCV32I_add = 3'b000;
+    parameter [2:0] RISCV32I_lw = 3'b010;
+    parameter [2:0] RISCV32I_lbu = 3'b100;
+    parameter [2:0] RISCV32I_sw = 3'b010;
+    parameter [2:0] RISCV32I_sb = 3'b000;
     parameter [11:0] RISCV32I_ebreak = 12'b000000000001;
 
     always@(*)begin
         operand1 = 32'b0;
         operand2 = 32'b0;
+        Q2 = 32'b0;
         reg_waddr = 5'b0;
+        store_type = 2'b11;
         reg_wen = 0;
         jump = 0;
+        lbu = 0;
+        mem_ren = 0;
+        mem_wen = 0;
         alu_op = 3'b111;
 
         case (opcode)
@@ -111,7 +127,7 @@ module IDU(
             reg_waddr = rd;
             reg_wen = 1;
             jump = 0;
-            alu_op = 3'b111;
+            alu_op = 3'b000;
         end
 
         RISCV32I_tiao: begin
@@ -149,11 +165,83 @@ module IDU(
             endcase
         end
 
+        RISCV32I_load:begin
+            case(funct3)
+            RISCV32I_lw:begin
+                operand1 = imm_i;
+                operand2 = rs1_rdata;
+                reg_waddr = rd;
+                store_type = 2'b00;
+                jump = 0;
+                mem_ren = 1;
+                reg_wen = 1;
+                alu_op = 3'b000;
+            end
+            RISCV32I_lbu:begin
+                operand1 = imm_i;
+                operand2 = rs1_rdata;
+                reg_waddr = rd;
+                store_type = 2'b00;
+                jump = 0;
+                lbu = 1;
+                mem_ren = 1;
+                reg_wen = 1;
+                alu_op = 3'b000;
+
+            end
+
+            default:begin
+                operand2 = 32'b0;
+                operand1 = 32'b0;
+                reg_waddr = 5'b0;
+                store_type = 2'b11;
+                jump = 0;
+                mem_ren = 0;
+                reg_wen = 0;
+                alu_op = 3'b111;
+            end
+
+            endcase
+
+        end
+        
+        RISCV32I_store:begin
+            case(funct3)
+            RISCV32I_sw:begin
+                operand1 = rs1_rdata;
+                operand2 = imm_s;
+                store_type = 2'b00;
+                Q2 = rs2_rdata;
+                mem_wen = 1;
+                alu_op = 3'b000;
+            end
+            RISCV32I_sb:begin
+                operand1 = rs1_rdata;
+                operand2 = imm_s;
+                store_type = 2'b01;
+                Q2 = rs2_rdata;
+                mem_wen = 1;
+                alu_op = 3'b000;
+            end
+            default:begin
+                operand1 = 32'b0;
+                operand2 = 32'b0;
+                store_type = 2'b11;
+                Q2 = 32'b0;
+                mem_wen = 0;
+                alu_op = 3'b111;
+            end
+            endcase
+
+        end
+
+
         default:begin
             operand2 = 32'b0;
             operand1 = 32'b0;
             reg_waddr = 5'b0;
             jump = 0;
+            mem_ren = 0;
             reg_wen = 0;
             alu_op = 3'b111;
 
