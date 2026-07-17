@@ -40,6 +40,7 @@ extern "C" void pmem_write(int waddr,int wdata,char wmask)
 
 extern "C" void halt()
 {
+  printf("HIT GOOD!\n");
   exit(0);
 }
 
