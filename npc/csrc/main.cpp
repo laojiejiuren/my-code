@@ -38,10 +38,18 @@ extern "C" void pmem_write(int waddr,int wdata,char wmask)
   mem[id] = new_data;
 } 
 
-extern "C" void halt()
+extern "C" void halt(int code)
 {
-  printf("HIT GOOD!\n");
-  exit(0);
+  if(code == 0)
+  {
+    printf("HIT GOOD TRAP!!!\n");
+    exit(0);
+  }
+  else
+  {
+    printf("HIT BAD TRAP!!!\n");
+    exit(1);
+  }
 }
 
 int main(int argc,char** argv) 
