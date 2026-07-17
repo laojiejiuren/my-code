@@ -8,6 +8,7 @@ module top(
     
     output [31:0] data_out
 );
+
     //IF 
     wire [31:0] next_pc;
     wire [31:0] pc;

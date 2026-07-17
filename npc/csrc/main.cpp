@@ -40,6 +40,7 @@ extern "C" void pmem_write(int waddr,int wdata,char wmask)
 
 extern "C" void halt(int code)
 {
+  //根据nemu的halt实现
   if(code == 0)
   {
     printf("HIT GOOD TRAP!!!\n");

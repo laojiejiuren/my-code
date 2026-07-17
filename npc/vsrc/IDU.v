@@ -159,6 +159,7 @@ module IDU(
             case(funct12)
             RISCV32I_ebreak:begin
                 halt(0);
+                
             end
             default:begin
             end
