@@ -71,7 +71,7 @@ int main(int argc,char** argv)
 
   fread(mem.data(),1,SIZE,F);
   fclose(F);
-  mem[0x224 >> 2] = 0x00100073; 
+  //mem[0x224 >> 2] = 0x00100073; 
   //要先初始化verilator->实例化顶层模块->初始化波形->正式开始仿真
   Verilated::commandArgs(argc,argv);
 
