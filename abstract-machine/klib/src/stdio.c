@@ -5,7 +5,8 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-int vsprintf(char *out, const char *fmt, va_list ap) {
+int add_buff(char *out, const char *fmt, va_list ap)
+{
   int cnt = 0;
   const char *tmp = fmt; 
   while (*tmp != '\0')
@@ -64,7 +65,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
   }
 
   *out = '\0';
-  return cnt ? cnt : -1; 
+  return cnt;
 }
 
 int printf(const char *fmt, ...) {
@@ -73,10 +74,14 @@ int printf(const char *fmt, ...) {
 
   const char *tmp = fmt;
   char buff[256];
-  int cnt = vsprintf(buff,tmp,ap);
+  int cnt = add_buff(buff,tmp,ap);
   va_end(ap);
   putstr(buff);
   return cnt;
+}
+
+int vsprintf(char *out, const char *fmt, va_list ap) {
+  panic("Not implemented");
 }
 
 int sprintf(char *out, const char *fmt, ...) {
@@ -84,7 +89,7 @@ int sprintf(char *out, const char *fmt, ...) {
   va_start(ap, fmt);
   const char* tmp = fmt;
 
-  int cnt = vsprintf(out,tmp,ap);
+  int cnt = add_buff(out,tmp,ap);
   va_end(ap);
   return cnt ? cnt : -1; 
 }
