@@ -5,20 +5,9 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-int printf(const char *fmt, ...) {
-  panic("Not implemented");
-}
-
 int vsprintf(char *out, const char *fmt, va_list ap) {
-  panic("Not implemented");
-}
-
-int sprintf(char *out, const char *fmt, ...) {
-    va_list ap;
-  va_start(ap, fmt);
   int cnt = 0;
-  const char* tmp = fmt;
-
+  const char *tmp = fmt; 
   while (*tmp != '\0')
   {
     if (*tmp == '%')
@@ -73,9 +62,31 @@ int sprintf(char *out, const char *fmt, ...) {
     }
     tmp++;
   }
+
   *out = '\0';
+  return cnt ? cnt : -1; 
+}
+
+int printf(const char *fmt, ...) {
+  va_list ap;
+  va_start(ap,fmt);
+
+  const char *tmp = fmt;
+  char buff[256];
+  int cnt = vsprintf(buff,tmp,ap);
   va_end(ap);
+  putstr(buff);
   return cnt;
+}
+
+int sprintf(char *out, const char *fmt, ...) {
+    va_list ap;
+  va_start(ap, fmt);
+  const char* tmp = fmt;
+
+  int cnt = vsprintf(out,tmp,ap);
+  va_end(ap);
+  return cnt ? cnt : -1; 
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
