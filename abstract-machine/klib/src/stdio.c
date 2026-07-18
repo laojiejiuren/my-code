@@ -75,6 +75,7 @@ int printf(const char *fmt, ...) {
   const char *tmp = fmt;
   char buff[256];
   int cnt = add_buff(buff,tmp,ap);
+
   va_end(ap);
   putstr(buff);
   return cnt;
@@ -85,7 +86,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 }
 
 int sprintf(char *out, const char *fmt, ...) {
-    va_list ap;
+  va_list ap;
   va_start(ap, fmt);
   const char* tmp = fmt;
 
