@@ -36,7 +36,7 @@ void *malloc(size_t size) {
 #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
   size = (size_t)ROUNDUP(size,8);
   char *old = heap.start;
-  heap.start = old + size;
+  heap.start += size;
   char *p = old;
   for (int i = 0; i < size; ++i) {
     *p = 0;
