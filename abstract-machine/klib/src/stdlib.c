@@ -38,7 +38,7 @@ void *malloc(size_t size) {
   size = (size_t)ROUNDUP(size,8);
   char *old = hbrk;
   hbrk += size;
-  for (uint64_t *p = (uint64_t *)old; p != (uint64_t *)hbrk; p ++) {
+  for (uint32_t *p = (uint32_t *)old; p != (uint32_t *)hbrk; p ++) {
     *p = 0;
   }
   return old;
