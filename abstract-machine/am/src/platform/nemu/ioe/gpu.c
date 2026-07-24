@@ -27,11 +27,12 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   uint32_t *pixels = (uint32_t *)ctl->pixels;
   int w = ctl->w;
   int h = ctl->h;
+  int x = ctl->x;
   int y = ctl->y;
 
   for(int i = 0;i < h; ++i) //枚举的是图像内部的行
     for(int j = 0;j < w; ++j)
-      fb[(i + y) * 300 + j] = pixels[i * w + j];
+      fb[(i + y) * 300 + (j + x)] = pixels[i * w + j];
 
 
   if (ctl->sync) {
