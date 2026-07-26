@@ -20,7 +20,7 @@ extern "C" int pmem_read(int raddr)
   if(raddr == CLOCK_ADDR)
   {
     clock_t now = clock();
-    return (int)(now - boot_time) / CLOCKS_PER_SEC;
+    return (int)(now - boot_time);
   }
 
   uint32_t addr = (raddr & ~0x3u) - BASE_ADDR;
