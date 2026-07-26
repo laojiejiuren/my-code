@@ -1,5 +1,6 @@
 #define MAX_SIZE (8 * 1024 * 1024)
 #define BASE_ADDR 0x80000000
+#define SERIAL_ADDR 0x10000000
 #include <stdio.h>
 //#include <nvboard.h>
 #include "Vtop.h"
@@ -36,6 +37,10 @@ extern "C" void pmem_write(int waddr,int wdata,char wmask)
     new_data = (new_data & 0x00ffffff) | (wdata & 0xff000000);
 
   mem[id] = new_data;
+  if(waddr == SERIAL_ADDR)
+  {
+    putchar(wdata);
+  }
 } 
 
 extern "C" void halt(int code)
@@ -100,7 +105,7 @@ int main(int argc,char** argv)
 
   while(1)
   {
-    printf("a0: %02x\n",top->data_out);
+    //printf("a0: %02x\n",top->data_out);
     top->clk = !top->clk;
     top->eval();
   }
