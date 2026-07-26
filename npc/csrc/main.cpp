@@ -117,7 +117,7 @@ int main(int argc,char** argv)
   while(1)
   {
     //printf("a0: %02x\n",top->data_out);
-    printf("%d\n",boot_time / CLOCKS_PER_SEC);
+    //printf("%d\n",boot_time / CLOCKS_PER_SEC);
     top->clk = !top->clk;
     top->eval();
   }
