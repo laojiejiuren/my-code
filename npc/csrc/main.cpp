@@ -1,19 +1,28 @@
 #define MAX_SIZE (8 * 1024 * 1024)
 #define BASE_ADDR 0x80000000
 #define SERIAL_ADDR 0x10000000
+#define CLOCK_ADDR 0x20000000
+
 #include <stdio.h>
 //#include <nvboard.h>
 #include "Vtop.h"
 #include "svdpi.h"
 #include "Vtop__Dpi.h"
 #include <vector>
+#include <time.h>
 using namespace std;
 
-vluint64_t main_time = 0;
 vector<uint32_t> mem(MAX_SIZE,0);
+static time_t boot_time = time(&boot_time);
 
 extern "C" int pmem_read(int raddr)
 {
+  if(raddr == CLOCK_ADDR)
+  {
+    time_t now = time(&now);
+    return difftime(now,boot_time);
+  }
+
   uint32_t addr = (raddr & ~0x3u) - BASE_ADDR;
   if(addr >= MAX_SIZE * 4) return 1;
   return mem[addr >> 2];
@@ -21,6 +30,12 @@ extern "C" int pmem_read(int raddr)
 //0x12345678
 extern "C" void pmem_write(int waddr,int wdata,char wmask)
 {
+  if(waddr == SERIAL_ADDR)
+  {
+    putchar(wdata);
+    return;
+  }
+
   uint32_t addr =  (waddr & ~0x3u) - BASE_ADDR;
   if(addr >= MAX_SIZE * 4) return;
   uint32_t id = addr >> 2;
@@ -37,10 +52,6 @@ extern "C" void pmem_write(int waddr,int wdata,char wmask)
     new_data = (new_data & 0x00ffffff) | (wdata & 0xff000000);
 
   mem[id] = new_data;
-  if(waddr == SERIAL_ADDR)
-  {
-    putchar(wdata);
-  }
 } 
 
 extern "C" void halt(int code)
