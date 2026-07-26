@@ -13,14 +13,14 @@
 using namespace std;
 
 vector<uint32_t> mem(MAX_SIZE,0);
-static time_t boot_time = time(&boot_time);
+static clock_t boot_time = clock();
 
 extern "C" int pmem_read(int raddr)
 {
   if(raddr == CLOCK_ADDR)
   {
-    time_t now = time(&now);
-    return difftime(now,boot_time);
+    clock_t now = clock();
+    return (int)(now - boot_time) / CLOCKS_PER_SEC;
   }
 
   uint32_t addr = (raddr & ~0x3u) - BASE_ADDR;
