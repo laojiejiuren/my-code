@@ -1,4 +1,5 @@
 #include <am.h>
+#include <riscv/riscv.h>
 #define CLOCK_ADDR 0x20000000
 
 void __am_timer_init() {

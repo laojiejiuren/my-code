@@ -9,18 +9,24 @@
 #include "svdpi.h"
 #include "Vtop__Dpi.h"
 #include <vector>
-#include <time.h>
+#include <sys/time.h>
 using namespace std;
 
 vector<uint32_t> mem(MAX_SIZE,0);
-static clock_t boot_time = clock();
+static uint64_t boot_time = 0;
 
 extern "C" int pmem_read(int raddr)
 {
-  if(raddr == CLOCK_ADDR)
+  if(raddr == CLOCK_ADDR || raddr == CLOCK_ADDR + 4)
   {
-    clock_t now = clock();
-    return (int)(now - boot_time);
+    struct timeval now;
+    gettimeofday(&now, NULL);
+    uint64_t us = now.tv_sec * 1000000 + now.tv_usec;
+
+    if(raddr == CLOCK_ADDR)
+      return (int)(uint32_t)(us - boot_time);
+    else if(raddr == CLOCK_ADDR + 4)
+      return (int)(uint32_t)((us - boot_time) >> 32);
   }
 
   uint32_t addr = (raddr & ~0x3u) - BASE_ADDR;
@@ -71,6 +77,10 @@ extern "C" void halt(int code)
 
 int main(int argc,char** argv) 
 {
+  struct timeval now;
+  gettimeofday(&now,NULL);
+  boot_time = now.tv_sec * 1000000 + now.tv_usec;
+ 
   if(argc < 2)
   {
     printf("NO FILE\n");
