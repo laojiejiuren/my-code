@@ -18,8 +18,8 @@
 #include <device/mmio.h>
 #include <isa.h>
 
-IFDEF(CONFIG_MTRACE, char *rmembuf);
-IFDEF(CONFIG_MTRACE, char *wmembuf);
+IFDEF(CONFIG_MTRACE, char rmembuf[128]);
+IFDEF(CONFIG_MTRACE, char wmembuf[128]);
 IFDEF(CONFIG_MTRACE, bool flag_mtrace = false);
 
 #if   defined(CONFIG_PMEM_MALLOC)
@@ -59,7 +59,7 @@ word_t paddr_read(paddr_t addr, int len) {
   {
     #ifdef CONFIG_MTRACE
       flag_mtrace = true;
-      snprintf(rmembuf,128,"addr: %02x len: %d",addr,len);
+      snprintf(rmembuf,sizeof(rmembuf),"addr: %02x len: %d",addr,len);
     #endif
     return pmem_read(addr, len);
   }
@@ -73,7 +73,7 @@ void paddr_write(paddr_t addr, int len, word_t data) {
   { 
     #ifdef CONFIG_MTRACE
       flag_mtrace = true;
-      snprintf(wmembuf,128,"addr: %02x len: %d data: %u",addr,len,data);
+      snprintf(wmembuf,sizeof(wmembuf),"addr: %02x len: %d data: %u",addr,len,data);
     #endif
     pmem_write(addr, len, data); 
     return;
