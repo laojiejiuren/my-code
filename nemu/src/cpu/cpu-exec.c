@@ -66,7 +66,8 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 
 #ifdef CONFIG_MTRACE
-  puts(_this->membuf);
+  puts(_this->rmembuf);
+  puts(_this->wmembuf);
 #endif
 
 }
