@@ -76,7 +76,6 @@ void paddr_write(paddr_t addr, int len, word_t data) {
     #ifdef CONFIG_MTRACE
       flag_wmem = true;
       snprintf(wmembuf,sizeof(wmembuf),"addr: %02x len: %d data: %u",addr,len,data);
-      flag_wmem = false;
     #endif
     pmem_write(addr, len, data); 
     return;
