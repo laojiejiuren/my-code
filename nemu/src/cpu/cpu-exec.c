@@ -97,6 +97,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #endif
 
 #ifdef CONFIG_IRINGBUF
+
   if(RING_N >= 20) RING_N = 0;
   char *row = s->ringbuf[RING_N];
   memset(row, ' ', sizeof(s->ringbuf[RING_N]));
