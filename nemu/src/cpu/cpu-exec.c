@@ -74,7 +74,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_MTRACE
   if(flag_rmem)
     { puts(rmembuf);flag_rmem = false;}
-  else if(flag_wmem)
+  if(flag_wmem)
     { puts(wmembuf);flag_wmem = false;}
 #endif
 
