@@ -61,7 +61,6 @@ word_t paddr_read(paddr_t addr, int len) {
     #ifdef CONFIG_MTRACE
       flag_rmem = true;
       snprintf(rmembuf,sizeof(rmembuf),"addr: %02x len: %d",addr,len);
-      flag_rmem = false;
     #endif
     return pmem_read(addr, len);
   }
