@@ -95,12 +95,12 @@ static void exec_once(Decode *s, vaddr_t pc) {
   uint8_t *inst_ring = (uint8_t *)&s->isa.inst;
   for(int i = len_ring - 1; i >= 0; --i)
   {
-    tmp += snprintf(p, 4, "%02x", inst_ring[i]);
+    tmp += snprintf(tmp, 4, "%02x", inst_ring[i]);
   }
   memset(tmp, ' ', 4);
 
    void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-  disassemble(p, s->ringbuf + sizeof(s->ringbuf) - tmp,
+  disassemble(tmp, s->ringbuf + sizeof(s->ringbuf) - tmp,
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst, len_ring);
 #endif
 }
