@@ -29,7 +29,8 @@ static int RING_N = 0;
 
 IFDEF(CONFIG_MTRACE, extern char rmembuf[128]);
 IFDEF(CONFIG_MTRACE, extern char wmembuf[128]);
-IFDEF(CONFIG_MTRACE, extern bool flag_mtrace);
+IFDEF(CONFIG_MTRACE, extern bool flag_rmem);
+IFDEF(CONFIG_MTRACE, extern bool flag_wmem);
 
 
 CPU_state cpu = {};
@@ -71,11 +72,10 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 
 #ifdef CONFIG_MTRACE
-  if(flag_mtrace)
-  {
+  if(flag_rmem)
     puts(rmembuf);
+  else if(flag_wmem)
     puts(wmembuf);
-  }
 #endif
 
 }

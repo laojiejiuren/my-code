@@ -20,7 +20,8 @@
 
 IFDEF(CONFIG_MTRACE, char rmembuf[128]);
 IFDEF(CONFIG_MTRACE, char wmembuf[128]);
-IFDEF(CONFIG_MTRACE, bool flag_mtrace = false);
+IFDEF(CONFIG_MTRACE, bool flag_rmem = false);
+IFDEF(CONFIG_MTRACE, bool flag_wmem = false);
 
 #if   defined(CONFIG_PMEM_MALLOC)
 static uint8_t *pmem = NULL;
@@ -58,7 +59,7 @@ word_t paddr_read(paddr_t addr, int len) {
   if (likely(in_pmem(addr))) 
   {
     #ifdef CONFIG_MTRACE
-      flag_mtrace = true;
+      flag_rmem = true;
       snprintf(rmembuf,sizeof(rmembuf),"addr: %02x len: %d",addr,len);
     #endif
     return pmem_read(addr, len);
@@ -72,7 +73,7 @@ void paddr_write(paddr_t addr, int len, word_t data) {
   if (likely(in_pmem(addr))) 
   { 
     #ifdef CONFIG_MTRACE
-      flag_mtrace = true;
+      flag_wmem = true;
       snprintf(wmembuf,sizeof(wmembuf),"addr: %02x len: %d data: %u",addr,len,data);
     #endif
     pmem_write(addr, len, data); 
