@@ -42,7 +42,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 
 #ifdef CONFIG_IRINGBUF
-  if(nemu_state.halt_ret != 0 || nemu_state.state != NEMU_RUNNING)
+  if(nemu_state.halt_ret != 0 || nemu_state.state == NEMU_ABORT || nemu_state.state == NEMU_STOP)
   {
     for(int i = 0; i < 20; ++i)
     {
