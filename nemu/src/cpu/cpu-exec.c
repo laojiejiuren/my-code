@@ -45,7 +45,14 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   if(nemu_state.halt_ret != 0 || nemu_state.state != NEMU_RUNNING)
   {
     for(int i = 0; i < 20; ++i)
-      puts(_this->ringbuf[i]);
+    {
+      if(i == RING_N)
+      {
+        printf("--> ");
+        puts(_this->ringbuf[i]);
+      }
+      else puts(_this->ringbuf[i]);
+    }
     memset(_this->ringbuf,' ',sizeof(_this->ringbuf));
   }
 #endif
