@@ -44,7 +44,8 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_IRINGBUF
   if(nemu_state.halt_ret != 0 || nemu_state.state != NEMU_RUNNING)
   {
-    puts(_this->ringbuf[RING_N]);
+    for(int i = 0; i < 20; ++i)
+      puts(_this->ringbuf[i]);
     memset(_this->ringbuf,' ',sizeof(_this->ringbuf));
   }
 #endif
