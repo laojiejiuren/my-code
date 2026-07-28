@@ -27,6 +27,11 @@
 #define MAX_INST_TO_PRINT 10
 static int RING_N = 0;
 
+IFDEF(CONFIG_MTRACE, extern char rmembuf;);
+extern char wmembuf;
+extern bool flag_mtrace;
+
+
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
