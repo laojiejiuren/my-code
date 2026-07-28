@@ -39,13 +39,21 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
+
+#ifdef CONFIG_IRINGBUF
+  if(nemu_state.halt_ret != 0)
+  {
+    puts(_this->ringbuf);
+    memset(_this->ringbuf,' ',sizeof(_this->ringbuf));
+  }
+#endif
+
 #ifdef CONFIG_WATCHPOINT
   if(!check_wp())
   {
     printf("触发监视点！！！\n");
     nemu_state.state = NEMU_STOP;
   }
-
 #endif
 }
 
@@ -77,6 +85,23 @@ static void exec_once(Decode *s, vaddr_t pc) {
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst, ilen);
+#endif
+
+#ifdef CONFIG_IRINGBUF
+  char * tmp = s->ringbuf;
+  tmp += snprintf(tmp, sizeof(s->ringbuf), FMT_WORD ":", s->pc);
+  int len_ring = s->snpc - s->pc;
+  
+  uint8_t *inst_ring = (uint8_t *)&s->isa.inst;
+  for(int i = len_ring - 1; i >= 0; --i)
+  {
+    tmp += snprintf(p, 4, "%02x", inst_ring[i]);
+  }
+  memset(tmp, ' ', 4);
+
+   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+  disassemble(p, s->ringbuf + sizeof(s->ringbuf) - tmp,
+      MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst, len_ring);
 #endif
 }
 
