@@ -159,9 +159,9 @@ config ITRACE_COND
   default "true"
 
 config MTRACE
-    depends on TRACE
-    bool "Enable memory trace"
-    default y
+  depends on TRACE
+  bool "Enable memory trace"
+  default y
 
 config DIFFTEST
   depends on TARGET_NATIVE_ELF
