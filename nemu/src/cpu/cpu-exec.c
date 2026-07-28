@@ -28,8 +28,8 @@
 static int RING_N = 0;
 
 IFDEF(CONFIG_MTRACE, extern char *rmembuf);
-IFDEF(CONFIG_MTRACE, extern char *wmembuf;);
-IFDEF(CONFIG_MTRACE, extern bool flag_mtrace;);
+IFDEF(CONFIG_MTRACE, extern char *wmembuf);
+IFDEF(CONFIG_MTRACE, extern bool flag_mtrace);
 
 
 CPU_state cpu = {};
