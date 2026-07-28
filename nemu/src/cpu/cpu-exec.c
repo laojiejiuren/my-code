@@ -89,7 +89,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 
 #ifdef CONFIG_IRINGBUF
   char * tmp = s->ringbuf;
-  tmp += snprintf(tmp, sizeof(s->ringbuf), FMT_WORD ":", s->pc);
+  tmp += snprintf(tmp, sizeof(s->ringbuf), FMT_WORD ":  ", s->pc);
   int len_ring = s->snpc - s->pc;
   
   uint8_t *inst_ring = (uint8_t *)&s->isa.inst;
