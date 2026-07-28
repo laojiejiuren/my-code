@@ -98,7 +98,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
     tmp += snprintf(tmp, 4, "%02x", inst_ring[i]);
   }
   memset(tmp, ' ', 4);
-
+  tmp += 4;
    void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
   disassemble(tmp, s->ringbuf + sizeof(s->ringbuf) - tmp,
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst, len_ring);
