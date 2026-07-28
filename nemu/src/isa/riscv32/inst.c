@@ -119,7 +119,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("0000001 ????? ????? 001 ????? 01100 11", mulh   , R, R(rd) = ((int64_t)(sword_t)src1 * (int64_t)(sword_t)src2) >> 32);
   INSTPAT("0000001 ????? ????? 011 ????? 01100 11", mulhu  , R, R(rd) = ((uint64_t)src1 * (uint64_t)src2) >> 32);
   INSTPAT("0000001 ????? ????? 010 ????? 01100 11", mulhsu , R, R(rd) = ((int64_t)(sword_t) src1 * (uint64_t) src2) >> 32);
-  INSTPAT("0000001 ????? ????? 100 ????? 01100 11", div    , R, {if(src2 == 0)R(rd) = 0xff22ffff;       \
+  INSTPAT("0000001 ????? ????? 100 ????? 01100 11", div    , R, {if(src2 == 0)R(rd) = 0xffffffff;       \
                                   else if(src2 == -1 && src1 == 0x80000000) R(rd) = (sword_t)(src1);    \
                                   else R(rd) = (sword_t)(src1) / (sword_t)src2;});
   INSTPAT("0000001 ????? ????? 101 ????? 01100 11", divu   , R, {if(src2 != 0)R(rd) = src1 / src2; else R(rd) = 0xffffffff;});
