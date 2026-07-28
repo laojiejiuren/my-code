@@ -46,7 +46,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   {
     for(int i = 0; i < 20; ++i)
     {
-      if(i == RING_N - 1)
+      if(i == RING_N - 1)//默认加一后会有偏移
       {
         printf("--> ");
         puts(_this->ringbuf[i]);
