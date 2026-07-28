@@ -16,10 +16,10 @@
 #include <memory/host.h>
 #include <memory/paddr.h>
 #include <device/mmio.h>
-#include <cpu/decode.h>
 #include <isa.h>
 
-Decode *s;
+IFDEF(CONFIG_MTRACE, char rmembuf[128]);
+IFDEF(CONFIG_MTRACE, char wmembuf[128]);
 
 #if   defined(CONFIG_PMEM_MALLOC)
 static uint8_t *pmem = NULL;
@@ -54,7 +54,6 @@ void init_mem() {
 }
 
 word_t paddr_read(paddr_t addr, int len) {
-  //snprintf(s->rmembuf,sizeof(s->rmembuf), "addr: %08x len: %d",addr,len);
   if (likely(in_pmem(addr))) return pmem_read(addr, len);
   IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
   out_of_bound(addr);
@@ -63,8 +62,7 @@ word_t paddr_read(paddr_t addr, int len) {
 
 void paddr_write(paddr_t addr, int len, word_t data) {
   if (likely(in_pmem(addr))) 
-  {
-    //snprintf(s->wmembuf,sizeof(s->wmembuf), "addr: %08x len: %d data: %u",addr,len,data); 
+  { 
     pmem_write(addr, len, data); 
     return;
   }
