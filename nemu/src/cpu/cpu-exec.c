@@ -27,9 +27,9 @@
 #define MAX_INST_TO_PRINT 10
 static int RING_N = 0;
 
-IFDEF(CONFIG_MTRACE, extern char rmembuf;);
-extern char wmembuf;
-extern bool flag_mtrace;
+IFDEF(CONFIG_MTRACE, extern char *rmembuf;);
+IFDEF(CONFIG_MTRACE, extern char *wmembuf;);
+IFDEF(CONFIG_MTRACE, extern bool flag_mtrace;);
 
 
 CPU_state cpu = {};
@@ -71,6 +71,11 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 
 #ifdef CONFIG_MTRACE
+  if(flag_mtrace)
+  {
+    puts(rmembuf);
+    puts(wmembuf);
+  }
 #endif
 
 }
