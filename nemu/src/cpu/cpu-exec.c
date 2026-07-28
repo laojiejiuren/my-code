@@ -25,6 +25,7 @@
  * You can modify this value as you want.
  */
 #define MAX_INST_TO_PRINT 10
+static int RING_N = 0;
 
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
@@ -43,7 +44,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_IRINGBUF
   if(nemu_state.halt_ret != 0 || nemu_state.state != NEMU_RUNNING)
   {
-    puts(_this->ringbuf);
+    puts(_this->ringbuf[RING_N]);
     memset(_this->ringbuf,' ',sizeof(_this->ringbuf));
   }
 #endif
@@ -88,19 +89,19 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #endif
 
 #ifdef CONFIG_IRINGBUF
-  char * tmp = s->ringbuf;
-  tmp += snprintf(tmp, sizeof(s->ringbuf), FMT_WORD ": ", s->pc);
-  int len_ring = s->snpc - s->pc;
+  if(RING_N >= 20) RING_N = 0;
+  char *row = s->ringbuf[RING_N];
+  row += snprintf(row, sizeof(s->ringbuf[RING_N]), FMT_WORD ": ", s->pc);
   
-  uint8_t *inst_ring = (uint8_t *)&s->isa.inst;
+  int len_ring = s->snpc - s->pc;
+  uint8_t * inst_ring = (uint8_t *)&s->isa.inst;
   for(int i = len_ring - 1; i >= 0; --i)
-  {
-    tmp += snprintf(tmp, 4, "%02x", inst_ring[i]);
-  }
-  memset(tmp, ' ', 2);
-  tmp += 2;
-   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-  disassemble(tmp, s->ringbuf + sizeof(s->ringbuf) - tmp,
+    row += snprintf(row, 4, "%02x", inst_ring[i]);
+  memset(row, ' ', 2);
+  row += 2;
+
+  void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+  disassemble(row, row + sizeof(s->ringbuf[RING_N]) - row,
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst, len_ring);
 #endif
 }
