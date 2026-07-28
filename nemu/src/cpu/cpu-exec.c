@@ -92,6 +92,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #ifdef CONFIG_IRINGBUF
   if(RING_N >= 20) RING_N = 0;
   char *row = s->ringbuf[RING_N];
+  memset(row, ' ', sizeof(s->ringbuf[RING_N]));
   row += snprintf(row, sizeof(s->ringbuf[RING_N]), FMT_WORD ": ", s->pc);
   
   int len_ring = s->snpc - s->pc;
@@ -104,6 +105,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
   disassemble(row, row + sizeof(s->ringbuf[RING_N]) - row,
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst, len_ring);
+  RING_N++;
 #endif
 }
 
