@@ -56,11 +56,11 @@ void init_mem() {
 }
 
 word_t paddr_read(paddr_t addr, int len) {
-  if (likely(in_pmem(addr))) 
+  if (likely(in_pmem(addr)))
   {
     #ifdef CONFIG_MTRACE
       flag_rmem = true;
-      snprintf(rmembuf,sizeof(rmembuf),"addr: %02x len: %d",addr,len);
+      snprintf(rmembuf,sizeof(rmembuf),"addr: "FMT_PADDR" len: %d",addr,len);
     #endif
     return pmem_read(addr, len);
   }
@@ -74,7 +74,7 @@ void paddr_write(paddr_t addr, int len, word_t data) {
   { 
     #ifdef CONFIG_MTRACE
       flag_wmem = true;
-      snprintf(wmembuf,sizeof(wmembuf),"addr: %02x len: %d data: %u",addr,len,data);
+      snprintf(wmembuf,sizeof(wmembuf),"addr: "FMT_PADDR" len: %d data: "FMT_WORD" ",addr,len,data);
     #endif
     pmem_write(addr, len, data); 
     return;
