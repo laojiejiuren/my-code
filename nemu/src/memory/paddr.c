@@ -60,7 +60,7 @@ word_t paddr_read(paddr_t addr, int len) {
   if (likely(in_pmem(addr)))
   {
     #ifdef CONFIG_MTRACE
-      if(flag_vif == false)
+      if(flag_vif == false || flag_vif)
       {
         flag_rmem = true;
         snprintf(rmembuf,sizeof(rmembuf),"addr: "FMT_PADDR" len: %d",addr,len);
