@@ -22,7 +22,7 @@ IFDEF(CONFIG_MTRACE, char rmembuf[128]);
 IFDEF(CONFIG_MTRACE, char wmembuf[128]);
 IFDEF(CONFIG_MTRACE, bool flag_rmem = false);
 IFDEF(CONFIG_MTRACE, bool flag_wmem = false);
-IFDEF(CONFIG_MTRACE, extern bool flag_vif);
+IFDEF(CONFIG_MTRACE, extern bool flag_vr);
 
 #if   defined(CONFIG_PMEM_MALLOC)
 static uint8_t *pmem = NULL;
@@ -60,7 +60,7 @@ word_t paddr_read(paddr_t addr, int len) {
   if (likely(in_pmem(addr)))
   {
     #ifdef CONFIG_MTRACE
-      if(flag_vif == false || flag_vif)
+      if(flag_vr)
       {
         flag_rmem = true;
         snprintf(rmembuf,sizeof(rmembuf),"pc: "FMT_WORD" addr: "FMT_PADDR" len: %d",cpu.pc,addr,len);
