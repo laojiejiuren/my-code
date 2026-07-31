@@ -63,7 +63,8 @@ word_t paddr_read(paddr_t addr, int len) {
       if(flag_vr)
       {
         flag_rmem = true;
-        snprintf(rmembuf,sizeof(rmembuf),"pc: "FMT_WORD" addr: "FMT_PADDR" len: %d",cpu.pc,addr,len);
+        if(MTRACE_COND)
+          snprintf(rmembuf,sizeof(rmembuf),"pc: "FMT_WORD" addr: "FMT_PADDR" len: %d",cpu.pc,addr,len);
         flag_vr = false;
       }
     #endif
