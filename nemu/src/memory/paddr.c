@@ -82,8 +82,7 @@ void paddr_write(paddr_t addr, int len, word_t data) {
       if(MTRACE_COND)
       {  
         snprintf(wmembuf,sizeof(wmembuf),"pc: "FMT_WORD" addr: "FMT_PADDR" len: %d data: "FMT_WORD"",cpu.pc,addr,len,data);
-        int tmp = MTRACE_COND;
-        printf("%d",tmp);
+        puts(MTRACE_COND);
       }
     #endif
     pmem_write(addr, len, data); 
