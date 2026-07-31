@@ -64,6 +64,7 @@ word_t paddr_read(paddr_t addr, int len) {
       {
         flag_rmem = true;
         snprintf(rmembuf,sizeof(rmembuf),"pc: "FMT_WORD" addr: "FMT_PADDR" len: %d",cpu.pc,addr,len);
+        flag_vr = false;
       }
     #endif
     return pmem_read(addr, len);
