@@ -16,10 +16,7 @@
 #include <isa.h>
 #include <memory/paddr.h>
 
-IFDEF(CONFIG_MTRACE, bool flag_vif = false);
-
 word_t vaddr_ifetch(vaddr_t addr, int len) {
-  flag_vif = true;
   return paddr_read(addr, len);
 }
 
