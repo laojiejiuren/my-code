@@ -69,7 +69,7 @@ void init_ftrace(const char *elf_file)
     }
     
     Elf32_Sym *symtab = malloc(symtab_hdr->sh_size);
-    int sym_num = symtab_hdr->sh_size / sizeof(symtab);
+    int sym_num = symtab_hdr->sh_size / sizeof(Elf32_Sym);
     fseek(F, symtab_hdr->sh_offset, SEEK_SET);
     if(fread(symtab, symtab_hdr->sh_size, 1, F) != 1)
     {
