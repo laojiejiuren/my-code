@@ -21,7 +21,7 @@
 #define R(i) gpr(i)
 #define Mr vaddr_read
 #define Mw vaddr_write
-IFDEF(CONFIG_MTRACE, bool flag_vr = false);
+bool flag_vr = false;
 
 enum {
   TYPE_I, TYPE_U, TYPE_S,
