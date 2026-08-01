@@ -90,7 +90,8 @@ void init_ftrace(const char *elf_file)
     for(int i = 0; i < sym_num; ++i)
     {
         char * tmp = strtab + symtab[i].st_name;
-        printf("%s",tmp);
+        if(symtab[i].st_name != 0)  // 过滤掉st_name==0的符号（索引0的占位符以及未命名的符号）
+            printf("%s\n",tmp);
     }
 
     fclose(F);
