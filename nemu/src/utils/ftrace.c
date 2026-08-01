@@ -38,7 +38,7 @@ void init_ftrace(const char *elf_file)
         return;
     }
 
-    //读取->shstrtab
+    //读取.shstrtab
     Elf32_Shdr *shstrtab_hdr = &shdr[ehdr.e_shstrndx];
     char *shstrtab = malloc(shstrtab_hdr->sh_size);
     fseek(F, shstrtab_hdr->sh_offset, SEEK_SET);
@@ -69,7 +69,7 @@ void init_ftrace(const char *elf_file)
     }
     
     Elf32_Sym *symtab = malloc(symtab_hdr->sh_size);
-    //int sym_num = symtab_hdr->sh_size / sizeof(symtab);
+    int sym_num = symtab_hdr->sh_size / sizeof(symtab);
     fseek(F, symtab_hdr->sh_offset, SEEK_SET);
     if(fread(symtab, symtab_hdr->sh_size, 1, F) != 1)
     {
@@ -78,13 +78,19 @@ void init_ftrace(const char *elf_file)
         return;
     }
 
-    Elf32_Sym *strtab = malloc(strtab_hdr->sh_size);
+    char *strtab = malloc(strtab_hdr->sh_size);
     fseek(F, strtab_hdr->sh_offset, SEEK_SET);
     if(fread(strtab, strtab_hdr->sh_size, 1, F) != 1)
     {
         printf("读取strtab失败\n");
         fclose(F);
         return;
+    }
+
+    for(int i = 0; i < sym_num; ++i)
+    {
+        char * tmp = strtab + symtab->st_name;
+        printf("%s",tmp);
     }
 
     fclose(F);
