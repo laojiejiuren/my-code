@@ -93,7 +93,7 @@ void init_ftrace(const char *elf_file)
         {
             char * tmp = strtab + symtab[i].st_name;
             if(symtab[i].st_name != 0) 
-                printf("%s\n",tmp);
+                printf("function name is %s\n",tmp);
         }
     }
 
