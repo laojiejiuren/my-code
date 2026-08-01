@@ -91,7 +91,7 @@ void init_ftrace(const char *elf_file)
     {
         char * tmp = strtab + symtab[i].st_name;
         if(symtab[i].st_name != 0) 
-            printf("%s",tmp);
+            printf("%s\n",tmp);
     }
 
     fclose(F);
