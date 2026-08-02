@@ -128,7 +128,7 @@ void ftrace_call(vaddr_t pc, vaddr_t next_pc)
                 printf(""FMT_WORD": ",pc);
                 for(int j = 0; j < cnt; ++j)
                     printf(" ");
-                printf("call [%s@"FMT_WORD"]",tmp,next_pc);
+                printf("call [%s@"FMT_WORD"]\n",tmp,next_pc);
             }
         }
     }
@@ -147,7 +147,7 @@ void ftrace_ret(vaddr_t pc)
                 printf(""FMT_WORD": ",pc);
                 for(int j = 0; j < cnt; ++j)
                     printf(" ");
-                printf("ret [%s]",tmp);
+                printf("ret [%s]\n",tmp);
             }
         }
     }
