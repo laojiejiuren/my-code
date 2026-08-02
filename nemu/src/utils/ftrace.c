@@ -116,7 +116,7 @@ void ftrace_call(vaddr_t pc, vaddr_t next_pc)
                 char *tmp = strtab + symtab[i].st_name;
                 if(symtab[i].st_name != 0)
                 {
-                    printf(""FMT_WORD": call [%s@"FMT_WORD"]\n",pc, tmp, next_pc);
+                    printf(""FMT_WORD": call [%s@"FMT_WORD"] ",pc, tmp, next_pc);
                 }
             }
         }
@@ -134,7 +134,7 @@ void ftrace_ret(vaddr_t pc)
                 char *tmp = strtab + symtab[i].st_name;
                 if(symtab[i].st_name != 0)
                 {
-                    printf(""FMT_WORD": ret [%s]\n",pc, tmp);
+                    printf(""FMT_WORD": ret [%s] ",pc, tmp);
                 }
             }
         }
