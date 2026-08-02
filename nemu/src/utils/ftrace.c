@@ -140,4 +140,3 @@ void ftrace_ret(vaddr_t pc)
         }
     }
 }
-
