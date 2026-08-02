@@ -85,6 +85,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 
   //提取rd寄存器,当rd寄存器是x0时就是函数返回，不是时就是调用
   int rd = BITS(inst_ftrace, 11, 7);
+  int rs1 = BITS(inst_ftrace, 19, 15);
   uint32_t opcode = BITS(inst_ftrace, 6, 0);
   uint32_t funct3 = BITS(inst_ftrace, 14, 12);
 
@@ -101,7 +102,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       if(funct3 == 0)
       {
         if(rd) {ftrace_call(_this->pc, _this->dnpc);}
-        else {ftrace_ret(_this->pc);}
+        else if(rd == 0 || rs1 == 31) {ftrace_ret(_this->pc);}
       }
       break;
     }
