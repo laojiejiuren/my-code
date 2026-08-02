@@ -115,7 +115,7 @@ bool check_value(vaddr_t addr, int id)
     return flag;
 }
 
-int cnt = 1;
+int cnt = 20;
 void ftrace_call(vaddr_t pc, vaddr_t next_pc)
 {
     for(int i = 0; i < sym_num; ++i)
@@ -137,6 +137,7 @@ void ftrace_call(vaddr_t pc, vaddr_t next_pc)
 
 void ftrace_ret(vaddr_t pc)
 {
+    cnt--;
     for(int i = 0; i < sym_num; ++i)
     {
          if(check_value(pc, i))
@@ -151,5 +152,4 @@ void ftrace_ret(vaddr_t pc)
             }
         }
     }
-    cnt--;
 }
