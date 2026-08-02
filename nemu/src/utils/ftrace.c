@@ -104,20 +104,27 @@ void init_ftrace(const char *elf_file)
 
     fclose(F);
 }
-int cnt = 0;
+
+bool check_value(vaddr_t addr, int id)
+{
+    bool flag = false;
+    if((symtab[id].st_info & 0xf) == STT_FUNC && 
+                (symtab[id].st_value <= addr && addr < symtab[id].st_value + symtab[id].st_size))
+        flag = true;
+
+    return flag;
+}
+
 void ftrace_call(vaddr_t pc, vaddr_t next_pc)
 {
     for(int i = 0; i < sym_num; ++i)
     {
-        if((symtab[i].st_info & 0xf) == STT_FUNC)
+        if(check_value(next_pc, i))
         {
-            if(symtab[i].st_value <= next_pc && next_pc < symtab[i].st_value + symtab[i].st_size)
+            char *tmp = strtab + symtab[i].st_name;
+            if(symtab[i].st_name != 0)
             {
-                char *tmp = strtab + symtab[i].st_name;
-                if(symtab[i].st_name != 0)
-                {
-                    printf(""FMT_WORD": call [%s@"FMT_WORD"] ",pc, tmp, next_pc);
-                }
+                printf(""FMT_WORD": call [%s@"FMT_WORD"] ",pc, tmp, next_pc);
             }
         }
     }
