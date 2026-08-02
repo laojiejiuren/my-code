@@ -101,8 +101,8 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     {
       if(funct3 == 0)
       {
-        if(rd) {ftrace_call(_this->pc, _this->dnpc);}
-        else if(rd == 0 && rs1 == 31) {ftrace_ret(_this->pc);}
+        //if(rd) {ftrace_call(_this->pc, _this->dnpc);}
+         if(rd == 0 && rs1 == 31) {ftrace_ret(_this->pc);}
       }
       break;
     }
