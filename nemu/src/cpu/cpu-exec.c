@@ -96,7 +96,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       else {ftrace_ret(_this->dnpc);printf("jal ret\n");}
       break;
     }
-    case 0xf7:      //jalr
+    case 0x67:      //jalr
     {
       if(funct3 == 0)
       {
