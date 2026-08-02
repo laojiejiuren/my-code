@@ -19,6 +19,7 @@
 #include <locale.h>
 #include "utils.h"
 #include "watchpoint.h"
+#include <elf.h>
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
  * This is useful when you use the `si' command.
@@ -31,7 +32,8 @@ IFDEF(CONFIG_MTRACE, extern char rmembuf[128]);
 IFDEF(CONFIG_MTRACE, extern char wmembuf[128]);
 IFDEF(CONFIG_MTRACE, extern bool flag_rmem);
 IFDEF(CONFIG_MTRACE, extern bool flag_wmem);
-
+IFDEF(CONFIG_FTRACE, extern char *strtab);
+IFDEF(CONFIG_FTRACE, extern Elf32_Sym *symtab);
 
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
@@ -79,7 +81,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 
 #ifdef CONFIG_FTRACE
-  
+
 #endif
 
 }
