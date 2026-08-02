@@ -92,9 +92,9 @@ void init_ftrace(const char *elf_file)
 
     for(int i = 0; i < sym_num; ++i)
     {
-        printf("0x%08x\n",symtab[i].st_value);
         if((symtab[i].st_info & 0xf) == STT_FUNC)
         {
+            printf("0x%08x\n",symtab[i].st_value);
             char * tmp = strtab + symtab[i].st_name;
             if(symtab[i].st_name != 0) 
                 printf("function name is '%s'\n",tmp);
