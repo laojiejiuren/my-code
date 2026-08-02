@@ -92,7 +92,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   {
     case 0x6f:      //jal
     {
-      if(rd) {ftrace_call(_this->pc, _this->dnpc);printf("%d\n",rd);rd = 0;}
+      if(rd) {ftrace_call(_this->pc, _this->dnpc);printf("%d\n",rd);}
       else {ftrace_ret(_this->pc);printf("jal ret\n");}
       break;
     }
