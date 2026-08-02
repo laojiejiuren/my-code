@@ -132,12 +132,10 @@ void ftrace_ret(vaddr_t pc)
 {
     for(int i = 0; i < sym_num; ++i)
     {
-         if(check_value(pc, i))
-        {
+
             char *tmp = strtab + symtab[i].st_name;
-            //if(symtab[i].st_name != 0)
+            if(symtab[i].st_name != 0)
                 printf(""FMT_WORD": ret [%s] ",pc, tmp);
-        }
     }
 }
 
