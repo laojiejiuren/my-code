@@ -78,6 +78,10 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     { puts(wmembuf);flag_wmem = false;}
 #endif
 
+#ifdef CONFIG_FTRACE
+  
+#endif
+
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {

@@ -1,6 +1,9 @@
 #include <common.h>
 #include <elf.h>
 
+Elf32_Sym *symtab = NULL;
+char *strtab = NULL;
+
 void init_ftrace(const char *elf_file)
 {
     if(elf_file == NULL)
@@ -68,7 +71,7 @@ void init_ftrace(const char *elf_file)
         return;
     }
     
-    Elf32_Sym *symtab = malloc(symtab_hdr->sh_size);
+    symtab = malloc(symtab_hdr->sh_size);
     int sym_num = symtab_hdr->sh_size / sizeof(Elf32_Sym);
     fseek(F, symtab_hdr->sh_offset, SEEK_SET);
     if(fread(symtab, symtab_hdr->sh_size, 1, F) != 1)
@@ -78,7 +81,7 @@ void init_ftrace(const char *elf_file)
         return;
     }
 
-    char *strtab = malloc(strtab_hdr->sh_size);
+    strtab = malloc(strtab_hdr->sh_size);
     fseek(F, strtab_hdr->sh_offset, SEEK_SET);
     if(fread(strtab, strtab_hdr->sh_size, 1, F) != 1)
     {
