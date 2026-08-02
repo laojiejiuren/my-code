@@ -3,6 +3,7 @@
 
 Elf32_Sym *symtab = NULL;
 char *strtab = NULL;
+int sym_num = 0;
 
 void init_ftrace(const char *elf_file)
 {
@@ -72,7 +73,7 @@ void init_ftrace(const char *elf_file)
     }
     
     symtab = malloc(symtab_hdr->sh_size);
-    int sym_num = symtab_hdr->sh_size / sizeof(Elf32_Sym);
+    sym_num = symtab_hdr->sh_size / sizeof(Elf32_Sym);
     fseek(F, symtab_hdr->sh_offset, SEEK_SET);
     if(fread(symtab, symtab_hdr->sh_size, 1, F) != 1)
     {
@@ -103,3 +104,40 @@ void init_ftrace(const char *elf_file)
 
     fclose(F);
 }
+int cnt = 0;
+void ftrace_call(vaddr_t pc, vaddr_t next_pc)
+{
+    for(int i = 0; i < sym_num; ++i)
+    {
+        if((symtab[i].st_info & 0xf) == STT_FUNC)
+        {
+            if(symtab[i].st_value <= next_pc && next_pc < symtab[i].st_value + symtab[i].st_size)
+            {
+                char *tmp = strtab + symtab[i].st_name;
+                if(symtab[i].st_name != 0)
+                {
+                    printf(""FMT_WORD": call [%s@"FMT_WORD"]",pc, tmp, next_pc);
+                }
+            }
+        }
+    }
+}
+
+void ftrace_ret(vaddr_t pc)
+{
+    for(int i = 0; i < sym_num; ++i)
+    {
+        if((symtab[i].st_info & 0xf) == STT_FUNC)
+        {
+            if(symtab[i].st_value <= pc && pc < symtab[i].st_value + symtab[i].st_size)
+            {
+                char *tmp = strtab + symtab[i].st_name;
+                if(symtab[i].st_name != 0)
+                {
+                    printf(""FMT_WORD": ret [%s]",pc, tmp);
+                }
+            }
+        }
+    }
+}
+

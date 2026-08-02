@@ -32,8 +32,8 @@ IFDEF(CONFIG_MTRACE, extern char rmembuf[128]);
 IFDEF(CONFIG_MTRACE, extern char wmembuf[128]);
 IFDEF(CONFIG_MTRACE, extern bool flag_rmem);
 IFDEF(CONFIG_MTRACE, extern bool flag_wmem);
-IFDEF(CONFIG_FTRACE, extern char *strtab);
-IFDEF(CONFIG_FTRACE, extern Elf32_Sym *symtab);
+IFDEF(CONFIG_FTRACE, extern void ftrace_call(vaddr_t pc, vaddr_t next_pc));
+IFDEF(CONFIG_FTRACE, extern void ftrace_ret(vaddr_t pc));
 
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
@@ -81,9 +81,33 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 
 #ifdef CONFIG_FTRACE
-  
-#endif
+  uint32_t inst_ftrace = _this->isa.inst;
 
+  //提取rd寄存器,当rd寄存器是x0时就是函数返回，不是时就是调用
+  int rd = BITS(inst_ftrace, 11, 7);
+  uint32_t opcode = BITS(inst_ftrace, 6, 0);
+  uint32_t funct3 = BITS(inst_ftrace, 14, 12);
+
+  switch(opcode)
+  {
+    case 0x6f:      //jal
+    {
+      if(rd) ftrace_call(_this->pc, _this->dnpc);
+      else ftrace_ret(_this->pc);
+      break;
+    }
+    case 0xf7:      //jalr
+    {
+      if(funct3 == 0)
+      {
+        if(rd) ftrace_call(_this->pc, _this->dnpc);
+        else ftrace_ret(_this->pc); 
+        break;
+      }
+    }
+  }
+
+#endif
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
