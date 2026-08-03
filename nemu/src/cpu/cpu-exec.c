@@ -26,7 +26,7 @@
  * You can modify this value as you want.
  */
 #define MAX_INST_TO_PRINT 10
-static int RING_N = 0;
+IFDEF(CONFIG_IRINGBUF static int RING_N = 0);
 
 IFDEF(CONFIG_MTRACE, extern char rmembuf[128]);
 IFDEF(CONFIG_MTRACE, extern char wmembuf[128]);
