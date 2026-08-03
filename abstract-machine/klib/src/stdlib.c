@@ -34,7 +34,7 @@ void *malloc(size_t size) {
   // Therefore do not call panic() here, else it will yield a dead recursion:
   //   panic() -> putchar() -> (glibc) -> malloc() -> panic()
 #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
-  /*size = (size_t)ROUNDUP(size,8);
+  size = (size_t)ROUNDUP(size,8);
   char *old = heap.start;
   heap.start += size;
   char *p = old;
@@ -43,7 +43,7 @@ void *malloc(size_t size) {
     p++;
   }
   return old;
-*/
+
 #endif
   return NULL;
 }
