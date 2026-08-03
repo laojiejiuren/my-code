@@ -165,7 +165,7 @@ config MTRACE
 
 config MTRACE_COND
   depends on MTRACE
-  string "Only trace instructions when the condition is true"
+  string "Only trace memeory when the condition is true"
   default "true"
 
 config FTRACE
