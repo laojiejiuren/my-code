@@ -55,6 +55,12 @@ int add_buff(char *out, const char *fmt, va_list ap)
           cnt++;
         }
       }
+      else if(*tmp == 'c')
+      {
+        int s1 = va_arg(ap, int);
+        *out++ = (char)s1;
+        cnt++;
+      }
     }
     else
     {
