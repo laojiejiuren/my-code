@@ -76,8 +76,9 @@ word_t paddr_read(paddr_t addr, int len) {
   }
 
   #ifdef CONFIG_DTRACE
-
-
+  IOMap *map[16] = {};
+  map = fetch_mmio_map(addr);
+  printf("%s",map->name);
   #endif
 
   IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
