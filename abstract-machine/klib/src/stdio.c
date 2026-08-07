@@ -26,7 +26,7 @@ int add_buff(char *out, const char *fmt, va_list ap)
           *out++ = '0';
           cnt++;
         }
-        else if(num < 0)
+        else if(num_tmp < 0)
         {
           *out++ = '-';
           cnt++;
