@@ -76,6 +76,7 @@ word_t paddr_read(paddr_t addr, int len) {
   }
 
   #ifdef CONFIG_DTRACE
+  printf("22123123")
   IOMap *map[16] = {};
   map = fetch_mmio_map(addr);
   printf("%s\n",map->name);
