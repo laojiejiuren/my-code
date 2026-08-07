@@ -34,6 +34,7 @@ IFDEF(CONFIG_MTRACE, extern bool flag_rmem);
 IFDEF(CONFIG_MTRACE, extern bool flag_wmem);
 IFDEF(CONFIG_FTRACE, extern void ftrace_call(vaddr_t pc, vaddr_t next_pc));
 IFDEF(CONFIG_FTRACE, extern void ftrace_ret(vaddr_t pc));
+IFDEF(CONFIG_DTRACE, extern char device_name[128]);
 
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
@@ -109,6 +110,11 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   }
 
 #endif
+
+#ifdef CONFIG_DTRACE
+  printf("%s", device_name);
+#endif
+
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {

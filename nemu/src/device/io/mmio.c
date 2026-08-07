@@ -15,14 +15,20 @@
 
 #include <device/map.h>
 #include <memory/paddr.h>
+#include <common.h>
 
 #define NR_MAP 16
+IFDEF(CONFIG_DTRACE, char device_name[128]);
 
 static IOMap maps[NR_MAP] = {};
 static int nr_map = 0;
 
 static IOMap* fetch_mmio_map(paddr_t addr) {
   int mapid = find_mapid_by_addr(maps, nr_map, addr);
+
+  if(mapid != -1)
+    snprintf(device_name, sizeof(device_name), "name: %s  addr: "FMT_PADDR"",maps[mapid].name, addr);
+
   return (mapid == -1 ? NULL : &maps[mapid]);
 }
 
