@@ -16,6 +16,7 @@
 #include <memory/host.h>
 #include <memory/paddr.h>
 #include <device/mmio.h>
+#include <device/map.h>
 #include <isa.h>
 
 IFDEF(CONFIG_MTRACE, char rmembuf[128]);
@@ -23,6 +24,7 @@ IFDEF(CONFIG_MTRACE, char wmembuf[128]);
 IFDEF(CONFIG_MTRACE, bool flag_rmem = false);
 IFDEF(CONFIG_MTRACE, bool flag_wmem = false);
 IFDEF(CONFIG_MTRACE, extern bool flag_vr);
+IFDEF(CONFIG_DTRACE, char device_name[128]);
 
 #if   defined(CONFIG_PMEM_MALLOC)
 static uint8_t *pmem = NULL;
@@ -72,6 +74,12 @@ word_t paddr_read(paddr_t addr, int len) {
     #endif
     return pmem_read(addr, len);
   }
+
+  #ifdef CONFIG_DTRACE
+
+
+  #endif
+
   IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
   out_of_bound(addr);
   return 0;
