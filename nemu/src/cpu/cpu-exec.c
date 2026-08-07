@@ -112,7 +112,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 
 #ifdef CONFIG_DTRACE
-  printf("%s", device_name);
+  printf("%s\n", device_name);
 #endif
 
 }
