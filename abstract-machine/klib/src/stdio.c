@@ -16,7 +16,7 @@ int add_buff(char *out, const char *fmt, va_list ap)
       tmp++;
       if(*tmp == 'd')
       {
-        long num = va_arg(ap, long);
+        long num = va_arg(ap, int);
         char buf[20] = {};
         int id = 0;
 
