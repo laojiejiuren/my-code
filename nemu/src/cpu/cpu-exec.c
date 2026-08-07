@@ -112,7 +112,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 
 #ifdef CONFIG_DTRACE
- if(nemu_state.halt_ret != 0 || nemu_state.state == NEMU_ABORT || nemu_state.state == NEMU_STOP)
+ if(nemu_state.state != NEMU_RUNNING)
   printf("%s\n", device_name);
 #endif
 
