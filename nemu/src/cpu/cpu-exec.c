@@ -113,7 +113,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 
 #ifdef CONFIG_DTRACE
  if(nemu_state.state != NEMU_RUNNING)
-  printf("%s\n", device_name);
+  printf(" "ANSI_FG_GREEN"%s\n", device_name);
 #endif
 
 }
