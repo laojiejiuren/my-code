@@ -16,7 +16,8 @@ int add_buff(char *out, const char *fmt, va_list ap)
       tmp++;
       if(*tmp == 'd')
       {
-        unsigned int num = va_arg(ap, int);
+        int num = va_arg(ap, int);
+        unsigned int num_tmp = num;
         char buf[20] = {};
         int id = 0;
 
@@ -29,13 +30,13 @@ int add_buff(char *out, const char *fmt, va_list ap)
         {
           *out++ = '-';
           cnt++;
-          num = -num;
+          num_tmp = -(unsigned)num;
         }
 
-        while (num)
+        while (num_tmp)
         {
-          buf[id++] = (num % 10) + '0';
-          num /= 10;
+          buf[id++] = (num_tmp % 10) + '0';
+          num_tmp /= 10;
           cnt++;
         }
 
