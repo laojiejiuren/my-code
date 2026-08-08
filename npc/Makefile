@@ -4,10 +4,10 @@ VERILATOR = verilator
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
 BIN = ./build/obj_dir/V$(TOPNAME)
-INC_DIR = ./csrc/include
+INC_DIR = ./include
 
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
-CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp")
+CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp") $(shell find $(abspath ./src) -name "*.c")
 
 VERILATOR_FLAGS = --cc --exe --build -j \
 				  -O3 -x-assign fast -x-initial fast --noassert \
@@ -24,7 +24,7 @@ $(BIN):$(VSRCS) $(CSRCS)
 	@mkdir -p $(BUILD_DIR)
 	$(VERILATOR) $(VERILATOR_FLAGS) \
 	$(VSRCS) $(CSRCS) \
-	-CFLAGS "$(CXXFLAGS)"
+	-CFLAGS "$(CXXFLAGS)" -LDFLAGS "-lreadline"
 	@echo "Build finished: $@"
 
 run:$(BIN)

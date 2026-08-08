@@ -1,8 +1,7 @@
-#define MAX_SIZE (8 * 1024 * 1024)
-#define BASE_ADDR 0x80000000
-#define SERIAL_ADDR 0x10000000
-#define CLOCK_ADDR 0x20000000
-
+#define MAX_SIZE     (8 * 1024 * 1024)
+#define BASE_ADDR    0x80000000
+#define SERIAL_ADDR  0x10000000
+#define CLOCK_ADDR   0x20000000
 #include <stdio.h>
 //#include <nvboard.h>
 #include "Vtop.h"
@@ -10,10 +9,25 @@
 #include "Vtop__Dpi.h"
 #include <vector>
 #include <sys/time.h>
+#include "../include/common.h"
 using namespace std;
 
 vector<uint32_t> mem(MAX_SIZE,0);
 static uint64_t boot_time = 0;
+int NPC_N = 12330;
+
+static int cmd_info_npc()
+{
+  svLogicVecVal val;
+  for(int i = 0; i < 32; ++i)
+  {
+    reg_display(i, &val);
+    printf("%-3s: 0x%08x\n", regs[i], val.aval);
+  }
+  return 0;
+}
+
+
 
 extern "C" int pmem_read(int raddr)
 {
@@ -29,7 +43,7 @@ extern "C" int pmem_read(int raddr)
       return (int)(uint32_t)((us - boot_time) >> 32);
   }
 
-  uint32_t addr = (raddr & ~0x3u) - BASE_ADDR;
+  uint32_t addr = (raddr & ~0x3u); //- BASE_ADDR;
   if(addr >= MAX_SIZE * 4) return 1;
   return mem[addr >> 2];
 }
@@ -42,7 +56,7 @@ extern "C" void pmem_write(int waddr,int wdata,char wmask)
     return;
   }
 
-  uint32_t addr =  (waddr & ~0x3u) - BASE_ADDR;
+  uint32_t addr =  (waddr & ~0x3u); //- BASE_ADDR;
   if(addr >= MAX_SIZE * 4) return;
   uint32_t id = addr >> 2;
   uint32_t old_data = mem[id];
@@ -65,12 +79,14 @@ extern "C" void halt(int code)
   //根据nemu的halt实现
   if(code == 0)
   {
-    printf("HIT GOOD TRAP!!!\n");
+    printf("    " NPC_GREEN " HIT GOOD TRAP!!! " NPC_NONE" \n");
+    cmd_info_npc();
     exit(0);
   }
   else
   {
-    printf("HIT BAD TRAP!!!\n");
+    printf("    " NPC_RED " HIT BAD TRAP!!! " NPC_NONE" \n");
+    cmd_info_npc();
     exit(1);
   }
 }
@@ -84,14 +100,14 @@ int main(int argc,char** argv)
   if(argc < 2)
   {
     printf("NO FILE\n");
-    //return 1;
+    return 1;
   }
 
   FILE * F = fopen(argv[1],"rb");
   if(F == NULL )
   {
     printf("ERROR: Failed to open file\n");
-    //return 1;
+    return 1;
   }
 
   fseek(F,0,SEEK_END);
@@ -102,16 +118,18 @@ int main(int argc,char** argv)
   {
     printf("ERROR: File too large. SIZE:%ld",SIZE);
     fclose(F);
-    //return 1;
+    return 1;
   }
 
   fread(mem.data(),1,SIZE,F);
   fclose(F);
-  //mem[0x224 >> 2] = 0x00100073; 
+  mem[0x224 >> 2] = 0x00100073; 
   //要先初始化verilator->实例化顶层模块->初始化波形->正式开始仿真
   Verilated::commandArgs(argc,argv);
 
   Vtop * top = new Vtop;
+
+  svSetScope(svGetScopeFromName("TOP.top.u_idu.u_gpr"));
 
   top->clk = 0;
   top->rst = 1;
@@ -121,15 +139,14 @@ int main(int argc,char** argv)
     top->eval();
   }
   top->rst = 0; 
-
-  int n=12000;
-
-  while(1)
+  rl_gets();
+  while(NPC_N)
   {
     //printf("a0: %02x\n",top->data_out);
     //printf("%d\n",boot_time / CLOCKS_PER_SEC);
     top->clk = !top->clk;
     top->eval();
+    NPC_N--;
   }
   delete top;
   return 0;
