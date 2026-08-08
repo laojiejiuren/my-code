@@ -27,12 +27,14 @@ static int nr_map = 0;
 static IOMap* fetch_mmio_map(paddr_t addr) {
   int mapid = find_mapid_by_addr(maps, nr_map, addr);
 
+#ifdef CONFIG_DTRACE
   if(mapid != -1)
   {
     if(DE_N == 50) DE_N = 0;
     snprintf(device_name[DE_N], sizeof(device_name[DE_N]), "name: %s  addr: "FMT_PADDR"",maps[mapid].name, addr);
     DE_N++;
   }
+#endif
   return (mapid == -1 ? NULL : &maps[mapid]);
 }
 
