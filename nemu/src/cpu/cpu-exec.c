@@ -114,9 +114,11 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_DTRACE
  if(nemu_state.state != NEMU_RUNNING)
  {
-  if(device_name[0][0] != 0);
-  for(int i = 0;i < 50; ++i)
-    printf("%s\n",device_name[i]);
+  if(device_name[0][0] != 0)
+  {
+    for(int i = 0;i < 50; ++i)
+      printf("%s\n",device_name[i]);
+  }
  }
 #endif
 }
