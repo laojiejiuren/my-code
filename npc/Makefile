@@ -20,6 +20,8 @@ CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"$(TOPNAME)"\"
 
 default:$(BIN)
 
+NPC_EXEC := $(IMG) #$(ARGS)
+
 $(BIN):$(VSRCS) $(CSRCS)
 	@mkdir -p $(BUILD_DIR)
 	$(VERILATOR) $(VERILATOR_FLAGS) \
@@ -29,7 +31,7 @@ $(BIN):$(VSRCS) $(CSRCS)
 
 run:$(BIN)
 	$(call git_commit, "run RTL") # DO NOT REMOVE THIS LINE!!!
-	@$^ $(IMG)
+	@$^ $(NPC_EXEC)
 
 clean:
 	rm -rf ./build

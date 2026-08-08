@@ -1,6 +1,24 @@
 #include "../include/common.h"
 extern int NPC_N;
 
+static struct {
+  const char *name;
+  const char *description;
+  int (*handler) (char *);
+} cmd_table [] = {
+  { "help", "Display information about all supported commands", cmd_help },
+  { "c", "Continue the execution of the program", cmd_c },
+  { "q", "Exit NEMU", cmd_q },
+  {"si", "Step one or N instructions",cmd_si},
+  {"info","Printf registers: info r or w",cmd_info},
+  {"x","Scan memory: x N EXPR",cmd_x},
+  {"p","Expression Evaluation: p EXPR",cmd_p},
+  {"w","Add watchpoint: w EXPR",cmd_w},
+  {"d","Delete watchpoint: d N",cmd_d},
+  /* TODO: Add more commands */
+};
+#define CMD_N ARRLEN(cmd_table);
+
 char* rl_gets() {
   static char *line_read = NULL;
 
@@ -18,18 +36,79 @@ char* rl_gets() {
   return line_read;
 }
 
-/*static int cmd_info_npc()
+static int cmd_info(char *args)
 {
-  svLogicVecVal val;
-  for(int i = 0; i < 32; ++i)
+  char *arg = strtok(NULL," ");
+
+  if(arg==NULL)
   {
-    reg_display(i, &val);
-    printf("%-3s: 0x%08x\n", regs[i], val.aval);
+    printf("NO INPUT.Please enter info r or w\n");
+    return 0;
+  }
+
+  bool flag = false;
+  uint32_t val = isa_reg_str2val(arg,&flag);
+
+  if(strcmp(arg,"r") == 0)
+    isa_reg_display();
+  else if(strcmp(arg,"w") == 0)
+    show_wp();
+  else if(flag)
+  {
+    printf("%-3s: 0x%08x \n",arg,val);
+  }
+  else
+    printf("Please enter info r or w\n");
+
+  return 0;
+}
+
+static int cmd_help(char *args) {
+  /* extract the first argument */
+  char *arg = strtok(NULL, " ");
+  int i;
+
+  if (arg == NULL) {
+    /* no argument given */
+    for (i = 0; i < NR_CMD; i ++) {
+      printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
+    }
+  }
+  else {
+    for (i = 0; i < NR_CMD; i ++) {
+      if (strcmp(arg, cmd_table[i].name) == 0) {
+        printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
+        return 0;
+      }
+    }
+    printf("Unknown command '%s'\n", arg);
   }
   return 0;
 }
 
-*/
+void sdb_npc()
+{
+    for(char *ch; (ch = rl_gets()) != NULL;)//不断读取命令行的字符串
+    {
+        char *ch_end = ch + strlen(ch);
 
+        //先要匹配对应的命令
+        char *cmd = strtok(ch, " ");
+        if(cmd == NULL) { continue;}
 
+        char *args = cmd + strlen(cmd) + 1;
+        if(args >= ch_end)
+            args = NULL;
 
+        int i;
+        for(i = 0; i < CMD_N; ++i)
+        {
+            if(strcmp(cmd, cmd_table) == 0)
+            {
+                if(cmd_table[i].handler(args) < 0) {return;}
+                break;
+            }
+        }
+        if(i == CMD_N){ printf("Unknown command '%s'\n",cmd); }
+    }
+}
