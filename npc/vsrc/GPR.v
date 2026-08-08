@@ -36,9 +36,9 @@ module GPR(
 
     assign data = gpr[10];
 
-    function void gpr_get(input int id, output[31:0] reg_data);
+    function void gpr_get(input int id, output bit[31:0] reg_data);
         reg_data = gpr[id];
     endfunction
-    export "DPI-C" function reg_display;
+    export "DPI-C" function gpr_get;
 
 endmodule

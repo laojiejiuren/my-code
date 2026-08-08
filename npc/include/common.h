@@ -13,5 +13,7 @@
 #include <vector>
 #include "Vtop__Dpi.h"
 #include <sys/time.h>
+#include <string.h>
+#define ARRLEN(arr) (int)(sizeof(arr) / sizeof(arr[0]))
 
 #endif

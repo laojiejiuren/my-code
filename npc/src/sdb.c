@@ -1,23 +1,6 @@
 #include "../include/common.h"
 extern int NPC_N;
-
-static struct {
-  const char *name;
-  const char *description;
-  int (*handler) (char *);
-} cmd_table [] = {
-  { "help", "Display information about all supported commands", cmd_help },
-  { "c", "Continue the execution of the program", cmd_c },
-  { "q", "Exit NEMU", cmd_q },
-  {"si", "Step one or N instructions",cmd_si},
-  {"info","Printf registers: info r or w",cmd_info},
-  {"x","Scan memory: x N EXPR",cmd_x},
-  {"p","Expression Evaluation: p EXPR",cmd_p},
-  {"w","Add watchpoint: w EXPR",cmd_w},
-  {"d","Delete watchpoint: d N",cmd_d},
-  /* TODO: Add more commands */
-};
-#define CMD_N ARRLEN(cmd_table);
+static int cmd_help(char *args);
 
 char* rl_gets() {
   static char *line_read = NULL;
@@ -36,6 +19,11 @@ char* rl_gets() {
   return line_read;
 }
 
+static int cmd_q(char *args)
+{
+    exit(0);
+} 
+
 static int cmd_info(char *args)
 {
   char *arg = strtok(NULL," ");
@@ -47,7 +35,7 @@ static int cmd_info(char *args)
   }
 
   bool flag = false;
-  uint32_t val = isa_reg_str2val(arg,&flag);
+  /*uint32_t val = isa_reg_str2val(arg,&flag);
 
   if(strcmp(arg,"r") == 0)
     isa_reg_display();
@@ -59,9 +47,27 @@ static int cmd_info(char *args)
   }
   else
     printf("Please enter info r or w\n");
-
+  */
   return 0;
 }
+
+static struct {
+  const char *name;
+  const char *description;
+  int (*handler) (char *);
+} cmd_table [] = {
+  { "help", "Display information about all supported commands", cmd_help },
+ // { "c", "Continue the execution of the program", cmd_c },
+  { "q", "Exit NEMU", cmd_q },
+ // {"si", "Step one or N instructions",cmd_si},
+  {"info","Printf registers: info r or w",cmd_info},
+ // {"x","Scan memory: x N EXPR",cmd_x},
+ // {"p","Expression Evaluation: p EXPR",cmd_p},
+ // {"w","Add watchpoint: w EXPR",cmd_w},
+ // {"d","Delete watchpoint: d N",cmd_d},
+  /* TODO: Add more commands */
+};
+#define CMD_N ARRLEN(cmd_table)
 
 static int cmd_help(char *args) {
   /* extract the first argument */
@@ -70,12 +76,12 @@ static int cmd_help(char *args) {
 
   if (arg == NULL) {
     /* no argument given */
-    for (i = 0; i < NR_CMD; i ++) {
+    for (i = 0; i < CMD_N; i ++) {
       printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
     }
   }
   else {
-    for (i = 0; i < NR_CMD; i ++) {
+    for (i = 0; i < CMD_N; i ++) {
       if (strcmp(arg, cmd_table[i].name) == 0) {
         printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
         return 0;
@@ -103,7 +109,7 @@ void sdb_npc()
         int i;
         for(i = 0; i < CMD_N; ++i)
         {
-            if(strcmp(cmd, cmd_table) == 0)
+            if(strcmp(cmd, cmd_table[i].name) == 0)
             {
                 if(cmd_table[i].handler(args) < 0) {return;}
                 break;

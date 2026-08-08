@@ -16,7 +16,7 @@ int pmem_read(int raddr)
       return (int)(uint32_t)((us - boot_time) >> 32);
   }
 
-  uint32_t addr = (raddr & ~0x3u) - BASE_ADDR;
+  uint32_t addr = (raddr & ~0x3u);// - BASE_ADDR;
   if(addr >= MAX_SIZE * 4) return 1;
   return mem[addr >> 2];
 }
@@ -29,7 +29,7 @@ void pmem_write(int waddr,int wdata,char wmask)
     return;
   }
 
-  uint32_t addr =  (waddr & ~0x3u) - BASE_ADDR;
+  uint32_t addr =  (waddr & ~0x3u);// - BASE_ADDR;
   if(addr >= MAX_SIZE * 4) return;
   uint32_t id = addr >> 2;
   uint32_t old_data = mem[id];
