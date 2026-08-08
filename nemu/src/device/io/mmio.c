@@ -18,7 +18,8 @@
 #include <common.h>
 
 #define NR_MAP 16
-IFDEF(CONFIG_DTRACE, char device_name[128]);
+IFDEF(CONFIG_DTRACE, char device_name[50][128]);
+IFDEF(CONFIG_DTRACE, static int DE_N = 0);
 
 static IOMap maps[NR_MAP] = {};
 static int nr_map = 0;
@@ -27,8 +28,11 @@ static IOMap* fetch_mmio_map(paddr_t addr) {
   int mapid = find_mapid_by_addr(maps, nr_map, addr);
 
   if(mapid != -1)
-    snprintf(device_name, sizeof(device_name), "name: %s  addr: "FMT_PADDR"",maps[mapid].name, addr);
-
+  {
+    if(DE_N == 50) DE_N = 0;
+    snprintf(device_name[DE_N], sizeof(device_name[DE_N]), "name: %s  addr: "FMT_PADDR"",maps[mapid].name, addr);
+    DE_N++;
+  }
   return (mapid == -1 ? NULL : &maps[mapid]);
 }
 

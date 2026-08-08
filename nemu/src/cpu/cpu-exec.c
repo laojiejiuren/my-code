@@ -34,7 +34,7 @@ IFDEF(CONFIG_MTRACE, extern bool flag_rmem);
 IFDEF(CONFIG_MTRACE, extern bool flag_wmem);
 IFDEF(CONFIG_FTRACE, extern void ftrace_call(vaddr_t pc, vaddr_t next_pc));
 IFDEF(CONFIG_FTRACE, extern void ftrace_ret(vaddr_t pc));
-IFDEF(CONFIG_DTRACE, extern char device_name[128]);
+IFDEF(CONFIG_DTRACE, extern char device_name[50][128]);
 
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
@@ -113,7 +113,10 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 
 #ifdef CONFIG_DTRACE
  if(nemu_state.state != NEMU_RUNNING)
-  printf(" "ANSI_FG_GREEN"%s\n", device_name);
+ {
+  for(int i = 0;i < 50; ++i)
+    printf("%s\n",device_name[i]);
+ }
 #endif
 
 }
