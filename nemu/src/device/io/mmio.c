@@ -18,7 +18,7 @@
 #include <common.h>
 
 #define NR_MAP 16
-IFDEF(CONFIG_DTRACE, char device_name[50][128]);
+IFDEF(CONFIG_DTRACE, char device_name[50][128] = {});
 IFDEF(CONFIG_DTRACE, static int DE_N = 0);
 
 static IOMap maps[NR_MAP] = {};
