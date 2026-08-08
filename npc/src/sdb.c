@@ -18,3 +18,18 @@ char* rl_gets() {
   return line_read;
 }
 
+/*static int cmd_info_npc()
+{
+  svLogicVecVal val;
+  for(int i = 0; i < 32; ++i)
+  {
+    reg_display(i, &val);
+    printf("%-3s: 0x%08x\n", regs[i], val.aval);
+  }
+  return 0;
+}
+
+*/
+
+
+

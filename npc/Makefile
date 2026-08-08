@@ -7,7 +7,7 @@ BIN = ./build/obj_dir/V$(TOPNAME)
 INC_DIR = ./include
 
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
-CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp") $(shell find $(abspath ./src) -name "*.c")
+CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp") $(shell find $(abspath ./src) -name "*.c" -or -name "*.cpp")
 
 VERILATOR_FLAGS = --cc --exe --build -j \
 				  -O3 -x-assign fast -x-initial fast --noassert \
