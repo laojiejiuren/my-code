@@ -1,4 +1,6 @@
 #include "../include/reg.h"
+#include <stdio.h>
+#include "Vtop__Dpi.h"
 
 const char *regs[] = {
   "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
@@ -7,13 +9,22 @@ const char *regs[] = {
   "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
 };
 
-extern void gpr_get(int id, uint32_t *reg_data);
+extern void gpr_get(int id, svBitVecVal *reg_data);
+extern void pc_get(svBitVecVal *pc_);
 
-void reg_diplay()
+uint32_t pc_display()
+{
+  svBitVecVal val;
+  pc_get(&val);
+  return val;
+}
+
+void reg_display()
 {
   for(int i = 0; i < 32; ++i)
   {
-    uint32_t *val;
-    printf("%-3s 0x%08x",res[i], val);
+    svBitVecVal val;
+    gpr_get(i, &val);
+    printf("%-3s 0x%08x\n", regs[i], val);
   }
 }

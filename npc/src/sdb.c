@@ -1,5 +1,5 @@
 #include "../include/common.h"
-extern int NPC_N;
+extern void npc_exec(uint64_t n);
 static int cmd_help(char *args);
 
 char* rl_gets() {
@@ -24,6 +24,30 @@ static int cmd_q(char *args)
     exit(0);
 } 
 
+static int cmd_c(char *args)
+{
+    npc_exec(-1);
+    return 0;
+}
+
+static int cmd_si(char *args)
+{
+    char *arg = strtok(NULL, " ");
+
+    int n = 1;
+    if(arg != NULL)
+    {
+        n = atoi(arg);
+        if(n < 0)
+        {
+            printf("Input is EROOR!!!\n");
+            return 0;
+        }
+    }
+    npc_exec(n);
+    return 0;
+}
+
 static int cmd_info(char *args)
 {
   char *arg = strtok(NULL," ");
@@ -34,15 +58,15 @@ static int cmd_info(char *args)
     return 0;
   }
 
-  //bool flag = false;
+  bool flag = false;
   //uint32_t val = isa_reg_str2val(arg,&flag);
 
   if(strcmp(arg,"r") == 0)
     reg_display();
   //else if(strcmp(arg,"w") == 0)
     //show_wp();
-  else if(flag)
-    printf("%-3s: 0x%08x \n",arg,val);
+  //else if(flag)
+    //printf("%-3s: 0x%08x \n",arg,val);
   else
     printf("Please enter info r or w\n");
   
@@ -55,9 +79,9 @@ static struct {
   int (*handler) (char *);
 } cmd_table [] = {
   { "help", "Display information about all supported commands", cmd_help },
- // { "c", "Continue the execution of the program", cmd_c },
+  { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
- // {"si", "Step one or N instructions",cmd_si},
+  {"si", "Step one or N instructions",cmd_si},
   {"info","Printf registers: info r or w",cmd_info},
  // {"x","Scan memory: x N EXPR",cmd_x},
  // {"p","Expression Evaluation: p EXPR",cmd_p},

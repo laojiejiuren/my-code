@@ -8,4 +8,10 @@ module IFU(
 );
     PC u_pc(.clk(clk),.rst(rst),.next_pc(next_pc),.pc(pc));
     assign inst = pmem_read(pc);
+
+    function void pc_get(output bit[31:0] pc_);
+        pc_ = pc;
+    endfunction
+    export "DPI-C" function pc_get;
+
 endmodule

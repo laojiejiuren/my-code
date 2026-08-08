@@ -10,7 +10,31 @@ using namespace std;
 struct timeval now;
 vector<uint32_t> mem(MAX_SIZE,0);
 uint64_t boot_time = 0;
-//int NPC_N = 12330;
+Vtop * top = new Vtop;
+
+void init_npc()
+{
+  top->clk = 0;
+  top->rst = 1;
+  for (int i = 0; i < 10; i++) 
+  {
+    top->clk = !top->clk;
+    top->eval();
+  }
+  top->rst = 0; 
+}
+
+void npc_exec(uint64_t n)
+{
+  while(n)
+  {
+    //printf("a0: %02x\n",top->data_out);
+    //printf("%d\n",boot_time / CLOCKS_PER_SEC);
+    top->clk = !top->clk;
+    top->eval();
+    n--;
+  }
+}
 
 int main(int argc,char** argv) 
 {
@@ -47,27 +71,10 @@ int main(int argc,char** argv)
   //要先初始化verilator->实例化顶层模块->初始化波形->正式开始仿真
   Verilated::commandArgs(argc,argv);
 
-  Vtop * top = new Vtop;
-
   svSetScope(svGetScopeFromName("TOP.top.u_idu.u_gpr"));
 
-  top->clk = 0;
-  top->rst = 1;
-  for (int i = 0; i < 10; i++) 
-  {
-    top->clk = !top->clk;
-    top->eval();
-  }
-  top->rst = 0; 
+  init_npc();
   sdb_npc();
-  while(1)
-  {
-    //printf("a0: %02x\n",top->data_out);
-    //printf("%d\n",boot_time / CLOCKS_PER_SEC);
-    top->clk = !top->clk;
-    top->eval();
-    //NPC_N--;
-  }
   delete top;
   return 0;
 }

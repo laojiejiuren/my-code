@@ -53,6 +53,8 @@ void halt(int code)
   if(code == 0)
   {
     printf("    " NPC_GREEN " HIT GOOD TRAP!!! " NPC_NONE" \n");
+    uint32_t pc = pc_display();
+    printf("pc: 0x%08x\n",pc);
     exit(0);
   }
   else

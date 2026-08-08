@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 extern const char *regs[];
-void reg_diplay()
+void reg_display();
+uint32_t pc_display();
 
 #endif
