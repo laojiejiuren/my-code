@@ -5,6 +5,7 @@
 #include "Vtop__Dpi.h"
 #include <sys/time.h>
 #include "../include/dir.h"
+#include "../include/config.h"
 using namespace std;
 
 struct timeval now;
@@ -24,6 +25,11 @@ void init_npc()
   top->rst = 0; 
 }
 
+static void trace_and_difftest()
+{
+
+}
+
 void npc_exec(uint64_t n)
 {
   while(n)
@@ -34,6 +40,7 @@ void npc_exec(uint64_t n)
     top->eval();
     top->clk = !top->clk;
     top->eval();
+    trace_and_difftest();
     n--;
   }
 }
