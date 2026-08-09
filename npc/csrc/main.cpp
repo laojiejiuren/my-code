@@ -32,6 +32,8 @@ void npc_exec(uint64_t n)
     //printf("%d\n",boot_time / CLOCKS_PER_SEC);
     top->clk = !top->clk;
     top->eval();
+    top->clk = !top->clk;
+    top->eval();
     n--;
   }
 }
