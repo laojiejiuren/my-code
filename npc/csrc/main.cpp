@@ -4,11 +4,11 @@
 #include "svdpi.h"
 #include "Vtop__Dpi.h"
 #include <sys/time.h>
-#include "../include/common.h"
+#include "../include/dir.h"
 using namespace std;
 
 struct timeval now;
-vector<uint32_t> mem(MAX_SIZE,0);
+vector<uint32_t> mem(MAX_SIZE_MEM,0);
 uint64_t boot_time = 0;
 Vtop * top = new Vtop;
 
@@ -60,7 +60,7 @@ int main(int argc,char** argv)
   long SIZE = ftell(F);
   fseek(F,0,SEEK_SET);
 
-  if(SIZE >= MAX_SIZE)
+  if(SIZE >= MAX_SIZE_MEM)
   {
     printf("ERROR: File too large. SIZE:%ld",SIZE);
     fclose(F);
@@ -76,6 +76,7 @@ int main(int argc,char** argv)
   svSetScope(svGetScopeFromName("TOP.top.u_idu.u_gpr"));
 
   init_npc();
+  init_sdb();
   sdb_npc();
   delete top;
   return 0;

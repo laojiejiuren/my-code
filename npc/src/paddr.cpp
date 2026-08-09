@@ -1,5 +1,6 @@
 #include "Vtop__Dpi.h"
 #include "../include/common.h"
+#include "../include/dir.h"
 
 extern struct timeval now;
 
@@ -17,7 +18,7 @@ int pmem_read(int raddr)
   }
 
   uint32_t addr = (raddr & ~0x3u) - BASE_ADDR;
-  if(addr >= MAX_SIZE * 4) return 1;
+  if(addr >= MAX_SIZE_MEM * 4) return 1;
   return mem[addr >> 2];
 }
 //0x12345678
@@ -30,7 +31,7 @@ void pmem_write(int waddr,int wdata,char wmask)
   }
 
   uint32_t addr =  (waddr & ~0x3u) - BASE_ADDR;
-  if(addr >= MAX_SIZE * 4) return;
+  if(addr >= MAX_SIZE_MEM * 4) return;
   uint32_t id = addr >> 2;
   uint32_t old_data = mem[id];
 

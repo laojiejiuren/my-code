@@ -1,4 +1,5 @@
 #include "../include/common.h"
+#include "../include/dir.h"
 #include <regex>
 
 extern void npc_exec(uint64_t n);
@@ -65,8 +66,8 @@ static int cmd_info(char *args)
 
   if(strcmp(arg,"r") == 0)
     reg_display();
-  //else if(strcmp(arg,"w") == 0)
-    //show_wp();
+  else if(strcmp(arg,"w") == 0)
+    show_wp();
   else if(flag)
     printf("%-3s: 0x%08x \n",arg,val);
   else
@@ -100,6 +101,13 @@ static int cmd_x(char *args)
     printf("ERROR EXPR at cmd_x\n");
     return 0;
   }
+
+  if(val % 4 != 0)
+  {
+    printf("不能整除4! ! !\n");
+    return -1;
+  }
+
   //将字符串转换成vaddr_t类型
   //vaddr_t val = strtoul(arg2,NULL,16);
   for(int i = 0; i < n; ++i)
@@ -109,6 +117,61 @@ static int cmd_x(char *args)
     vaddr_t real_addr = next_addr + BASE_ADDR;
     printf("0x%08x : 0x%08x\n",real_addr,out_data);
   }
+
+  return 0;
+}
+
+static int cmd_p(char *args)
+{
+  if(args == NULL)
+  {
+    printf("Please enter p EXPR\n");
+    return 0;
+  }
+
+  bool success;
+  word_t val = expr(args,&success);
+  if(!success)
+  {
+    printf("eval ERROR\n");
+    return 0;
+  }
+  printf("expr :%s  val: %u 0x%08x\n",args,val,val);
+  return 0;
+}
+
+static int cmd_w(char *args)
+{
+  if(args == NULL)
+  {
+    printf("Please enter w EXPR\n");
+    return 0;
+  }
+
+  WP * wp = new_wp(args);
+  printf("Add watchpoint is %d %s\n",wp->NO,wp->expr_str);
+  return 0;
+}
+
+static int cmd_d(char *args)
+{
+  char *arg = strtok(NULL," ");
+
+  if(arg == NULL)
+  {
+    printf("Please enter d N\n");
+    return 0;
+  }
+
+  char * flag;
+  uint32_t id = strtoul(arg,&flag,10);
+
+  if(*flag != '\0')
+  {
+    printf("Please enter a valid string:d N\n");
+    return 0;
+  }
+  delete_wp((int)id);
 
   return 0;
 }
@@ -124,9 +187,9 @@ static struct {
   {"si", "Step one or N instructions",cmd_si},
   {"info","Printf registers: info r or w",cmd_info},
   {"x","Scan memory: x N EXPR",cmd_x},
- // {"p","Expression Evaluation: p EXPR",cmd_p},
- // {"w","Add watchpoint: w EXPR",cmd_w},
- // {"d","Delete watchpoint: d N",cmd_d},
+  {"p","Expression Evaluation: p EXPR",cmd_p},
+  {"w","Add watchpoint: w EXPR",cmd_w},
+  {"d","Delete watchpoint: d N",cmd_d},
   /* TODO: Add more commands */
 };
 #define CMD_N ARRLEN(cmd_table)
@@ -156,7 +219,6 @@ static int cmd_help(char *args) {
 
 void sdb_npc()
 {
-    init_regex();
     for(char *ch; (ch = rl_gets()) != NULL;)//不断读取命令行的字符串
     {
         char *ch_end = ch + strlen(ch);
@@ -180,4 +242,10 @@ void sdb_npc()
         }
         if(i == CMD_N){ printf("Unknown command '%s'\n",cmd); }
     }
+}
+
+void init_sdb()
+{
+  init_regex();
+  init_wp_pool();
 }
