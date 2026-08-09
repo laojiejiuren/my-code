@@ -1,4 +1,4 @@
-#include "../include/reg.h"
+#include "reg.h"
 #include <stdio.h>
 #include <string.h>
 #include "Vtop__Dpi.h"

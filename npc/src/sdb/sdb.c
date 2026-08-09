@@ -1,5 +1,5 @@
-#include "../include/common.h"
-#include "../include/dir.h"
+#include "common.h"
+#include "dir.h"
 #include <regex>
 
 extern void npc_exec(uint64_t n);

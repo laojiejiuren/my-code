@@ -4,7 +4,7 @@ VERILATOR = verilator
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
 BIN = ./build/obj_dir/V$(TOPNAME)
-INC_DIR = ./include
+INC_DIR = $(abspath ./include)
 
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp") $(shell find $(abspath ./src) -name "*.c" -or -name "*.cpp")

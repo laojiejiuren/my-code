@@ -1,6 +1,6 @@
 #include "Vtop__Dpi.h"
-#include "../include/common.h"
-#include "../include/dir.h"
+#include "common.h"
+#include "dir.h"
 
 extern struct timeval now;
 

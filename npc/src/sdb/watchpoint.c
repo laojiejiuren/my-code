@@ -14,8 +14,8 @@
 ***************************************************************************************/
 // head用于组织使用中的监视点结构
 // free_用于组织空闲的监视点结构
-#include "../include/common.h"
-#include "../include/sdb.h"
+#include "common.h"
+#include "sdb.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
