@@ -20,6 +20,5 @@
 #define word_t uint32_t
 #define vaddr_t uint32_t
 
-extern void config_base(svBit* flag);
 
 #endif
