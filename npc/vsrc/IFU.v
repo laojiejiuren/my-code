@@ -14,4 +14,9 @@ module IFU(
     endfunction
     export "DPI-C" function pc_get;
 
+    function void inst_get(output bit[31:0] inst_ );
+        inst_ = inst;
+    endfunction
+    export "DPI-C" function inst_get;
+
 endmodule

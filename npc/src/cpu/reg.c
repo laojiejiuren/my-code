@@ -1,5 +1,6 @@
 #include "reg.h"
 #include <stdio.h>
+#include "pc.h"
 #include <string.h>
 #include "Vtop__Dpi.h"
 
@@ -11,14 +12,6 @@ const char *regs[] = {
 };
 
 extern void gpr_get(int id, svBitVecVal *reg_data);
-extern void pc_get(svBitVecVal *pc_);
-
-uint32_t pc_gets()
-{
-  svBitVecVal val;
-  pc_get(&val);
-  return val;
-}
 
 uint32_t reg_gets(int id)
 {

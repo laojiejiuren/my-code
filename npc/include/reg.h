@@ -5,7 +5,6 @@
 #include <stdio.h>
 extern const char *regs[];
 void reg_display();
-uint32_t pc_gets();
 uint32_t reg_gets(int id);
 uint32_t reg_str2val(const char *s, bool *success);
 
