@@ -2,7 +2,7 @@
 #define __DIR_H__
 
 #include "sdb.h"
-#include "reg.h"
+#include "cpu.h"
 #include "utils.h"
 #include "paddr.h"
 #include "watchpoint.h"

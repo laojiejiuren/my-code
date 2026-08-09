@@ -1,6 +1,5 @@
-#include "reg.h"
+#include "cpu.h"
 #include <stdio.h>
-#include "pc.h"
 #include <string.h>
 #include "Vtop__Dpi.h"
 

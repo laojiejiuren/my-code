@@ -4,8 +4,8 @@
 #include "svdpi.h"
 #include "Vtop__Dpi.h"
 #include <sys/time.h>
-#include "../include/dir.h"
-#include "../include/config.h"
+#include "dir.h"
+#include "config.h"
 using namespace std;
 
 struct timeval now;
