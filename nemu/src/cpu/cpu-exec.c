@@ -119,6 +119,8 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
     for(int i = 0;i < 50; ++i)
       printf("%s\n",device_name[i]);
   }
+  else if(device_name[0][0] == 0)
+    printf("No device detected.");
  }
 #endif
 }
