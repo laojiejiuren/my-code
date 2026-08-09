@@ -11,7 +11,20 @@ using namespace std;
 struct timeval now;
 vector<uint32_t> mem(MAX_SIZE_MEM,0);
 uint64_t boot_time = 0;
+static bool put_flag = false;
 Vtop * top = new Vtop;
+
+static void trace_and_difftest()
+{
+  #if CONFIG_WATCHPOINT
+    if(!check_wp())
+    {
+      printf("触发监视点！！！\n");
+      return;
+    }
+  #endif
+}
+
 
 void init_npc()
 {
@@ -23,11 +36,6 @@ void init_npc()
     top->eval();
   }
   top->rst = 0; 
-}
-
-static void trace_and_difftest()
-{
-
 }
 
 void npc_exec(uint64_t n)
