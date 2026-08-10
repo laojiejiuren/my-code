@@ -25,8 +25,7 @@ static void trace_and_difftest()
   #endif
 }
 
-
-void init_npc()
+static void init_npc()
 {
   top->clk = 0;
   top->rst = 1;
@@ -38,19 +37,41 @@ void init_npc()
   top->rst = 0; 
 }
 
+static void npc_exec_once()
+{
+  top->clk = !top->clk;
+  top->eval();
+  top->clk = !top->clk;
+  top->eval();
+}
+
+static void execute(uint64_t n)
+{ 
+  for(; n > 0; --n)
+  {
+
+  }
+} 
+
 void npc_exec(uint64_t n)
 {
-  while(n)
+  switch(npc_state.state)
   {
-    //printf("a0: %02x\n",top->data_out);
-    //printf("%d\n",boot_time / CLOCKS_PER_SEC);
-    top->clk = !top->clk;
-    top->eval();
-    top->clk = !top->clk;
-    top->eval();
-    trace_and_difftest();
-    n--;
+    case NPC_ABORT: case NPC_END: case NPC_QUIT:
+      printf("Program execution has ended. To restart the program, exit NEMU and run again.\n");
+      return;
+    default: npc_state.state = NPC_RUNNING;
   }
+
+  execute(n);
+
+  switch(npc_state.state)
+  {
+    case NPC_RUNNING: npc_state.state = NPC_STOP; break;
+    
+  }
+
+
 }
 
 int main(int argc,char** argv) 

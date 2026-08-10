@@ -15,11 +15,11 @@ uint32_t pc_gets()
 
 // ----------- inst -----------
 
-extern void pc_get(svBitVecVal* pc_);
+extern void inst_get(svBitVecVal* pc_);
 
 uint32_t inst_gets()
 {
     svBitVecVal val;
-    pc_get(&val);
+    inst_get(&val);
     return val;
 }
