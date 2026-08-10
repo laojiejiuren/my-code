@@ -1,6 +1,7 @@
 TOPNAME = top
 VERILATOR = verilator
 
+include src/utils/filelist.mk
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
 BIN = ./build/obj_dir/V$(TOPNAME)
@@ -26,7 +27,7 @@ $(BIN):$(VSRCS) $(CSRCS)
 	@mkdir -p $(BUILD_DIR)
 	$(VERILATOR) $(VERILATOR_FLAGS) \
 	$(VSRCS) $(CSRCS) \
-	-CFLAGS "$(CXXFLAGS)" -LDFLAGS "-lreadline"
+	-CFLAGS "$(CXXFLAGS) $(CFLAGS)" -LDFLAGS "-lreadline"
 	@echo "Build finished: $@"
 
 run:$(BIN)

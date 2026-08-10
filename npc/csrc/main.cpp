@@ -17,7 +17,11 @@ Decode s;
 
 static void trace_and_difftest()
 {
-  #if CONFIG_WATCHPOINT
+  #if CONFIG_ITRACE
+
+  #endif
+
+  #ifdef CONFIG_WATCHPOINT
     if(!check_wp())
     {
       printf("触发监视点！！！\n");
@@ -47,6 +51,10 @@ static void npc_exec_once(Decode *s)
   //printf("%u\n",top->data_out);
   s->pc = pc_gets();
   s->inst = inst_gets();
+
+#ifdef CONFIG_ITRACE
+
+#endif
 }
 
 static void execute(uint64_t n)
