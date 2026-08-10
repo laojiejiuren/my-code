@@ -1,7 +1,21 @@
 #include "common.h"
 #include "dir.h"
+#include "config.h"
+#include "Vtop__Dpi.h"
 
 extern struct timeval now;
+#if CONFIG_MTRACE
+  extern void mem_en_get(svBit* ren_flag, svBit* wen_flag);
+  char rmembuf[128];
+  char wmembuf[128];
+  bool flag_rmem = false;
+  bool flag_wmem = false;
+
+  svBit ren1, wen1;
+  char ren = 0;
+  char wen = 0;
+#endif
+
 
 int pmem_read(int raddr)
 {
@@ -18,6 +32,19 @@ int pmem_read(int raddr)
 
   uint32_t addr = (raddr & ~0x3u) - BASE_ADDR;
   if(addr >= MAX_SIZE_MEM * 4) return 1;
+
+  #if CONFIG_MTRACE
+    mem_en_get(&ren1, &wen1);
+    ren = ren1;
+    if(ren == 1)
+    {
+      snprintf(rmembuf,sizeof(rmembuf),"pc: 0x%08x addr: 0x%08x",pc_gets(),addr);
+      flag_rmem = true;
+      ren = 0;
+    }
+  
+  #endif
+
   return mem[addr >> 2];
 }
 //0x12345678
@@ -44,6 +71,10 @@ void pmem_write(int waddr,int wdata,char wmask)
   if(wmask & 0x8)
     new_data = (new_data & 0x00ffffff) | (wdata & 0xff000000);
 
+  #if CONFIG_MTRACE
+    snprintf(wmembuf,sizeof(wmembuf),"pc: 0x%08x addr: 0x%08x data: 0x%08x",pc_gets(),addr, new_data);
+    flag_wmem = true;
+  #endif
   mem[id] = new_data;
 } 
 

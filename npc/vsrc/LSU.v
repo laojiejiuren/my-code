@@ -1,5 +1,4 @@
 module LSU(
-    input [31:0] pc,
     input [31:0] waddr,
     input [31:0] raddr,
     input [31:0] wdata,
@@ -71,12 +70,5 @@ module LSU(
             pmem_write(waddr,wdata_tmp,wmask);
         end
     end
-
-    function void mem_en_get(output bit[31:0] addr_, output bit [31:0] pc_);
-        ren_flag = mem_ren_id_ls;
-        wen_flag = mem_wen_id_ls;
-    endfunction
-    export "DPI-C" function mem_en_get;
-
 
 endmodule

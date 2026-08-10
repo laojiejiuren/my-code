@@ -55,7 +55,7 @@ module top(
     );
 
     LSU u_lsu(
-        .pc(pc),.waddr(alu_res_ex),.raddr(alu_res_ex),.wdata(Q2_id_ls),.store_type(store_type_id_ls),.lbu(lbu_id_ls),.ren(mem_ren_id_ls),.wen(mem_wen_id_ls),
+        .waddr(alu_res_ex),.raddr(alu_res_ex),.wdata(Q2_id_ls),.store_type(store_type_id_ls),.lbu(lbu_id_ls),.ren(mem_ren_id_ls),.wen(mem_wen_id_ls),
         .data_mem(data_mem_ls)
     );
 
@@ -65,4 +65,9 @@ module top(
         .next_pc(next_pc),.reg_wen_wb(reg_wen_wb_id),.reg_waddr_wb(reg_waddr_wb_id),.reg_wdata_wb(reg_wdata_wb_id)
     );
 
+    function void mem_en_get(output bit ren_flag, output bit wen_flag);
+        ren_flag = mem_ren_id_ls;
+        wen_flag = mem_wen_id_ls;
+    endfunction
+    export "DPI-C" function mem_en_get;
 endmodule

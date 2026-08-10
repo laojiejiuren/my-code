@@ -15,10 +15,17 @@ static bool put_flag = false;
 Vtop * top = new Vtop;
 Decode s;
 
+#if CONFIG_MTRACE
+  extern bool flag_rmem;
+  extern bool flag_wmem;
+  extern char rmembuf[128];
+  extern char wmembuf[128];
+#endif
+
 static void trace_and_difftest(Decode *s)
 {
   #if CONFIG_ITRACE
-    printf("%s\n",s->logbuf);
+    //printf("%s\n",s->logbuf);
     FILE *fp = fopen("/home/lv/ysyx-workbench/npc/build/npc-log.txt", "a");
     if(!fp)
     {
@@ -28,6 +35,13 @@ static void trace_and_difftest(Decode *s)
     fputs(s->logbuf, fp);
     fputc('\n', fp);
     fclose(fp);
+  #endif
+
+  #if CONFIG_MTRACE
+    if(flag_rmem)
+      { puts(rmembuf);flag_rmem = false;}
+    if(flag_wmem)
+      { puts(wmembuf);flag_wmem = false;}
   #endif
 
   #if CONFIG_WATCHPOINT
