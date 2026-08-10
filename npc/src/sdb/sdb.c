@@ -1,5 +1,6 @@
 #include "common.h"
 #include "dir.h"
+#include "config.h"
 #include <regex>
 
 extern void npc_exec(uint64_t n);
@@ -247,6 +248,9 @@ void sdb_npc()
 
 void init_sdb()
 {
+  if(BATCH_MODE)
+    npc_exec(-1);
+
   init_regex();
   init_wp_pool();
 }
