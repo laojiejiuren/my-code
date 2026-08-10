@@ -8,7 +8,7 @@ module PC(
 
 always@(posedge clk)begin
     if(rst) begin
-        pc <= 32'h00000000;
+        pc <= 32'h80000000;
     end 
     else pc <= next_pc;
 end
