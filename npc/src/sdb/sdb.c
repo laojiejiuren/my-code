@@ -24,7 +24,8 @@ char* rl_gets() {
 
 static int cmd_q(char *args)
 {
-    exit(0);
+  npc_state.state = NPC_QUIT;
+  exit(0);
 } 
 
 static int cmd_c(char *args)

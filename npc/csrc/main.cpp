@@ -44,7 +44,7 @@ static void npc_exec_once(Decode *s)
   top->eval();
   top->clk = !top->clk;
   top->eval();
-
+  //printf("%u\n",top->data_out);
   s->pc = pc_gets();
   s->inst = inst_gets();
 }
@@ -65,7 +65,7 @@ void npc_exec(uint64_t n)
   {
     case NPC_ABORT: case NPC_END: case NPC_QUIT:
       printf("Program execution has ended. To restart the program, exit NEMU and run again.\n");
-      return;
+      exit(0);
     default: npc_state.state = NPC_RUNNING;
   }
 
@@ -79,10 +79,25 @@ void npc_exec(uint64_t n)
     {
       if(npc_state.state == NPC_ABORT)
       {
-        printf("" NPC_RED "HIT BAD TRAP PC = 0x%08x " NPC_NONE " \n",s.pc);
+        printf("" NPC_RED "ABORT PC = 0x%08x " NPC_NONE " \n",s.pc);
+        exit(1);
+      }
+      else 
+      {
+        if(npc_state.halt_ret != 0)
+        {
+          printf("%u\n",npc_state.halt_ret);
+          printf("" NPC_RED "NPC HIT BAD TRAP PC = 0x%08x " NPC_NONE " \n",s.pc);
+          exit(0);
+        }
+        else 
+        {
+          printf("" NPC_GREEN "NPC HIT GOOD TRAP PC = 0x%08x " NPC_NONE " \n",s.pc);
+          exit(0);
+        }
       }
     }
-    //case NPC_QUIT:
+    case NPC_STOP: printf("NPC STOP\n");
   }
 
 
@@ -119,7 +134,7 @@ int main(int argc,char** argv)
 
   fread(mem.data(),1,SIZE,F);
   fclose(F);
-  mem[0x224 >> 2] = 0x00100073; 
+  //mem[0x224 >> 2] = 0x00100073; 
   //要先初始化verilator->实例化顶层模块->初始化波形->正式开始仿真
   Verilated::commandArgs(argc,argv);
 

@@ -60,6 +60,8 @@ void halt(int code)
   else
   {
     printf("    " NPC_RED " HIT BAD TRAP!!! " NPC_NONE" \n");
+    uint32_t pc = pc_gets();
+    printf("pc: 0x%08x\n",pc);
     exit(1);
   }
 }
