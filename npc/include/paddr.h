@@ -20,8 +20,9 @@
 extern std::vector<uint32_t> mem;
 extern uint64_t boot_time;
 
-extern "C" void pmem_write(int waddr,int wdata,char wmask);
-extern "C" int pmem_read(int raddr);
-extern "C" void halt(int code);
+//extern "C" void pmem_write(int waddr,int wdata,char wmask);
+//extern "C" int pmem_read(int raddr);
+//extern "C" void halt(int code);
+//extern "C" void mem_en_get(svBit* ren_flag, svBit* wen_flag);
 
 #endif

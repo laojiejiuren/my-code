@@ -55,7 +55,7 @@ module top(
     );
 
     LSU u_lsu(
-        .waddr(alu_res_ex),.raddr(alu_res_ex),.wdata(Q2_id_ls),.store_type(store_type_id_ls),.lbu(lbu_id_ls),.ren(mem_ren_id_ls),.wen(mem_wen_id_ls),
+        .pc(pc),.waddr(alu_res_ex),.raddr(alu_res_ex),.wdata(Q2_id_ls),.store_type(store_type_id_ls),.lbu(lbu_id_ls),.ren(mem_ren_id_ls),.wen(mem_wen_id_ls),
         .data_mem(data_mem_ls)
     );
 

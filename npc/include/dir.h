@@ -12,7 +12,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <vector>
-#include "Vtop__Dpi.h"
 #include <sys/time.h>
 #include <string.h>
 
