@@ -253,4 +253,5 @@ void init_sdb()
 
   init_regex();
   init_wp_pool();
+  init_disasm();
 }

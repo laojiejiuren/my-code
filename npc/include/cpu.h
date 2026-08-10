@@ -34,6 +34,8 @@ extern NPCState npc_state;
 typedef struct{
   uint32_t pc;
   uint32_t inst;
+  char logbuf[128];
+  char ringbuf[20][128];
 } Decode;
 
 #endif

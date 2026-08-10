@@ -15,13 +15,22 @@ static bool put_flag = false;
 Vtop * top = new Vtop;
 Decode s;
 
-static void trace_and_difftest()
+static void trace_and_difftest(Decode *s)
 {
   #if CONFIG_ITRACE
-
+    printf("%s\n",s->logbuf);
+    FILE *fp = fopen("/home/lv/ysyx-workbench/npc/build/npc-log.txt", "a");
+    if(!fp)
+    {
+      printf("Failed to open the file");
+      return;
+    }
+    fputs(s->logbuf, fp);
+    fputc('\n', fp);
+    fclose(fp);
   #endif
 
-  #ifdef CONFIG_WATCHPOINT
+  #if CONFIG_WATCHPOINT
     if(!check_wp())
     {
       printf("触发监视点！！！\n");
@@ -52,8 +61,20 @@ static void npc_exec_once(Decode *s)
   s->pc = pc_gets();
   s->inst = inst_gets();
 
-#ifdef CONFIG_ITRACE
+#if CONFIG_ITRACE
+  char *p = s->logbuf;
+  p += snprintf(p,sizeof(s->logbuf), "0x%08x : ",s->pc);
 
+  uint8_t *inst = (uint8_t *)&s->inst;
+  for(int i = 4; i > 0; --i)
+    p += snprintf(p, 4, "%02x", inst[i]);
+
+  memset(p, ' ', 2);
+  p += 2;
+  void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+  disassemble(p, s->logbuf + sizeof(s->logbuf) - p, s->pc, (uint8_t *)&s->inst, 4);
+  p = p + '\n';
+  p++;
 #endif
 }
 
@@ -62,7 +83,7 @@ static void execute(uint64_t n)
   for(; n > 0; --n)
   {
     npc_exec_once(&s);
-    trace_and_difftest();
+    trace_and_difftest(&s);
     if(npc_state.state != NPC_RUNNING) break;
   }
 } 
