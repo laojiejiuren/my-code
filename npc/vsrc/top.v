@@ -1,6 +1,7 @@
 import "DPI-C" function void halt(input int code);
 import "DPI-C" function int pmem_read (input int raddr);
 import "DPI-C" function void pmem_write (input int waddr, input int wdata, input byte wmask);
+import "DPI-C" function void set_npc_state(input int state, input bit[31:0] pc, input [31:0] halt_ret);
 
 module top(
     input clk,
@@ -41,7 +42,7 @@ module top(
     );
     
     IDU u_idu(
-        .clk(clk),.rst(rst),.inst(inst_if),.reg_waddr_wb(reg_waddr_wb_id),.reg_wdata_wb(reg_wdata_wb_id),.reg_wen_wb(reg_wen_wb_id),
+        .clk(clk),.rst(rst),.inst(inst_if),.pc(pc),.reg_waddr_wb(reg_waddr_wb_id),.reg_wdata_wb(reg_wdata_wb_id),.reg_wen_wb(reg_wen_wb_id),
         .jump(jump),.reg_wen(reg_wen_id_ex),.alu_op(alu_op_id),.reg_waddr(reg_waddr_id_wb),.operand1(operand1_id),.operand2(operand2_id),
         .lbu(lbu_id_ls),.mem_ren(mem_ren_id_ls),.mem_wen(mem_wen_id_ls),.store_type(store_type_id_ls),.Q2(Q2_id_ls),
         

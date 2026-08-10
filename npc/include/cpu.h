@@ -30,4 +30,10 @@ typedef struct {
 
 extern NPCState npc_state;
 
+// -------- cpu.state --------
+typedef struct{
+  uint32_t pc;
+  uint32_t inst;
+} Decode;
+
 #endif

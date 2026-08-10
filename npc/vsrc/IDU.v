@@ -2,6 +2,7 @@ module IDU(
     input clk,
     input rst,
 
+    input [31:0] pc,
     input [31:0] inst,
 
     input [4:0] reg_waddr_wb,
@@ -159,7 +160,7 @@ module IDU(
             case(funct12)
             RISCV32I_ebreak:begin
                 halt(data);
-                
+                set_npc_state(2, pc, inst);
             end
             default:begin
             end

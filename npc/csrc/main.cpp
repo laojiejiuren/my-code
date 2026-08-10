@@ -13,6 +13,7 @@ vector<uint32_t> mem(MAX_SIZE_MEM,0);
 uint64_t boot_time = 0;
 static bool put_flag = false;
 Vtop * top = new Vtop;
+Decode s;
 
 static void trace_and_difftest()
 {
@@ -20,7 +21,7 @@ static void trace_and_difftest()
     if(!check_wp())
     {
       printf("触发监视点！！！\n");
-      return;
+      npc_state.state = NPC_STOP;
     }
   #endif
 }
@@ -37,19 +38,24 @@ static void init_npc()
   top->rst = 0; 
 }
 
-static void npc_exec_once()
+static void npc_exec_once(Decode *s)
 {
   top->clk = !top->clk;
   top->eval();
   top->clk = !top->clk;
   top->eval();
+
+  s->pc = pc_gets();
+  s->inst = inst_gets();
 }
 
 static void execute(uint64_t n)
 { 
   for(; n > 0; --n)
   {
-
+    npc_exec_once(&s);
+    trace_and_difftest();
+    if(npc_state.state != NPC_RUNNING) break;
   }
 } 
 
@@ -69,6 +75,14 @@ void npc_exec(uint64_t n)
   {
     case NPC_RUNNING: npc_state.state = NPC_STOP; break;
     
+    case NPC_ABORT: case NPC_END:
+    {
+      if(npc_state.state == NPC_ABORT)
+      {
+        printf("" NPC_RED "HIT BAD TRAP PC = 0x%08x " NPC_NONE " \n",s.pc);
+      }
+    }
+    //case NPC_QUIT:
   }
 
 
