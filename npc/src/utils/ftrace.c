@@ -77,8 +77,9 @@ void init_ftrace(const char *elf_file)
         fclose(F);
         return;
     }
+    
     printf("ELF文件解析成功\n");
-    printf("符号表的项目数量：%d\n",sym_num);
+    printf("符号表的项目数量: %d\n",sym_num);
     /*for(int i = 0; i < sym_num; ++i)
     {
         if((symtab[i].st_info & 0xf) == STT_FUNC)
@@ -117,15 +118,14 @@ void ftrace_call(vaddr_t pc, vaddr_t next_pc)
                 for(int j = 0; j < cnt; ++j)
                     printf(" ");
                 printf("call [%s@0x%08x]\n",tmp,next_pc);
+                cnt++;
             }
         }
     }
-    cnt++;
 }
 
 void ftrace_ret(vaddr_t pc)
 {
-    cnt--;
     for(int i = 0; i < sym_num; ++i)
     {
         if(check_value(pc, i))
@@ -137,6 +137,7 @@ void ftrace_ret(vaddr_t pc)
                 for(int j = 0; j < cnt; ++j)
                     printf(" ");
                 printf("ret [%s]\n",tmp);
+                cnt--;
             }
         }
     }
