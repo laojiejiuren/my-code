@@ -69,7 +69,7 @@ void init_ftrace(const char *elf_file)
     }
 
     symtab = (Elf32_Sym *)malloc(symtab_hdr->sh_size);
-    sym_num = sizeof(symtab_hdr->sh_size) / sizeof(Elf32_Sym);
+    sym_num = symtab_hdr->sh_size / sizeof(symtab[0]);
     fseek(F, symtab_hdr->sh_offset, SEEK_SET);
     if(fread(symtab, symtab_hdr->sh_size, 1, F) != 1)
     {
@@ -78,7 +78,8 @@ void init_ftrace(const char *elf_file)
         return;
     }
     printf("ELF文件解析成功\n");
-    for(int i = 0; i < sym_num; ++i)
+    printf("符号表的项目数量：%d\n",sym_num);
+    /*for(int i = 0; i < sym_num; ++i)
     {
         if((symtab[i].st_info & 0xf) == STT_FUNC)
         {
@@ -87,7 +88,7 @@ void init_ftrace(const char *elf_file)
                 printf("function name is '%s'\n",tmp);
             printf("0x%08x\n",symtab[i].st_value);
         }
-    }
+    }*/
 
     fclose(F);
 }
