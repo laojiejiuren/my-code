@@ -5,7 +5,7 @@
 
 extern void npc_exec(uint64_t n);
 static int cmd_help(char *args);
-char * elf_file = "/home/lv/ysyx-workbench/am-kernels/tests/cpu-tests/build/add-minirv-npc.elf";
+extern char *file_name;
 
 char* rl_gets() {
   static char *line_read = NULL;
@@ -249,11 +249,12 @@ void sdb_npc()
 
 void init_sdb()
 {
-  if(BATCH_MODE)
-    npc_exec(-1);
-
-  init_ftrace(elf_file);
+  printf("elf: %s\n", file_name);
+  init_ftrace(file_name);
   init_regex();
   init_wp_pool();
   init_disasm();
+
+  if(BATCH_MODE)
+    npc_exec(-1);
 }

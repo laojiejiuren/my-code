@@ -14,6 +14,7 @@ vector<uint32_t> mem(MAX_SIZE_MEM,0);
 uint64_t boot_time = 0;
 static bool put_flag = false;
 Vtop * top = new Vtop;
+char *file_name = NULL;
 Decode s;
 
 #if CONFIG_MTRACE
@@ -182,11 +183,13 @@ int main(int argc,char** argv)
   gettimeofday(&now,NULL);
   boot_time = now.tv_sec * 1000000 + now.tv_usec;
  
-  if(argc < 2)
+  if(argc < 3)
   {
     printf("NO FILE\n");
     return 1;
   }
+
+  file_name = argv[2];
 
   FILE * F = fopen(argv[1],"rb");
   if(F == NULL )

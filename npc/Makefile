@@ -21,6 +21,7 @@ CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"$(TOPNAME)"\"
 
 default:$(BIN)
 
+ELF_FILE = $(addsuffix .elf, $(basename $(IMG)))
 NPC_EXEC := $(IMG) #$(ARGS)
 
 $(BIN):$(VSRCS) $(CSRCS)
@@ -32,7 +33,7 @@ $(BIN):$(VSRCS) $(CSRCS)
 
 run:$(BIN)
 	$(call git_commit, "run RTL") # DO NOT REMOVE THIS LINE!!!
-	@$^ $(NPC_EXEC)
+	@$^ $(NPC_EXEC) $(ELF_FILE)
 
 clean:
 	rm -rf ./build
