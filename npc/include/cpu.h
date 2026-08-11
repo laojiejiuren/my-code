@@ -10,6 +10,7 @@
 
 uint32_t pc_gets();
 uint32_t inst_gets();
+uint32_t snpc_gets();
 
 // -------- reg --------
 
@@ -33,6 +34,7 @@ extern NPCState npc_state;
 // -------- cpu.state --------
 typedef struct{
   uint32_t pc;
+  uint32_t snpc;
   uint32_t inst;
   char logbuf[128];
   char ringbuf[20][128];

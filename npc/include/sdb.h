@@ -8,6 +8,7 @@ void sdb_npc();
 void init_sdb();
 uint32_t expr(char *e, bool *success);
 
+void init_ftrace(const char *elf_file);
 void init_regex();
 void init_wp_pool();
 void init_disasm();

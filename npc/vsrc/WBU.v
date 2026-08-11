@@ -26,5 +26,10 @@ module WBU(
 
     end
 
+    function void snpc_get(output bit [31:0] npc_);
+        npc_ = next_pc;
+    endfunction
+    export "DPI-C" function snpc_get;
+
 endmodule
 //jalr,alu相加的地址给pc，PC+4给寄存器

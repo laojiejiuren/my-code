@@ -23,3 +23,12 @@ uint32_t inst_gets()
     inst_get(&val);
     return val;
 }
+
+// ----------- inst -----------
+
+uint32_t snpc_gets()
+{
+    svBitVecVal val;
+    snpc_get(&val);
+    return val;
+}

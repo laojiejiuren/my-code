@@ -6,6 +6,7 @@
 #include <sys/time.h>
 #include "dir.h"
 #include "config.h"
+#include "ftrace.h"
 using namespace std;
 
 struct timeval now;
@@ -44,6 +45,35 @@ static void trace_and_difftest(Decode *s)
       { puts(wmembuf);flag_wmem = false;}
   #endif
 
+  #if CONFIG_FTRACE
+    uint32_t inst_ = s->inst;
+
+    int rd = (inst_ >> 7) & 0x1f;
+    int rs1 = (inst_ >> 15) & 0x1f;
+    uint32_t opcode = inst_ & 0x7f;
+    uint32_t func3 = (inst_ >> 12) & 0x7;
+
+    switch(opcode)
+    {
+      case 0x6f://jal 只做调用函数
+      { 
+        //printf("rd: %d rs1: %d opcode: 0x%02x func3: %u\n",rd,rs1,opcode,func3);
+        if(rd) ftrace_call(s->pc, s->snpc);
+        break;
+      }
+      case 0x67://jalr 既调用又返回
+      {
+        if(func3 == 0)
+        {
+          //printf("rd: %d rs1: %d opcode: 0x%02x func3: %u\n",rd,rs1,opcode,func3);
+          if(rd) ftrace_call(s->pc, s->snpc);
+          else if(rd == 0 && rs1 == 1) ftrace_ret(s->pc);
+        } 
+        break;
+      }
+    }
+  #endif
+
   #if CONFIG_WATCHPOINT
     if(!check_wp())
     {
@@ -73,6 +103,7 @@ static void npc_exec_once(Decode *s)
   top->eval();
   //printf("%u\n",top->data_out);
   s->pc = pc_gets();
+  s->snpc = snpc_gets();
   s->inst = inst_gets();
 
 #if CONFIG_ITRACE
