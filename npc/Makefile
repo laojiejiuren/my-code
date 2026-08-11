@@ -17,7 +17,7 @@ VERILATOR_FLAGS = --cc --exe --build -j \
 
 INC_PATH = $(INC_DIR)
 INCFLAGS = $(addprefix -I, $(INC_PATH))
-CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"$(TOPNAME)"\"
+CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"$(TOPNAME)"\" -g
 
 default:$(BIN)
 
@@ -37,7 +37,7 @@ run:$(BIN)
 
 gdb:$(BIN)
 	$(call git_commit, "run GDB")
-	gdb -s $(ELF_FILE) --args $(NPC_EXEC)
+	gdb -s $(ELF_FILE) --args $(BIN) $(NPC_EXEC) $(ELF_FILE)
 
 clean:
 	rm -rf ./build
