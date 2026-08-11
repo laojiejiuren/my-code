@@ -35,6 +35,10 @@ run:$(BIN)
 	$(call git_commit, "run RTL") # DO NOT REMOVE THIS LINE!!!
 	@$^ $(NPC_EXEC) $(ELF_FILE)
 
+gdb:$(BIN)
+	$(call git_commit, "run GDB")
+	gdb -s $(ELF_FILE) --args $(NPC_EXEC)
+
 clean:
 	rm -rf ./build
 
