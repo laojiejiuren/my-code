@@ -1,6 +1,5 @@
 #include "dir.h"
 #include <elf.h>
-#include "common.h"
 
 Elf32_Sym *symtab = NULL;
 char *strtab = NULL;
@@ -8,18 +7,8 @@ int sym_num = 0;
 
 void init_ftrace(const char *elf_file)
 {
-    if(elf_file == NULL)
-    {
-        printf("NO FILE! ! !\n");
-        return;
-    }
-    
-    FILE *F = fopen(elf_file, "rb");
-    if(F == NULL)
-    {
-        printf("Error: failed to open file\n");
-        return;
-    }
+    long int size = 0;
+    FILE *F = openfile(elf_file, "rb", &size);
 
     Elf32_Ehdr ehdr;
     if(fread(&ehdr, sizeof(ehdr), 1, F) != 1 || strncmp((const char *)ehdr.e_ident, ELFMAG, SELFMAG) != 0 || !ehdr.e_shoff)

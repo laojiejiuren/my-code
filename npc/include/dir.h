@@ -6,6 +6,9 @@
 #include "utils.h"
 #include "paddr.h"
 #include "watchpoint.h"
+#include "ftrace.h"
+#include "common.h"
+#include "config.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stdio.h>

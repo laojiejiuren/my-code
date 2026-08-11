@@ -5,8 +5,6 @@
 #include "Vtop__Dpi.h"
 #include <sys/time.h>
 #include "dir.h"
-#include "config.h"
-#include "ftrace.h"
 using namespace std;
 
 struct timeval now;
@@ -188,20 +186,10 @@ int main(int argc,char** argv)
     printf("NO FILE\n");
     return 1;
   }
-
   file_name = argv[2];
 
-  FILE * F = fopen(argv[1],"rb");
-  if(F == NULL )
-  {
-    printf("ERROR: Failed to open file\n");
-    return 1;
-  }
-
-  fseek(F,0,SEEK_END);
-  long SIZE = ftell(F);
-  fseek(F,0,SEEK_SET);
-
+  long int SIZE = 0;
+  FILE *F = openfile(argv[1], "rb", &SIZE);
   if(SIZE >= MAX_SIZE_MEM)
   {
     printf("ERROR: File too large. SIZE:%ld",SIZE);
