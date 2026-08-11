@@ -11,4 +11,6 @@
 #define NPC_WHITE   "\33[1;37m"
 #define NPC_NONE    "\33[0m"
 
+FILE *openfile(const char *filename, const char *mode, long *size);
+
 #endif

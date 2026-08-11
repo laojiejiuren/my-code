@@ -172,8 +172,6 @@ void npc_exec(uint64_t n)
     }
     case NPC_STOP: printf("NPC STOP\n");
   }
-
-
 }
 
 int main(int argc,char** argv) 
@@ -181,11 +179,7 @@ int main(int argc,char** argv)
   gettimeofday(&now,NULL);
   boot_time = now.tv_sec * 1000000 + now.tv_usec;
  
-  if(argc < 3)
-  {
-    printf("NO FILE\n");
-    return 1;
-  }
+  assert(argc >= 3);
   file_name = argv[2];
 
   long int SIZE = 0;
