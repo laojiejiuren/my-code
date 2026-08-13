@@ -164,7 +164,7 @@ void npc_exec(uint64_t n)
     {
       if(npc_state.state == NPC_ABORT)
       {
-        printf("" NPC_RED "ABORT PC = 0x%08x npc:sp 0x%08x" NPC_NONE " \n",npc_state.halt_pc, reg_gets(2));
+        printf("" NPC_RED "ABORT PC = 0x%08x" NPC_NONE " \n",npc_state.halt_pc);
         exit(1);
       }
       else 
