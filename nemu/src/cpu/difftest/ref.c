@@ -24,7 +24,7 @@ typedef struct diff_{
 } DIFF_;
 
 //此时npc会将pc值、gpr传入
-void diff_set_reg(void *dut)
+static void diff_set_reg(void *dut)
 {
   DIFF_ *p = (DIFF_ *)dut;
 
@@ -33,20 +33,22 @@ void diff_set_reg(void *dut)
     cpu.gpr[i] = p->gpr[i];
 }
 
-void diff_get_reg(void *dut)
+static void diff_get_reg(void *dut)
 {
   DIFF_ *p = (DIFF_ *)dut;
 
   p->pc = cpu.pc;
   for(int i = 0; i < 32; ++i)
     p->gpr[i] = cpu.gpr[i];
+  for(int i = 0;i < 32; ++i)
+    printf("dut reg: 0x%08x  ref reg: 0x%08x\n", p->gpr[i], cpu.gpr[i]);
 }
 
 __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
   if(direction == DIFFTEST_TO_REF)
   {
     for(int i = 0; i < n; ++i)
-      paddr_write(addr + i * 4, 4, *(uint32_t *)buf);
+      paddr_write(addr + i * 4, 4, ((uint32_t *)buf)[i]);
   }
   else assert(0);
 }
@@ -59,6 +61,7 @@ __EXPORT void difftest_regcpy(void *dut, bool direction) {
 }
 
 __EXPORT void difftest_exec(uint64_t n) {
+  printf("test\n");
   cpu_exec(n);
 }
 

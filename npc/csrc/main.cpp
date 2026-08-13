@@ -164,7 +164,7 @@ void npc_exec(uint64_t n)
     {
       if(npc_state.state == NPC_ABORT)
       {
-        printf("" NPC_RED "ABORT PC = 0x%08x " NPC_NONE " \n",s.pc);
+        printf("" NPC_RED "ABORT PC = 0x%08x npc:sp 0x%08x" NPC_NONE " \n",npc_state.halt_pc, reg_gets(2));
         exit(1);
       }
       else 
@@ -215,7 +215,7 @@ int main(int argc,char** argv)
 
   #if CONFIG_DIFFTEST
     diff_file = argv[3];
-    npc_init_difftest(diff_file, (long)&SIZE_BIN, 1234);
+    npc_init_difftest(diff_file, (long)SIZE_BIN, 1234);
   #endif
   init_sdb();
   sdb_npc();

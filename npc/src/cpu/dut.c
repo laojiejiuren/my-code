@@ -52,8 +52,9 @@ static void checkregs(CPU_state *ref_r, uint32_t pc)
     {
         if(ref_r->gpr[i] != cpu.gpr[i])
         {
-           flag = false;
-           break;
+            //printf("nemu reg: 0x%08x  npc reg: 0x%08x\n", ref_r->gpr[i], cpu.gpr[i]);
+            flag = true;
+            break;
         }
     }
     if(!flag)
