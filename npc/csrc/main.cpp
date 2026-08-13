@@ -84,7 +84,7 @@ static void trace_and_difftest(Decode *s)
   #endif
 
   #if CONFIG_DIFFTEST
-    
+    difftest_step(s->pc, s->snpc);
   #endif
 }
 
@@ -134,7 +134,6 @@ static void execute(uint64_t n)
   //发现我的RTL代码在取inst是组合逻辑，在取到k-1条指令的pc时，snpc已经是指向ebreak的pc，然后eval()触发上升沿，
   //RTL内部的PC更新，inst更新，IDU模块识别到ebreak指令。但是这个时候的itrace还在存储k-1的数据，所以需要延迟一
   //个节拍退出执行，将ebreak存储进itrace
-
   bool flag = false;
   for(; n > 0; --n)
   {
@@ -192,19 +191,19 @@ int main(int argc,char** argv)
   gettimeofday(&now,NULL);
   boot_time = now.tv_sec * 1000000 + now.tv_usec;
  
-  assert(argc >= 3);
+  assert(argc >= 4);
   file_name = argv[2];
 
-  long int SIZE = 0;
-  FILE *F = openfile(argv[1], "rb", &SIZE);
-  if(SIZE >= MAX_SIZE_MEM)
+  long int SIZE_BIN = 0;
+  FILE *F = openfile(argv[1], "rb", &SIZE_BIN);
+  if(SIZE_BIN >= MAX_SIZE_MEM)
   {
-    printf("ERROR: File too large. SIZE:%ld",SIZE);
+    printf("ERROR: File too large. SIZE:%ld",SIZE_BIN);
     fclose(F);
     return 1;
   }
 
-  fread(mem.data(),1,SIZE,F);
+  fread(mem.data(),1,SIZE_BIN,F);
   fclose(F);
   //mem[0x224 >> 2] = 0x00100073; 
   //要先初始化verilator->实例化顶层模块->初始化波形->正式开始仿真
@@ -215,7 +214,8 @@ int main(int argc,char** argv)
   init_npc();
 
   #if CONFIG_DIFFTEST
-    npc_init_difftest(diff_file, );
+    diff_file = argv[3];
+    npc_init_difftest(diff_file, (long)&SIZE_BIN, 1234);
   #endif
   init_sdb();
   sdb_npc();

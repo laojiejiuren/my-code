@@ -2,6 +2,7 @@ TOPNAME = top
 VERILATOR = verilator
 
 include src/utils/filelist.mk
+
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
 BIN = ./build/obj_dir/V$(TOPNAME)
@@ -17,12 +18,13 @@ VERILATOR_FLAGS = --cc --exe --build -j \
 
 INC_PATH = $(INC_DIR)
 INCFLAGS = $(addprefix -I, $(INC_PATH))
-CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"$(TOPNAME)"\" -g
+CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"$(TOPNAME)"\" -g 
 
 default:$(BIN)
-
+DIFF_REF_SO = $(NEMU_HOME)/build/riscv32-nemu-interpreter-so
 ELF_FILE = $(addsuffix .elf, $(basename $(IMG)))
-NPC_EXEC := $(IMG) #$(ARGS)
+ARGS = $(ELF_FILE) $(DIFF_REF_SO) 
+NPC_EXEC := $(IMG) $(ARGS)
 
 $(BIN):$(VSRCS) $(CSRCS)
 	@mkdir -p $(BUILD_DIR)
@@ -33,11 +35,11 @@ $(BIN):$(VSRCS) $(CSRCS)
 
 run:$(BIN)
 	$(call git_commit, "run RTL") # DO NOT REMOVE THIS LINE!!!
-	@$^ $(NPC_EXEC) $(ELF_FILE)
+	@$^ $(NPC_EXEC)
 
 gdb:$(BIN)
 	$(call git_commit, "run GDB")
-	gdb -s $(ELF_FILE) --args $(BIN) $(NPC_EXEC) $(ELF_FILE)
+	gdb -s $(ELF_FILE) --args $(BIN) $(NPC_EXEC)
 
 clean:
 	rm -rf ./build

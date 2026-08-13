@@ -47,4 +47,9 @@ typedef struct{
 
 // -------- difftest --------
 
+extern CPU_state cpu;
+enum { DIFFTEST_TO_DUT, DIFFTEST_TO_REF };
+void npc_init_difftest(char *file_name, long img_size, int port);
+void difftest_step(uint32_t pc, uint32_t npc);
+
 #endif

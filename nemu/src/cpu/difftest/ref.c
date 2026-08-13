@@ -19,8 +19,8 @@
 #include <memory/paddr.h>
 
 typedef struct diff_{
-  uint32_t gpr[32];
   uint32_t pc;
+  uint32_t gpr[32];
 } DIFF_;
 
 //此时npc会将pc值、gpr传入
@@ -46,7 +46,7 @@ __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction)
   if(direction == DIFFTEST_TO_REF)
   {
     for(int i = 0; i < n; ++i)
-      paddr_write(addr, 4, *(uint32_t *)buf);
+      paddr_write(addr + i * 4, 4, *(uint32_t *)buf);
   }
   else assert(0);
 }
