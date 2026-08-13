@@ -45,4 +45,6 @@ typedef struct{
   uint32_t gpr[32];
 } CPU_state;
 
+// -------- difftest --------
+
 #endif

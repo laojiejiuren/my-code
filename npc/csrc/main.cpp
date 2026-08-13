@@ -13,6 +13,7 @@ uint64_t boot_time = 0;
 static bool put_flag = false;
 Vtop * top = new Vtop;
 char *file_name = NULL;
+char *diff_file = NULL;
 CPU_state cpu = {};
 Decode s;
 
@@ -81,6 +82,10 @@ static void trace_and_difftest(Decode *s)
       npc_state.state = NPC_STOP;
     }
   #endif
+
+  #if CONFIG_DIFFTEST
+    
+  #endif
 }
 
 static void init_npc()
@@ -97,21 +102,22 @@ static void init_npc()
 
 static void npc_exec_once(Decode *s)
 {
+  s->pc = pc_gets();
+  s->snpc = snpc_gets();
+  s->inst = inst_gets();
+
   top->clk = !top->clk;
   top->eval();
   top->clk = !top->clk;
   top->eval();
   //printf("%u\n",top->data_out);
-  s->pc = pc_gets();
-  s->snpc = snpc_gets();
-  s->inst = inst_gets();
 
 #if CONFIG_ITRACE
   char *p = s->logbuf;
   p += snprintf(p,sizeof(s->logbuf), "0x%08x : ",s->pc);
 
   uint8_t *inst = (uint8_t *)&s->inst;
-  for(int i = 4; i > 0; --i)
+  for(int i = 3; i > 0; --i)
     p += snprintf(p, 4, "%02x", inst[i]);
 
   memset(p, ' ', 2);
@@ -125,11 +131,17 @@ static void npc_exec_once(Decode *s)
 
 static void execute(uint64_t n)
 { 
+  //发现我的RTL代码在取inst是组合逻辑，在取到k-1条指令的pc时，snpc已经是指向ebreak的pc，然后eval()触发上升沿，
+  //RTL内部的PC更新，inst更新，IDU模块识别到ebreak指令。但是这个时候的itrace还在存储k-1的数据，所以需要延迟一
+  //个节拍退出执行，将ebreak存储进itrace
+
+  bool flag = false;
   for(; n > 0; --n)
   {
     npc_exec_once(&s);
     trace_and_difftest(&s);
-    if(npc_state.state != NPC_RUNNING) break;
+    if(flag) break;
+    flag = (npc_state.state != NPC_RUNNING);
   }
 } 
 
@@ -201,6 +213,10 @@ int main(int argc,char** argv)
   svSetScope(svGetScopeFromName("TOP.top.u_idu.u_gpr"));
 
   init_npc();
+
+  #if CONFIG_DIFFTEST
+    npc_init_difftest(diff_file, );
+  #endif
   init_sdb();
   sdb_npc();
   delete top;
