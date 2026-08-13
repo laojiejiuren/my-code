@@ -13,6 +13,7 @@ uint64_t boot_time = 0;
 static bool put_flag = false;
 Vtop * top = new Vtop;
 char *file_name = NULL;
+CPU_state cpu = {};
 Decode s;
 
 #if CONFIG_MTRACE
