@@ -40,8 +40,6 @@ static void diff_get_reg(void *dut)
   p->pc = cpu.pc;
   for(int i = 0; i < 32; ++i)
     p->gpr[i] = cpu.gpr[i];
-  for(int i = 0;i < 32; ++i)
-    printf("nemu reg: 0x%08x  npc reg: 0x%08x\n", cpu.gpr[i], p->gpr[i]);
 }
 
 __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
