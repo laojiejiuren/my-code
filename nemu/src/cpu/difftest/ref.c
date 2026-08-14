@@ -45,8 +45,8 @@ static void diff_get_reg(void *dut)
 __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
   if(direction == DIFFTEST_TO_REF)
   {
-    for(int i = 0; i < n; ++i)
-      paddr_write(addr + i * 4, 4, *((uint32_t *)buf + i * 4));
+    for(int i = 0; i < n; i += 4)
+      paddr_write(addr + i, 4, *((uint32_t *)((uint8_t *)buf + i)));
   }
   else assert(0);
 }

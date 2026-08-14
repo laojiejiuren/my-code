@@ -78,7 +78,7 @@ module IDU(
         RISCV32I_I:begin
             case (funct3)
             RISCV32I_addi: begin
-                operand2 = rs1_rdata;//imm_i;
+                operand2 = imm_i;
                 operand1 = rs1_rdata;
                 reg_waddr = rd;
                 jump = 0;
