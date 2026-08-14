@@ -124,8 +124,6 @@ static void npc_exec_once(Decode *s)
   p += 2;
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p, s->pc, (uint8_t *)&s->inst, 4);
-  p = p + '\n';
-  p++;
 #endif
 }
 
@@ -133,14 +131,12 @@ static void execute(uint64_t n)
 { 
   //发现我的RTL代码在取inst是组合逻辑，在取到k-1条指令的pc时，snpc已经是指向ebreak的pc，然后eval()触发上升沿，
   //RTL内部的PC更新，inst更新，IDU模块识别到ebreak指令。但是这个时候的itrace还在存储k-1的数据，所以需要延迟一
-  //个节拍退出执行，将ebreak存储进itrace
-  bool flag = false;
+  //个节拍退出执行，将ebreak存储进itrace       ------ 已在RTL代码中修复这个bug
   for(; n > 0; --n)
   {
     npc_exec_once(&s);
     trace_and_difftest(&s);
-    if(flag) break;
-    flag = (npc_state.state != NPC_RUNNING);
+    if(npc_state.state != NPC_RUNNING) break;
   }
 } 
 
