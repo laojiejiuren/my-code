@@ -13,6 +13,7 @@ static int skip_dut_nr_inst = 0;
 
 static void npc_reg_up(CPU_state *cpu)
 {
+    cpu->pc = pc_gets();
     for(int i = 0; i < 32; ++i)
         cpu->gpr[i] = reg_gets(i);
 }
@@ -40,7 +41,6 @@ void npc_init_difftest(char *file_name, long img_size, int port)
     ref_difftest_init(port);
     ref_difftest_memcpy(BASE_ADDR, mem.data(), img_size, DIFFTEST_TO_REF);
 
-    cpu.pc = pc_gets();
     npc_reg_up(&cpu);
     ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
 }
@@ -49,10 +49,10 @@ static void checkregs(CPU_state *ref_r, uint32_t pc)
 {
     bool flag = true;
 
-    if(ref_r->pc != pc)
+    if(ref_r->pc != cpu.pc)
     {
-        flag =false;
-        printf("REF PC: 0x%08x DUT PC: 0x%08x", ref_r->pc, pc);
+        flag = false;
+        printf("REF PC: 0x%08x DUT PC: 0x%08x\n", ref_r->pc, cpu.pc);
     }
     for(int i = 0; i < 32; ++i)
     {
@@ -78,7 +78,6 @@ static void checkregs(CPU_state *ref_r, uint32_t pc)
 void difftest_step(uint32_t pc, uint32_t npc)
 {
     CPU_state ref_r;
-    npc_reg_up(&cpu);
     if(skip_dut_nr_inst > 0)
     {
         ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
@@ -103,6 +102,7 @@ void difftest_step(uint32_t pc, uint32_t npc)
     ref_difftest_exec(1);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
 
+    npc_reg_up(&cpu);
     checkregs(&ref_r, pc);
 }
 
