@@ -48,6 +48,12 @@ void npc_init_difftest(char *file_name, long img_size, int port)
 static void checkregs(CPU_state *ref_r, uint32_t pc)
 {
     bool flag = true;
+
+    if(ref_r->pc != pc)
+    {
+        flag =false;
+        printf("REF PC: 0x%08x DUT PC: 0x%08x", ref_r->pc, pc);
+    }
     for(int i = 0; i < 32; ++i)
     {
         if(ref_r->gpr[i] != cpu.gpr[i])
@@ -61,6 +67,11 @@ static void checkregs(CPU_state *ref_r, uint32_t pc)
         npc_state.state = NPC_ABORT;
         npc_state.halt_pc = pc;
         reg_display();
+
+        printf("------REF regs------\n");
+        for(int i = 0; i < 32; ++i)
+            printf("%-3s 0x%08x\n", regs[i], ref_r->gpr[i]);
+
     }
 }
 
