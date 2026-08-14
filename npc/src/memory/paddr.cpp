@@ -17,7 +17,7 @@ extern struct timeval now;
 #endif
 
 
-int pmem_read(int raddr)
+int pmem_read(int raddr, int ren, int len)
 {
   if(raddr == CLOCK_ADDR || raddr == CLOCK_ADDR + 4)
   {
@@ -34,13 +34,10 @@ int pmem_read(int raddr)
   if(addr >= MAX_SIZE_MEM * 4) return 1;
 
   #if CONFIG_MTRACE
-    mem_en_get(&ren1, &wen1);
-    ren = ren1;
     if(ren == 1)
     {
-      snprintf(rmembuf,sizeof(rmembuf),"pc: 0x%08x addr: 0x%08x",pc_gets(),addr);
+      snprintf(rmembuf,sizeof(rmembuf),"pc: 0x%08x addr: 0x%08x len: %d", pc_gets(), raddr, len);
       flag_rmem = true;
-      ren = 0;
     }
   
   #endif
@@ -72,7 +69,7 @@ void pmem_write(int waddr,int wdata,char wmask)
     new_data = (new_data & 0x00ffffff) | (wdata & 0xff000000);
 
   #if CONFIG_MTRACE
-    snprintf(wmembuf,sizeof(wmembuf),"pc: 0x%08x addr: 0x%08x data: 0x%08x",pc_gets(),addr, new_data);
+    snprintf(wmembuf,sizeof(wmembuf),"pc: 0x%08x addr: 0x%08x data: 0x%08x",pc_gets(),waddr, new_data);
     flag_wmem = true;
   #endif
   mem[id] = new_data;

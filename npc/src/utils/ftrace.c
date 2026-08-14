@@ -48,6 +48,13 @@ void init_ftrace(const char *elf_file)
             symtab_hdr = &shdr[i];
     }
 
+    if(symtab_hdr == NULL || strtab_hdr == NULL)
+    {
+        printf("ELF中找不到.symtab/.strtab, ftrace不可用\n");
+        fclose(F);
+        return;
+    }
+
     strtab = (char *)malloc(strtab_hdr->sh_size);
     fseek(F, strtab_hdr->sh_offset, SEEK_SET);
     if(fread(strtab, strtab_hdr->sh_size, 1, F) != 1)

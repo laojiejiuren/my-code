@@ -7,7 +7,7 @@ module IFU(
     output[31:0] inst
 );
     PC u_pc(.clk(clk),.rst(rst),.next_pc(next_pc),.pc(pc));
-    assign inst = pmem_read(pc);
+    assign inst = pmem_read(pc, 32'b0, 32'd4);
 
     function void pc_get(output bit[31:0] pc_);
         pc_ = pc;

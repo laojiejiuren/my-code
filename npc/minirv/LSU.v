@@ -49,7 +49,7 @@ module LSU(
     //那么要做选择字节的应该是内存数据
     always@(*) begin
         if(ren) begin
-            data_mem = pmem_read(raddr);
+            data_mem = pmem_read(raddr, {31'b0,ren}, lbu ? 32'd1 : 32'd4);
             if(lbu) begin
                 if(raddr[1:0] == 2'b00)
                     data_mem = (data_mem & 32'h000000ff);

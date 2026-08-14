@@ -289,7 +289,7 @@ static uint32_t eval(int p,int q)
       {
         uint32_t addr = eval(p + 1,q);
         if(eval_ok == false) return 0;
-        return pmem_read(addr - BASE_ADDR);
+        return pmem_read(addr - BASE_ADDR, 0, 4);
       }
       if(tokens[p].type == NEG)
       {

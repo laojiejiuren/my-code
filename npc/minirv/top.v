@@ -1,4 +1,4 @@
-import "DPI-C" function int pmem_read (input int raddr);
+import "DPI-C" function int pmem_read (input int raddr, input int ren, input int len);
 import "DPI-C" function void pmem_write (input int waddr, input int wdata, input byte wmask);
 import "DPI-C" function void halt(input int state, input bit[31:0] pc, input int halt_ret);
 
@@ -64,9 +64,4 @@ module top(
         .next_pc(next_pc),.reg_wen_wb(reg_wen_wb_id),.reg_waddr_wb(reg_waddr_wb_id),.reg_wdata_wb(reg_wdata_wb_id)
     );
 
-    function void mem_en_get(output bit ren_flag, output bit wen_flag);
-        ren_flag = mem_ren_id_ls;
-        wen_flag = mem_wen_id_ls;
-    endfunction
-    export "DPI-C" function mem_en_get;
 endmodule

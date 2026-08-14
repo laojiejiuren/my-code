@@ -117,7 +117,7 @@ static void npc_exec_once(Decode *s)
   p += snprintf(p,sizeof(s->logbuf), "0x%08x : ",s->pc);
 
   uint8_t *inst = (uint8_t *)&s->inst;
-  for(int i = 3; i > 0; --i)
+  for(int i = 3; i >= 0; --i)
     p += snprintf(p, 4, "%02x", inst[i]);
 
   memset(p, ' ', 2);
@@ -192,7 +192,7 @@ int main(int argc,char** argv)
 
   long int SIZE_BIN = 0;
   FILE *F = openfile(argv[1], "rb", &SIZE_BIN);
-  if(SIZE_BIN >= MAX_SIZE_MEM)
+  if(SIZE_BIN >= MAX_SIZE_MEM * 4)
   {
     printf("ERROR: File too large. SIZE:%ld",SIZE_BIN);
     fclose(F);
