@@ -10,10 +10,6 @@ extern struct timeval now;
   char wmembuf[128];
   bool flag_rmem = false;
   bool flag_wmem = false;
-
-  svBit ren1, wen1;
-  char ren = 0;
-  char wen = 0;
 #endif
 
 
