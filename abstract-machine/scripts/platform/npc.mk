@@ -26,10 +26,16 @@ image: image-dep
 	@echo + OBJCOPY "->" $(IMAGE_REL).bin
 	@$(OBJCOPY) -S --set-section-flags .bss=alloc,contents -O binary $(IMAGE).elf $(IMAGE).bin
 
-run: insert-arg
-	$(MAKE) -C $(NPC_HOME) run IMG=$(IMAGE).bin
+run_minirv: insert-arg
+	$(MAKE) -C $(NPC_HOME) run_minirv IMG=$(IMAGE).bin
 
-gdb: insert-arg
-	$(MAKE) -C $(NPC_HOME) gdb IMG=$(IMAGE).bin
+gdb_minirv: insert-arg
+	$(MAKE) -C $(NPC_HOME) gdb_minirv IMG=$(IMAGE).bin
+
+run_riscv32e: insert-arg
+	$(MAKE) -C $(NPC_HOME) run_riscv32e IMG=$(IMAGE).bin
+
+gdb_riscv32e: insert-arg
+	$(MAKE) -C $(NPC_HOME) gdb_riscv32e IMG=$(IMAGE).bin
 
 .PHONY: insert-arg
