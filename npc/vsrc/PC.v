@@ -13,10 +13,4 @@ always@(posedge clk)begin
     else pc <= next_pc;
 end
 
-    function void config_base(output bit flag);
-        if(rst && pc == 32'h00000000)
-            flag = 1;
-    endfunction
-    export "DPI-C" function config_base;
-
 endmodule

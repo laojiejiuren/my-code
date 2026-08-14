@@ -2,7 +2,7 @@
 
 NPCState npc_state = { .state = NPC_STOP };
 
-extern "C" void set_npc_state(int state, uint32_t pc, int halt_ret)
+extern "C" void halt(int state, uint32_t pc, int halt_ret)
 {
     npc_state.state = state;
     npc_state.halt_pc = pc;

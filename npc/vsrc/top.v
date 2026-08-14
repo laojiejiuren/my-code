@@ -1,7 +1,6 @@
-import "DPI-C" function void halt(input int code);
 import "DPI-C" function int pmem_read (input int raddr);
 import "DPI-C" function void pmem_write (input int waddr, input int wdata, input byte wmask);
-import "DPI-C" function void set_npc_state(input int state, input bit[31:0] pc, input int halt_ret);
+import "DPI-C" function void halt(input int state, input bit[31:0] pc, input int halt_ret);
 
 module top(
     input clk,
