@@ -252,7 +252,7 @@ module IDU(
 
     always@(posedge clk) begin
         if(!rst && opcode == RISCV32I_sys && funct12 == RISCV32I_ebreak)
-            set_npc_state(2, pc, data);
+            halt(2, pc, data);
     end
 
 endmodule
