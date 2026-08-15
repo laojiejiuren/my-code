@@ -19,14 +19,17 @@ VERILATOR_FLAGS_MINIRV = --cc --exe --build -j \
 # ------- riscv32e -------
 
 BUILD_DIR_RV32E = ./build/RV32E
-OBJ_DIR_RV32E = $(BUILD_DIR)/obj_dir
+OBJ_DIR_RV32E = $(BUILD_DIR_RV32E)/obj_dir
 BIN_RV32E = $(OBJ_DIR_RV32E)/V$(TOPNAME)
 
+INV_PATH = $(abspath ./riscv32e/include_verilog)
+INVFLAGS = $(addprefix -I, $(INV_PATH))
 VSRCS_RV32E = $(shell find $(abspath ./riscv32e) -name "*.v")
 
 VERILATOR_FLAGS_RV32E = --cc --exe --build -j \
 				  -O3 -x-assign fast -x-initial fast --noassert \
 				  --top-module $(TOPNAME) \
+				  $(INVFLAGS)             \
 				  -Mdir $(OBJ_DIR_RV32E)
 
 # ------- 通用 -------
@@ -35,6 +38,7 @@ INC_DIR = $(abspath ./include)
 CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp") $(shell find $(abspath ./src) -name "*.c" -or -name "*.cpp")
 
 INC_PATH = $(INC_DIR)
+
 INCFLAGS = $(addprefix -I, $(INC_PATH))
 CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"$(TOPNAME)"\" -g 
 
