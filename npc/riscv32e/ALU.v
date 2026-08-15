@@ -16,7 +16,7 @@ module ALU(
             4'h4: result = A ^ B;                //XOR、XORI
             4'h5: result = A >> offset;          //srl、srli
             4'h6: result = A << offset;          //sll、slli
-            4'h7: result = $signed(A) >> offset; //srai、sra
+            4'h7: result = $signed(A) >>> offset; //srai、sra
             4'h8: result = (A < B) ? 1 : 0;      //sltui、sltu  
             4'h9: result = ($signed(A) < $signed(B) ? 1 : 0); //slt、slti
             default: result = 32'h0;

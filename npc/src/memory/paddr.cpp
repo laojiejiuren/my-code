@@ -68,6 +68,7 @@ void pmem_write(int waddr,int wdata,char wmask)
     snprintf(wmembuf,sizeof(wmembuf),"pc: 0x%08x addr: 0x%08x data: 0x%08x",pc_gets(),waddr, new_data);
     flag_wmem = true;
   #endif
+
   mem[id] = new_data;
 } 
 

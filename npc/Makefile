@@ -26,7 +26,7 @@ INV_PATH = $(abspath ./riscv32e/include_verilog)
 INVFLAGS = $(addprefix -I, $(INV_PATH))
 VSRCS_RV32E = $(shell find $(abspath ./riscv32e) -name "*.v")
 
-VERILATOR_FLAGS_RV32E = --cc --exe --build -j \
+VERILATOR_FLAGS_RV32E = --cc  --exe --build -j \
 				  -O3 -x-assign fast -x-initial fast --noassert \
 				  --top-module $(TOPNAME) \
 				  $(INVFLAGS)             \

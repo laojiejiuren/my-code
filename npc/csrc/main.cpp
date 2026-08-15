@@ -1,6 +1,7 @@
 #include <stdio.h>
 //#include <nvboard.h>
 #include "Vtop.h"
+#include "verilated_fst_c.h"
 #include "svdpi.h"
 #include "Vtop__Dpi.h"
 #include <sys/time.h>
@@ -16,6 +17,8 @@ char *file_name = NULL;
 char *diff_file = NULL;
 CPU_state cpu = {};
 Decode s;
+//VerilatedFstC* tfp = NULL;
+//uint64_t sim_time = 0;
 
 #if CONFIG_MTRACE
   extern bool flag_rmem;
@@ -98,6 +101,7 @@ static void init_npc()
     top->eval();
   }
   top->rst = 0; 
+  //tfp->dump(0); 
 }
 
 static void npc_exec_once(Decode *s)
@@ -108,6 +112,8 @@ static void npc_exec_once(Decode *s)
 
   top->clk = !top->clk;
   top->eval();
+  //sim_time += 10;
+  //tfp->dump(sim_time);
   top->clk = !top->clk;
   top->eval();
   //printf("%u\n",top->data_out);
@@ -204,6 +210,12 @@ int main(int argc,char** argv)
   //mem[0x224 >> 2] = 0x00100073; 
   //要先初始化verilator->实例化顶层模块->初始化波形->正式开始仿真
   Verilated::commandArgs(argc,argv);
+  /*Verilated::traceEverOn(true);
+  tfp = new VerilatedFstC;
+  top = new Vtop;                // 实例化设计（top 已是全局变量，此处不能再声明）
+  top->trace(tfp, 99);           // 99 是追踪层级深度，可根据需要调整
+  tfp->open("wave.fst");*/
+
 
   svSetScope(svGetScopeFromName("TOP.top.u_idu.u_gpr"));
 
@@ -216,5 +228,8 @@ int main(int argc,char** argv)
   init_sdb();
   sdb_npc();
   delete top;
+  //tfp->close();
+  //delete tfp;
+
   return 0;
 }

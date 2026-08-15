@@ -31,7 +31,13 @@ module LSU(
             2'b11:begin wmask = 8'h08; wdata_tmp = wdata << 24; end
             endcase
         end
-
+        2'b10:begin //sh
+            case(select)
+            2'b00: begin wmask = 8'h03; wdata_tmp = wdata; end
+            2'b10: begin wmask = 8'h0c; wdata_tmp = wdata << 16; end
+            default: wmask = 0;
+            endcase
+        end
         default:wmask = 8'h0f;
         endcase
     end
@@ -47,16 +53,16 @@ module LSU(
                 ((load_type == RISCV32I_lh) || (load_type == RISCV32I_lhu)) ? 32'd2 : 32'd4);
             case(load_type)
             RISCV32I_lw: data_mem = rdata_tmp;
+            RISCV32I_lbu: data_mem = (rdata_tmp >> (8 * raddr[1:0])) & 32'hff;
             RISCV32I_lb: begin
-                rdata_tmp = (rdata_tmp >> (raddr[1:0] * 8)) & 32'hff;
-                data_mem = {{24{rdata_tmp[7]}}, rdata_tmp[7:0]};
+                data_mem = (rdata_tmp >> (8 * raddr[1:0])) & 32'hff;
+                data_mem = {{24{data_mem[7]}}, data_mem[7:0]};
             end
-            RISCV32I_lbu: data_mem = (rdata_tmp >> (raddr[1:0] * 8)) & 32'hff;
-            RISCV32I_lh:begin
-                rdata_tmp = (rdata_tmp >> (raddr[1] * 16)) & 32'hffff;
-                data_mem = {{16{rdata_tmp[15]}}, rdata_tmp[15:0]};
+            RISCV32I_lhu: data_mem = (rdata_tmp >> (16 * raddr[1])) & 32'hffff;
+            RISCV32I_lh: begin
+                data_mem = (rdata_tmp >> (16 * raddr[1])) & 32'hffff;
+                data_mem = {{16{data_mem[15]}}, data_mem[15:0]};
             end
-            RISCV32I_lhu: data_mem = (rdata_tmp >> (raddr[1] * 16)) & 32'hffff;
             default: data_mem = 32'b0;
             endcase
         end

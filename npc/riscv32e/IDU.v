@@ -72,7 +72,7 @@ module IDU(
             case (funct3)
             RISCV32I_addi: alu_op = 4'h0;
             RISCV32I_sltiu: alu_op = 4'h8;
-            RISCV32I_slti: alu_op = 4'h8;
+            RISCV32I_slti: alu_op = 4'h9;
             RISCV32I_andi: alu_op = 4'h2;
             RISCV32I_xori: alu_op = 4'h4;
             RISCV32I_ori: alu_op = 4'h3;
@@ -95,7 +95,7 @@ module IDU(
             reg_waddr = rd;
             reg_wen = 1;
             case(funct3)
-            RISCV32I_add: alu_op = funct7[5] ? 4'h1 : 4'h0; //add or sub, 由funct7区分
+            RISCV32I_add: alu_op = funct7[5] ? 4'h1 : 4'h0;
             RISCV32I_slt: alu_op = 4'h9;
             RISCV32I_sltu: alu_op = 4'h8;
             RISCV32I_xor: alu_op = 4'h4;
@@ -103,7 +103,7 @@ module IDU(
             RISCV32I_and: alu_op = 4'h2;
             RISCV32I_sll: alu_op = 4'h6;
             RISCV32I_srl: begin
-                if(funct7[5] == 1) alu_op = 4'h7;
+                if(funct7[5] == 1) alu_op = 4'h7; 
                 else alu_op = 4'h5; 
             end
 
@@ -200,13 +200,7 @@ module IDU(
             end
 
             default:begin
-                operand2 = 32'b0;
-                operand1 = 32'b0;
-                reg_waddr = 5'b0;
                 load_type = 3'd0;
-                mem_ren = 0;
-                reg_wen = 0;
-                alu_op = 4'hA;
             end
 
             endcase
