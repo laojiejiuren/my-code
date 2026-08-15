@@ -5,7 +5,9 @@
 
 extern void npc_exec(uint64_t n);
 static int cmd_help(char *args);
+#if CONFIG_FTRACE
 extern char *file_name;
+#endif
 
 char* rl_gets() {
   static char *line_read = NULL;
@@ -249,8 +251,10 @@ void sdb_npc()
 
 void init_sdb()
 {
+  #if CONFIG_FTRACE
   printf("elf: %s\n", file_name);
   init_ftrace(file_name);
+  #endif
   init_regex();
   init_wp_pool();
   init_disasm();
