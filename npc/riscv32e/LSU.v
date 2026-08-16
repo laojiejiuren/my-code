@@ -1,5 +1,4 @@
-`include "opcode.vh"
-import opcode::*;
+`include "opcode.v"
 
 module LSU(
     input [31:0] waddr,
@@ -49,17 +48,17 @@ module LSU(
         data_mem = 32'b0;
         if(ren) begin
             rdata_tmp = pmem_read(raddr, {31'b0,ren},
-                ((load_type == RISCV32I_lb) || (load_type == RISCV32I_lbu)) ? 32'd1 :
-                ((load_type == RISCV32I_lh) || (load_type == RISCV32I_lhu)) ? 32'd2 : 32'd4);
+                ((load_type == `RISCV32I_lb) || (load_type == `RISCV32I_lbu)) ? 32'd1 :
+                ((load_type == `RISCV32I_lh) || (load_type == `RISCV32I_lhu)) ? 32'd2 : 32'd4);
             case(load_type)
-            RISCV32I_lw: data_mem = rdata_tmp;
-            RISCV32I_lbu: data_mem = (rdata_tmp >> (8 * raddr[1:0])) & 32'hff;
-            RISCV32I_lb: begin
+            `RISCV32I_lw: data_mem = rdata_tmp;
+            `RISCV32I_lbu: data_mem = (rdata_tmp >> (8 * raddr[1:0])) & 32'hff;
+            `RISCV32I_lb: begin
                 data_mem = (rdata_tmp >> (8 * raddr[1:0])) & 32'hff;
                 data_mem = {{24{data_mem[7]}}, data_mem[7:0]};
             end
-            RISCV32I_lhu: data_mem = (rdata_tmp >> (16 * raddr[1])) & 32'hffff;
-            RISCV32I_lh: begin
+            `RISCV32I_lhu: data_mem = (rdata_tmp >> (16 * raddr[1])) & 32'hffff;
+            `RISCV32I_lh: begin
                 data_mem = (rdata_tmp >> (16 * raddr[1])) & 32'hffff;
                 data_mem = {{16{data_mem[15]}}, data_mem[15:0]};
             end

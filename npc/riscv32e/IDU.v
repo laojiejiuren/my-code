@@ -1,5 +1,4 @@
-`include "opcode.vh"
-import opcode::*;
+`include "opcode.v"
 
 module IDU(
     input clk,
@@ -64,22 +63,22 @@ module IDU(
         alu_op = 4'hA;
 
         case (opcode)
-        RISCV32I_I:begin //addi,sltiu,slti,srai,slli,srli,andi,xori,ori
+        `RISCV32I_I:begin //addi,sltiu,slti,srai,slli,srli,andi,xori,ori
             operand1 = rs1_rdata;
             operand2 = imm_i;
             reg_waddr = rd;
             reg_wen = 1;
             case (funct3)
-            RISCV32I_addi: alu_op = 4'h0;
-            RISCV32I_sltiu: alu_op = 4'h8;
-            RISCV32I_slti: alu_op = 4'h9;
-            RISCV32I_andi: alu_op = 4'h2;
-            RISCV32I_xori: alu_op = 4'h4;
-            RISCV32I_ori: alu_op = 4'h3;
-            RISCV32I_slli: begin
+            `RISCV32I_addi: alu_op = 4'h0;
+            `RISCV32I_sltiu: alu_op = 4'h8;
+            `RISCV32I_slti: alu_op = 4'h9;
+            `RISCV32I_andi: alu_op = 4'h2;
+            `RISCV32I_xori: alu_op = 4'h4;
+            `RISCV32I_ori: alu_op = 4'h3;
+            `RISCV32I_slli: begin
                 if(funct7[5] == 0) alu_op = 4'h6;
             end
-            RISCV32I_srai: begin
+            `RISCV32I_srai: begin
                 if(funct7[5] == 1) alu_op = 4'h7;//srai
                 else alu_op = 4'h5; //srli
             end
@@ -89,20 +88,20 @@ module IDU(
             endcase
         end
 
-        RISCV32I_R:begin
+        `RISCV32I_R:begin
             operand1 = rs1_rdata;
             operand2 = rs2_rdata;
             reg_waddr = rd;
             reg_wen = 1;
             case(funct3)
-            RISCV32I_add: alu_op = funct7[5] ? 4'h1 : 4'h0;
-            RISCV32I_slt: alu_op = 4'h9;
-            RISCV32I_sltu: alu_op = 4'h8;
-            RISCV32I_xor: alu_op = 4'h4;
-            RISCV32I_or: alu_op = 4'h3;
-            RISCV32I_and: alu_op = 4'h2;
-            RISCV32I_sll: alu_op = 4'h6;
-            RISCV32I_srl: begin
+            `RISCV32I_add: alu_op = funct7[5] ? 4'h1 : 4'h0;
+            `RISCV32I_slt: alu_op = 4'h9;
+            `RISCV32I_sltu: alu_op = 4'h8;
+            `RISCV32I_xor: alu_op = 4'h4;
+            `RISCV32I_or: alu_op = 4'h3;
+            `RISCV32I_and: alu_op = 4'h2;
+            `RISCV32I_sll: alu_op = 4'h6;
+            `RISCV32I_srl: begin
                 if(funct7[5] == 1) alu_op = 4'h7; 
                 else alu_op = 4'h5; 
             end
@@ -111,7 +110,7 @@ module IDU(
             endcase
         end
 
-        RISCV32I_U:begin
+        `RISCV32I_U:begin
             operand1 = imm_u;
             operand2 = 32'b0;
             reg_waddr = rd;
@@ -119,7 +118,7 @@ module IDU(
             alu_op = 4'h0;
         end
 
-        RISCV32I_auipc:begin
+        `RISCV32I_auipc:begin
             operand1 = pc;
             operand2 = imm_u;
             reg_waddr = rd;
@@ -127,26 +126,26 @@ module IDU(
             alu_op = 4'h0;
         end
 
-         RISCV32I_B:begin
+         `RISCV32I_B:begin
             operand1 = pc;
             operand2 = imm_b;
             alu_op = 4'h0;
             case(funct3)
-            RISCV32I_beq: branch = (rs1_rdata == rs2_rdata);
-            RISCV32I_bne: branch = (rs1_rdata != rs2_rdata);
-            RISCV32I_bge: branch = ($signed(rs1_rdata) >= $signed(rs2_rdata));
-            RISCV32I_bgeu: branch = (rs1_rdata >= rs2_rdata);
-            RISCV32I_blt: branch = ($signed(rs1_rdata) < $signed(rs2_rdata));
-            RISCV32I_bltu: branch = (rs1_rdata < rs2_rdata);
+            `RISCV32I_beq: branch = (rs1_rdata == rs2_rdata);
+            `RISCV32I_bne: branch = (rs1_rdata != rs2_rdata);
+            `RISCV32I_bge: branch = ($signed(rs1_rdata) >= $signed(rs2_rdata));
+            `RISCV32I_bgeu: branch = (rs1_rdata >= rs2_rdata);
+            `RISCV32I_blt: branch = ($signed(rs1_rdata) < $signed(rs2_rdata));
+            `RISCV32I_bltu: branch = (rs1_rdata < rs2_rdata);
 
             default: branch = 0;
             endcase
          end
 
 
-        RISCV32I_ja: begin
+        `RISCV32I_ja: begin
             case(funct3)
-            RISCV32I_jalr: begin
+            `RISCV32I_jalr: begin
                 operand1 = rs1_rdata;
                 operand2 = imm_i;
                 reg_waddr = rd;
@@ -168,7 +167,7 @@ module IDU(
 
         end
 
-        RISCV32I_jal: begin
+        `RISCV32I_jal: begin
             operand1 = pc;
             operand2 = imm_j;
             reg_waddr = rd;
@@ -177,9 +176,9 @@ module IDU(
             alu_op = 4'h0;
         end
         
-        RISCV32I_sys:begin
+        `RISCV32I_sys:begin
             case(funct12)
-            RISCV32I_ebreak:begin
+            `RISCV32I_ebreak:begin
                 //halt(data);
             end
             default:begin
@@ -187,7 +186,7 @@ module IDU(
             endcase
         end
 
-        RISCV32I_load:begin
+        `RISCV32I_load:begin
             operand1 = rs1_rdata;
             operand2 = imm_i;
             reg_waddr = rd;
@@ -195,7 +194,7 @@ module IDU(
             reg_wen = 1;
             alu_op = 4'h0;
             case(funct3)
-            RISCV32I_lw , RISCV32I_lb , RISCV32I_lh , RISCV32I_lbu , RISCV32I_lhu :begin
+            `RISCV32I_lw , `RISCV32I_lb , `RISCV32I_lh , `RISCV32I_lbu , `RISCV32I_lhu :begin
                 load_type = funct3;
             end
 
@@ -207,16 +206,16 @@ module IDU(
 
         end
         
-        RISCV32I_store:begin
+        `RISCV32I_store:begin
             operand1 = rs1_rdata;
             operand2 = imm_s;
             Q2 = rs2_rdata;
             mem_wen = 1;
             alu_op = 4'h0;
             case(funct3)
-            RISCV32I_sw: store_type = 2'b00;
-            RISCV32I_sb: store_type = 2'b01;
-            RISCV32I_sh: store_type = 2'b10;
+            `RISCV32I_sw: store_type = 2'b00;
+            `RISCV32I_sb: store_type = 2'b01;
+            `RISCV32I_sh: store_type = 2'b10;
 
             default:begin
                 store_type = 2'b11;
@@ -239,7 +238,7 @@ module IDU(
     end
 
     always@(posedge clk) begin
-        if(!rst && opcode == RISCV32I_sys && funct12 == RISCV32I_ebreak)
+        if(!rst && opcode == `RISCV32I_sys && funct12 == `RISCV32I_ebreak)
             halt(2, pc, data);
     end
 
