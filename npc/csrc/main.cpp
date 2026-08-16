@@ -17,8 +17,12 @@ char *file_name = NULL;
 char *diff_file = NULL;
 CPU_state cpu = {};
 Decode s;
-//VerilatedFstC* tfp = NULL;
-//uint64_t sim_time = 0;
+
+#if CONFIG_WAVE
+VerilatedFstC* tfp = NULL;
+uint64_t sim_time = 0;
+static void close_trace() { if (tfp) tfp->close(); }
+#endif
 
 #if CONFIG_MTRACE
   extern bool flag_rmem;
@@ -101,7 +105,9 @@ static void init_npc()
     top->eval();
   }
   top->rst = 0; 
-  //tfp->dump(0); 
+  #if CONFIG_WAVE   
+    tfp->dump(0); 
+  #endif
 }
 
 static void npc_exec_once(Decode *s)
@@ -112,8 +118,12 @@ static void npc_exec_once(Decode *s)
 
   top->clk = !top->clk;
   top->eval();
-  //sim_time += 10;
-  //tfp->dump(sim_time);
+
+  #if CONFIG_WAVE
+    sim_time += 10;
+    tfp->dump(sim_time);
+  #endif
+  
   top->clk = !top->clk;
   top->eval();
   //printf("%u\n",top->data_out);
@@ -210,12 +220,14 @@ int main(int argc,char** argv)
   //mem[0x224 >> 2] = 0x00100073; 
   //要先初始化verilator->实例化顶层模块->初始化波形->正式开始仿真
   Verilated::commandArgs(argc,argv);
-  /*Verilated::traceEverOn(true);
-  tfp = new VerilatedFstC;
-  top = new Vtop;                // 实例化设计（top 已是全局变量，此处不能再声明）
-  top->trace(tfp, 99);           // 99 是追踪层级深度，可根据需要调整
-  tfp->open("wave.fst");*/
 
+  #if CONFIG_WAVE
+  Verilated::traceEverOn(true);
+  tfp = new VerilatedFstC;
+  top->trace(tfp, 99);          
+  tfp->open("wave.fst");
+  atexit(close_trace);
+  #endif
 
   svSetScope(svGetScopeFromName("TOP.top.u_idu.u_gpr"));
 

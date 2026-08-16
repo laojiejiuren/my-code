@@ -29,6 +29,7 @@ VSRCS_RV32E = $(shell find $(abspath ./riscv32e) -name "*.v")
 VERILATOR_FLAGS_RV32E = --cc  --exe --build -j \
 				  -O3 -x-assign fast -x-initial fast --noassert \
 				  --top-module $(TOPNAME) \
+				   --trace-fst --trace-depth 2 \
 				  $(INVFLAGS)             \
 				  -Mdir $(OBJ_DIR_RV32E)
 
