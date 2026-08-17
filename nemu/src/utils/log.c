@@ -32,7 +32,7 @@ void init_log(const char *log_file) {
 
 bool log_enable() {
   return MUXDEF(CONFIG_TRACE, (g_nr_guest_inst >= CONFIG_TRACE_START) &&
-         (g_nr_guest_inst <= 60000), false);
+         (g_nr_guest_inst <= 6000000), false);
 }
 #endif
 //CONFIG_TRACE_END
