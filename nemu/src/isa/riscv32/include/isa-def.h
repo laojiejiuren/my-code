@@ -23,6 +23,30 @@ typedef struct {
   vaddr_t pc;
 } MUXDEF(CONFIG_RV64, riscv64_CPU_state, riscv32_CPU_state);
 
+typedef struct{
+  word_t mtvec;   //入口地址
+  word_t mcause;  //异常原因
+  word_t mepc;    //触发异常的PC地址
+  word_t mstatus; //状态
+} CSR;
+
+typedef enum {
+  INSTRUCTION_ADDRESS_MISALIGNED = 0,  //指令地址未对齐
+  INSTRUCTION_ACCESS_FAULT       = 1,  //指令访问错误
+  ILLEGAL_INSTRUCTION            = 2,  //非法指令
+  BREAKPOINT                     = 3,  //断点
+  LOAD_ADDRESS_MISALIGNED        = 4,  //加载地址未对齐
+  LOAD_ACCESS_FAULT              = 5,  //加载访问错误
+  STORE_ADDRESS_MISALIGNED       = 6,  //存储地址未对齐
+  STORE_ACCESS_FAULT             = 7,  //存储访问错误
+  ENVIRONMENT_CALL_FROM_U_MODE   = 8,  //用户模式的环境调用
+  ENVIRONMENT_CALL_FROM_S_MODE   = 9,  //特权模式的环境调用
+  ENVIRONMENT_CALL_FROM_M_MODE   = 11, //机器模式的环境调用
+  INSTRUCTION_PAGE_FAULT         = 12, //指令页错误
+  LOAD_PAGE_FAULT                = 13, //加载页错误
+  STORE_PAGE_FAULT               = 15, //存储页错误
+} EVENT;
+
 // decode
 typedef struct {
   uint32_t inst;
