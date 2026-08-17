@@ -26,7 +26,7 @@ bool flag_vr = false;
 enum {
   TYPE_I, TYPE_U, TYPE_S,
   TYPE_N, TYPE_J, TYPE_B,
-  TYPE_R,// none
+  TYPE_R, TYPE_C,// none
 };
 
 #define src1R() do { *src1 = R(rs1); } while (0)
@@ -45,7 +45,7 @@ enum {
                 (BITS(i,30,25) << 5) | (BITS(i,11,8) << 1);     \
     *imm = SEXT(val,13);                                        \
 } while(0)
-
+#define immC() do{ *imm = BITS(i, 31, 20);} while(0)
 
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
   uint32_t i = s->isa.inst;
@@ -59,6 +59,7 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_
     case TYPE_R: src1R(); src2R();         break;
     case TYPE_J:                   immJ(); break;
     case TYPE_B: src1R(); src2R(); immB(); break;
+    case TYPE_C: src1R();          immC(); break;
     case TYPE_N: break;
     default: panic("unsupported type = %d", type);
   }
@@ -130,6 +131,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("0000001 ????? ????? 111 ????? 01100 11", remu   , R, {if(src2 != 0)R(rd) = src1 % src2;else R(rd) = (src1);});
 
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
+  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , C, { word_t tmp = csr_read(imm); csr_write(imm, src1); R(rd) = tmp; });
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
   INSTPAT_END();
 

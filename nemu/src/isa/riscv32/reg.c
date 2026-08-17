@@ -52,3 +52,27 @@ word_t isa_reg_str2val(const char *s, bool *success)
   }
   return result;
 }
+
+word_t csr_read(vaddr_t addr)
+{
+  switch(addr)
+  {
+    case CSR_Mstatus: return cpu_csr.mstatus;
+    case CSR_Mepc: return cpu_csr.mepc;
+    case CSR_Mtvec: return cpu_csr.mtvec;
+    case CSR_Mcause: return cpu_csr.mcause;
+    default: return 0;
+  }
+}
+
+void csr_write(vaddr_t addr, word_t data)
+{
+  switch(addr)
+  {
+    case CSR_Mstatus: cpu_csr.mstatus = data; break;
+    case CSR_Mepc: cpu_csr.mepc = data; break;
+    case CSR_Mtvec: cpu_csr.mtvec = data; break;
+    case CSR_Mcause: cpu_csr.mcause = data; break;
+    default: return;
+  }
+}

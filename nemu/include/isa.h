@@ -38,7 +38,7 @@ struct Decode;
 int isa_exec_once(struct Decode *s);
 
 //CSR
-struct CSR;
+extern CSR cpu_csr;
 
 // memory
 enum { MMU_DIRECT, MMU_TRANSLATE, MMU_FAIL };

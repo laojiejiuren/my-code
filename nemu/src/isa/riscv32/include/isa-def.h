@@ -30,6 +30,13 @@ typedef struct{
   word_t mstatus; //状态
 } CSR;
 
+typedef enum{
+  CSR_Mstatus = 0x300,
+  CSR_Mtvec = 0x305,
+  CSR_Mepc = 0x341,
+  CSR_Mcause = 0x342,
+} CSR_ID;
+
 typedef enum {
   INSTRUCTION_ADDRESS_MISALIGNED = 0,  //指令地址未对齐
   INSTRUCTION_ACCESS_FAULT       = 1,  //指令访问错误
