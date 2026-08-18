@@ -15,7 +15,7 @@
 
 #include <isa.h>
 
-CSR cpu_csr = {};
+CSR cpu_csr = {.mstatus = 0x1800};
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   /* TODO: Trigger an interrupt/exception with ``NO''.
    * Then return the address of the interrupt/exception vector.
