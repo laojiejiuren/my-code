@@ -29,7 +29,7 @@ void etrace_printf(uint32_t epc, uint32_t mtvec, uint32_t mcause, bool flag)
 {
   const char *ch = flag ? "ecall" : "mret ";
   etrace_write("etrace: %s epc = "FMT_WORD" mtvec = "FMT_WORD" mcause = "FMT_WORD" a7 = "FMT_WORD" \n",
-               ch, epc, mtvec, mcause, R(7));
+               ch, epc, mtvec, mcause, R(17));
 }
 
 #endif
