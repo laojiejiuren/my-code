@@ -35,7 +35,6 @@ void etrace_printf(uint32_t epc, uint32_t mtvec, uint32_t mcause, bool flag)
 void etrace_printf(uint32_t epc, uint32_t mtvec, uint32_t mcause, bool flag){}
 #endif
 
-
 enum {
   TYPE_I, TYPE_U, TYPE_S,
   TYPE_N, TYPE_J, TYPE_B,
