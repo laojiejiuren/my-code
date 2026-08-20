@@ -9,6 +9,7 @@ Context* __am_irq_handle(Context *c) {
     Event ev = {0};
     switch (c->mcause) {
       case ENVIRONMENT_CALL_FROM_U_MODE: 
+      case ENVIRONMENT_CALL_FROM_M_MODE:
       ev.event = EVENT_YIELD; c->mepc += 4; break;
       default: ev.event = EVENT_ERROR; break;
     }
