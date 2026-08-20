@@ -25,14 +25,14 @@
 bool flag_vr = false;
 
 #ifdef CONFIG_ETRACE
-void etrace_printf(uint32_t epc, uint32_t mtvec, uint32_t mcause, bool flag)
+void etrace_printf(uint32_t epc, uint32_t mtvec, uint32_t mcause, uint32_t mstatus, bool flag)
 {
   const char *ch = flag ? "ecall" : "mret ";
-  etrace_write("etrace: %s epc = "FMT_WORD" mtvec = "FMT_WORD" mcause = "FMT_WORD" a7 = "FMT_WORD" \n",
-               ch, epc, mtvec, mcause, R(17));
+  etrace_write("etrace: %s epc = "FMT_WORD" mtvec = "FMT_WORD" mcause = "FMT_WORD" a7 = "FMT_WORD" mstatus = "FMT_WORD" \n",
+               ch, epc, mtvec, mcause, R(17), mstatus);
 }
 #else
-void etrace_printf(uint32_t epc, uint32_t mtvec, uint32_t mcause, bool flag){}
+void etrace_printf(uint32_t epc, uint32_t mtvec, uint32_t mcause, uint32_t mstatus, bool flag){}
 #endif
 
 enum {
@@ -143,11 +143,11 @@ static int decode_exec(Decode *s) {
   INSTPAT("0000001 ????? ????? 111 ????? 01100 11", remu   , R, {if(src2 != 0)R(rd) = src1 % src2;else R(rd) = (src1);});
 
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
-  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, s->dnpc = isa_raise_intr(8, s->pc); etrace_printf(s->pc, cpu_csr.mtvec, 8, 1));
+  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, s->dnpc = isa_raise_intr(8, s->pc); etrace_printf(s->pc, cpu_csr.mtvec, cpu_csr.mstatus, 8, 1));
   INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , C, { R(rd) = csr_read(imm); csr_write(imm, src1); });
   INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , C, { word_t tmp = csr_read(imm); if (src1 != 0) csr_write(imm, tmp | src1); R(rd) = tmp; });
   INSTPAT("??????? ????? ????? 011 ????? 11100 11", csrrc  , C, { word_t tmp = csr_read(imm); if (src1 != 0) csr_write(imm, tmp & ~src1); R(rd) = tmp; });
-  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , N, s->dnpc = cpu_csr.mepc; etrace_printf(s->pc, cpu_csr.mtvec, cpu_csr.mcause, 0));
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , N, s->dnpc = cpu_csr.mepc; etrace_printf(s->pc, cpu_csr.mtvec, cpu_csr.mcause, cpu_csr.mstatus, 0));
 
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
   INSTPAT_END();
