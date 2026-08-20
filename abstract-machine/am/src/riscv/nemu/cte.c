@@ -9,7 +9,6 @@ Context* __am_irq_handle(Context *c) {
     Event ev = {0};
     switch (c->mcause) {
       case ENVIRONMENT_CALL_FROM_U_MODE: 
-      //case ENVIRONMENT_CALL_FROM_M_MODE: 
       ev.event = EVENT_YIELD; c->mepc += 4; break;
       default: ev.event = EVENT_ERROR; break;
     }
@@ -38,7 +37,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
 
   kc->mepc = (uintptr_t)entry;
   kc->mstatus = 0x1800;
-  kc->gpr[2] = (uintptr_t)kc;
+  //kc->gpr[2] = (uintptr_t)kc;
   return kc;
 }
 
