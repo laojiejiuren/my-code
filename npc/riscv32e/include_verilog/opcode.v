@@ -58,4 +58,10 @@
 `define RISCV32I_blt    3'b100
 `define RISCV32I_bltu   3'b110
 
+//------- system指令 -------
 `define RISCV32I_ebreak 12'b000000000001
+`define RISCV32I_ecall  12'b000000000000
+`define RISCV32I_mret   12'b001100000010
+
+`define RISCV32I_csrrw  3'b001
+`define RISCV32I_csrrs  3'b010

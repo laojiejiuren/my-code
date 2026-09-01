@@ -181,6 +181,9 @@ module IDU(
             `RISCV32I_ebreak:begin
                 //halt(data);
             end
+            `RISCV32I_ecall:begin
+                
+            end
             default:begin
             end
             endcase
