@@ -11,6 +11,14 @@ module IDU(
     input [31:0] reg_wdata_wb,
     input reg_wen_wb,
 
+    //------ CSR -----
+    input [31:0] csr_data,
+
+    output reg [11:0] csr_addr,
+    output reg csr_w,
+    output reg csr_ren,
+    output reg ecall,
+
     output reg reg_wen,
     output reg mem_ren, 
     output reg mem_wen,
@@ -47,6 +55,7 @@ module IDU(
     wire [31:0] imm_s = {{20{inst[31]}}, inst[31:25], inst[11:7]};
     wire [31:0] imm_j = {{12{inst[31]}}, inst[19:12], inst[20], inst[30:21], 1'b0};
     wire [31:0] imm_b = {{20{inst[31]}}, inst[7], inst[30:25], inst[11:8], 1'b0};
+    wire [11:0] imm_C = inst[31:20];
 
     always@(*)begin
         operand1 = 32'b0;
@@ -182,10 +191,24 @@ module IDU(
                 //halt(data);
             end
             `RISCV32I_ecall:begin
-                
+                ecall = 1;
             end
             default:begin
             end
+            endcase
+
+            case(funct3)
+            `RISCV32I_csrrs:begin
+                operand1  = csr_data;
+                operand2  = rs1_rdata;
+                reg_waddr = rd;
+                reg_wen   = 1;
+                csr_ren   = 1;
+                csr_addr  = imm_C;
+                alu_op    = 4'h3;
+                csr_w     = 1;
+            end
+            default:begin end
             endcase
         end
 

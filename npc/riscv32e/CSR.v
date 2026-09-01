@@ -1,40 +1,71 @@
+`include "opcode.v"
+
 module CSR(
     input clk,
     input rst,
 
+    //------- ecall ------
     input [31:0] pc,
-    input [31:0] cause,
-    input [31:0] data_csr,
+
+    //csrrs
+    input [31:0] data_csr,//在ALU中经过计算后的数据
 
     input [11:0] csr_addr,
     input csr_ecall,
-    input csr_r,
     input csr_w,
 
-    output [31:0] csr_out
+    output reg [31:0] csr_mtvec,
+    output reg [31:0] csr_data
 );
 
-    logic [31:0] mstatus,mtvepc,mepc,mcause;
-    logic [63:0] mcycle;
+    logic [31:0] mstatus,mtvec,mepc,mcause;
+    logic [31:0] mcycle,mcycleh;
     
+    always @(*) begin//读取CSR的数据
+        case (csr_addr)
+        `CSR_mstatus:csr_data = mstatus;
+        `CSR_mtvec:  csr_data = mtvec;
+        `CSR_mepc:   csr_data = mepc;
+        `CSR_mcause: csr_data = mcause;
+        `CSR_mcycle: csr_data = mcycle;
+        `CSR_mcycleh:csr_data = mcycleh;
+        default:     csr_data = 32'b0;
+        endcase
+    end
+
+    always @(posedge clk) begin
+        if(rst)begin
+            mcycle  <= 32'b0;
+            mcycleh <= 32'b0;
+        end
+        else if(csr_w && csr_addr == `CSR_mcycle)
+            mcycle <= data_csr;
+        else if(csr_w && csr_addr == `CSR_mcycleh)
+            mcycleh <= data_csr;
+        else {mcycleh,mcycle} <= {mcycleh,mcycle} + 1;
+    end
+
     always @(posedge clk) begin
         if(rst) begin
-            mcycle <= 64'b0;
             mstatus <= 32'h1800;
-            mtvepc <= 32'b0;
+            mtvec <= 32'b0;
             mepc <= 32'b0;
             mcause <= 32'b0;
         end
         else begin
             if(csr_ecall)begin
                 mstatus <= 32'h1800;
-                mcause <= cause;
+                mcause <= 32'h11;
                 mepc <= pc;
-                csr_out <= mtvepc;
+                csr_mtvec <= mtvec;
             end
-            else if(csr_w)begin
+            else if(csr_w)begin//将数据写进CSR
                 case(csr_addr)
-
+                `CSR_mstatus: mstatus <= data_csr;
+                `CSR_mtvec:   mtvec   <= data_csr;
+                `CSR_mepc:    mepc    <= data_csr;
+                `CSR_mcause:  mcause  <= data_csr;
+                default: begin end
                 endcase
             end
         end
