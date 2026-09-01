@@ -203,7 +203,7 @@ int main(int argc,char** argv)
   gettimeofday(&now,NULL);
   boot_time = now.tv_sec * 1000000 + now.tv_usec;
  
-  assert(argc >= 4);
+  //assert(argc >= 4);
   file_name = argv[2];
 
   long int SIZE_BIN = 0;

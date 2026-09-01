@@ -14,6 +14,7 @@ VSRCS_MINIRV = $(shell find $(abspath ./minirv) -name "*.v")
 VERILATOR_FLAGS_MINIRV = --cc --exe --build -j \
 				  -O3 -x-assign fast -x-initial fast --noassert \
 				  --top-module $(TOPNAME) \
+				  --trace-fst --trace-depth 2 \
 				  -Mdir $(OBJ_DIR_MINIRV)
 
 # ------- riscv32e -------
@@ -46,8 +47,8 @@ CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"$(TOPNAME)"\" -g
 default:$(BIN_MINIRV)
 DIFF_REF_SO = $(NEMU_HOME)/build/riscv32-nemu-interpreter-so
 ELF_FILE = $(addsuffix .elf, $(basename $(IMG)))
-ARGS = $(ELF_FILE) $(DIFF_REF_SO) 
-NPC_EXEC := $(IMG) $(ARGS)
+#ARGS = $(ELF_FILE) $(DIFF_REF_SO) 
+NPC_EXEC := $(IMG) #$(ARGS)
 
 # ------- minirv依赖 -------
 

@@ -70,6 +70,10 @@ module IDU(
         mem_ren = 0;
         mem_wen = 0;
         alu_op = 4'hA;
+        csr_addr = 12'b0;
+        csr_w = 0;
+        csr_ren = 0;
+        ecall = 0;
 
         case (opcode)
         `RISCV32I_I:begin //addi,sltiu,slti,srai,slli,srli,andi,xori,ori
@@ -206,7 +210,7 @@ module IDU(
                 csr_ren   = 1;
                 csr_addr  = imm_C;
                 alu_op    = 4'h3;
-                csr_w     = 1;
+                csr_w     = (rs1 != 5'b0); //rs1=x0时不写CSR(csrr伪指令)
             end
             default:begin end
             endcase
