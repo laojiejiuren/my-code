@@ -61,6 +61,8 @@ word_t csr_read(vaddr_t addr)
     case CSR_Mepc: return cpu_csr.mepc;
     case CSR_Mtvec: return cpu_csr.mtvec;
     case CSR_Mcause: return cpu_csr.mcause;
+    case CSR_Mvendorid: return 0x79737879;
+    case CSR_Marchid: return 0x018D7E6E;
     default: return 0;
   }
 }
