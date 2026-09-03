@@ -72,3 +72,5 @@
 `define CSR_mcause  12'h342
 `define CSR_mcycle  12'hB00
 `define CSR_mcycleh 12'hB80
+`define CSR_mvendorid 12'hF11
+`define CSR_marchid 12'hF12

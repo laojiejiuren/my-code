@@ -62,6 +62,24 @@ int add_buff(char *out, const char *fmt, va_list ap)
         *out++ = (char)s1;
         cnt++;
       }
+      else if(*tmp == 'x')
+      {
+        unsigned int num_x = va_arg(ap, unsigned int);
+        char buf_x[20] = {};
+        int id_x = 0;
+
+        while(num_x)
+        {
+          buf_x[id_x++] = (num_x % 16) >= 10 ? (num_x % 16) + 'a' : (num_x % 16) + '0';
+          num_x /= 16;
+          cnt++;
+        }
+        for (int i = id_x - 1; i >= 0; --i)
+        {
+          *out = buf_x[i];
+          out++;
+        }
+      }
     }
     else
     {

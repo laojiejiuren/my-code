@@ -124,6 +124,10 @@ static void npc_exec_once(Decode *s)
     tfp->dump(sim_time);
   #endif
   
+  /*uint32_t v = 0;
+  get_csr(1,&v);
+  printf("%u\n",v);
+*/
   top->clk = !top->clk;
   top->eval();
   //printf("%u\n",top->data_out);
@@ -217,7 +221,16 @@ int main(int argc,char** argv)
 
   fread(mem.data(),1,SIZE_BIN,F);
   fclose(F);
-  mem[0x224 >> 2] = 0x00100073; 
+  /*mem[0x224 >> 2] = 0x00100073; 
+  mem[0x000 >> 2] = 0xB00022F3; // csrr t0, mcycle
+  mem[0x004 >> 2] = 0xB0002373; // csrr t1, mcycle
+  mem[0x008 >> 2] = 0xB00023F3; // csrr t2, mcycle
+  mem[0x00C >> 2] = 0x40530533; // sub  a0, t1, t0    a0 = t1 - t0
+  mem[0x010 >> 2] = 0x406385B3; // sub  a1, t2, t1    a1 = t2 - t1
+  mem[0x014 >> 2] = 0x00153513; // sltiu a0, a0, 1    a0 = (a0 == 0) 即未自增
+  mem[0x018 >> 2] = 0x0015B593; // sltiu a1, a1, 1    a1 = (a1 == 0) 即未自增
+  mem[0x01C >> 2] = 0x00B56533; // or   a0, a0, a1    a0 = 任一差值非0则1(失败)
+  mem[0x020 >> 2] = 0x00100073; // ebreak            halt_ret = gpr[10] = a0*/
   //要先初始化verilator->实例化顶层模块->初始化波形->正式开始仿真
   Verilated::commandArgs(argc,argv);
 

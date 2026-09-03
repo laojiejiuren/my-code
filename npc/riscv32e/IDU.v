@@ -18,6 +18,7 @@ module IDU(
     output reg csr_w,
     output reg csr_ren,
     output reg ecall,
+    output reg mret,
 
     output reg reg_wen,
     output reg mem_ren, 
@@ -196,6 +197,9 @@ module IDU(
             end
             `RISCV32I_ecall:begin
                 ecall = 1;
+            end
+            `RISCV32I_mret:begin
+                mret = 1;
             end
             default:begin
             end

@@ -29,7 +29,7 @@ module top(
     reg csr_w;
     reg csr_ren;
     reg ecall;
-
+    reg mret;
     //ID -> LS
     reg mem_ren_id_ls;
     reg mem_wen_id_ls;
@@ -44,6 +44,7 @@ module top(
 
     //CSR
     wire [31:0] csr_mtvec;
+    wire [31:0] csr_mepc;
     reg [31:0] csr_data;
 
     IFU u_ifu(
@@ -52,7 +53,7 @@ module top(
     
     IDU u_idu(
         .clk(clk),.rst(rst),.inst(inst_if),.pc(pc),.reg_waddr_wb(reg_waddr_wb_id),.reg_wdata_wb(reg_wdata_wb_id),.reg_wen_wb(reg_wen_wb_id),.csr_data(csr_data),
-        .csr_addr(csr_addr),.csr_w(csr_w),.csr_ren(csr_ren),.ecall(ecall),
+        .csr_addr(csr_addr),.csr_w(csr_w),.csr_ren(csr_ren),.ecall(ecall),.mret(mret),
         .jump(jump),.branch(branch),.reg_wen(reg_wen_id_ex),.alu_op(alu_op_id),.reg_waddr(reg_waddr_id_wb),.operand1(operand1_id),.operand2(operand2_id),
         .mem_ren(mem_ren_id_ls),.mem_wen(mem_wen_id_ls),.store_type(store_type_id_ls),.load_type(load_type_id_ls),.Q2(Q2_id_ls),
         
@@ -71,13 +72,13 @@ module top(
 
     WBU u_wbu(
         .reg_wen_id(reg_wen_id_ex),.jump(jump),.branch(branch) ,.reg_waddr_id(reg_waddr_id_wb),.alu_res(alu_res_ex),.pc(pc),
-        .mem_ren_id(mem_ren_id_ls),.data_mem(data_mem_ls),.csr_ren_id(csr_ren),.ecall_id(ecall),.csr_data(csr_data),.csr_mtvec(csr_mtvec),
+        .mem_ren_id(mem_ren_id_ls),.data_mem(data_mem_ls),.csr_ren_id(csr_ren),.ecall_id(ecall),.mret_id(mret),.csr_data(csr_data),.csr_mtvec(csr_mtvec),.csr_mepc(csr_mepc),
         .next_pc(next_pc),.reg_wen_wb(reg_wen_wb_id),.reg_waddr_wb(reg_waddr_wb_id),.reg_wdata_wb(reg_wdata_wb_id)
     );
 
     CSR u_csr(
-        .clk(clk),.rst(rst),.pc(pc),.data_csr(alu_res_ex),.csr_addr(csr_addr),.csr_ecall(ecall),.csr_w(csr_w),
-        .csr_mtvec(csr_mtvec),.csr_data(csr_data)
+        .clk(clk),.rst(rst),.pc(pc),.data_csr(alu_res_ex),.csr_addr(csr_addr),.csr_ecall(ecall),.csr_mret(mret),.csr_w(csr_w),
+        .csr_mtvec(csr_mtvec),.csr_mepc(csr_mepc),.csr_data(csr_data)
     );
 
 endmodule

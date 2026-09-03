@@ -47,8 +47,8 @@ CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"$(TOPNAME)"\" -g
 default:$(BIN_MINIRV)
 DIFF_REF_SO = $(NEMU_HOME)/build/riscv32-nemu-interpreter-so
 ELF_FILE = $(addsuffix .elf, $(basename $(IMG)))
-#ARGS = $(ELF_FILE) $(DIFF_REF_SO) 
-NPC_EXEC := $(IMG) #$(ARGS)
+ARGS = $(ELF_FILE) $(DIFF_REF_SO) 
+NPC_EXEC := $(IMG) $(ARGS)
 
 # ------- minirv依赖 -------
 

@@ -5,6 +5,7 @@ module WBU(
     input mem_ren_id,
     input csr_ren_id,
     input ecall_id,
+    input mret_id,
 
     input [4:0] reg_waddr_id,
     input [31:0] data_mem,
@@ -12,6 +13,7 @@ module WBU(
     input [31:0] pc,
     input [31:0] csr_data,
     input [31:0] csr_mtvec,
+    input [31:0] csr_mepc,
 
     output [31:0] next_pc,
     output reg_wen_wb,
@@ -19,7 +21,7 @@ module WBU(
     output reg [31:0] reg_wdata_wb
 );
 
-    assign next_pc = ecall_id ? csr_mtvec : branch ? alu_res : (jump ? (alu_res & ~32'h1): pc + 4);
+    assign next_pc = mret_id ? csr_mepc : ecall_id ? csr_mtvec : branch ? alu_res : (jump ? (alu_res & ~32'h1): pc + 4);
 
     assign reg_wen_wb = reg_wen_id;
     assign reg_waddr_wb = reg_waddr_id;
