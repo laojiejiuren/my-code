@@ -75,6 +75,7 @@ module IDU(
         csr_w = 0;
         csr_ren = 0;
         ecall = 0;
+        mret = 0;
 
         case (opcode)
         `RISCV32I_I:begin //addi,sltiu,slti,srai,slli,srli,andi,xori,ori

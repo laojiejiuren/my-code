@@ -31,6 +31,24 @@ static void close_trace() { if (tfp) tfp->close(); }
   extern char wmembuf[128];
 #endif
 
+#if CONFIG_DIFFTEST
+// 判断当前指令是否为设备地址(非pmem)的访存, 是则跳过ref执行
+static bool is_device_access(Decode *s)
+{
+  uint32_t inst = s->inst;
+  uint32_t opcode = inst & 0x7f;
+
+  if (opcode == 0x03 || opcode == 0x23) { // LOAD / STORE
+    uint32_t rs1 = (inst >> 15) & 0x1f;
+    int32_t imm = (opcode == 0x03) ? (int32_t)inst >> 20
+                                   : (((int32_t)(inst & 0xfe000000)) >> 20) | ((inst >> 7) & 0x1f);
+    uint32_t addr = (uint32_t)((int32_t)cpu.gpr[rs1] + imm);
+    return (addr < BASE_ADDR || addr >= BASE_ADDR + (uint64_t)MAX_SIZE_MEM * 4);
+  }
+  return false;
+}
+#endif
+
 static void trace_and_difftest(Decode *s)
 {
   #if CONFIG_ITRACE
@@ -91,6 +109,8 @@ static void trace_and_difftest(Decode *s)
   #endif
 
   #if CONFIG_DIFFTEST
+    extern bool is_skip_ref;
+    if(is_device_access(s)) is_skip_ref = true;
     difftest_step(s->pc, s->snpc);
   #endif
 }
