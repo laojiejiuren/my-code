@@ -25,7 +25,7 @@ void halt(int code) {
 }
 
 void _trm_init() {
-  uint32_t string, id;
+ /* uint32_t string, id;
 
   asm volatile ("csrr %0, mvendorid" : "=r"(string));
   asm volatile ("csrr %0, marchid" : "=r"(id));
@@ -36,7 +36,7 @@ void _trm_init() {
     tmp[3 - i] = ch[i]; 
 
   printf("%s_%d\n",tmp,id);
-
+*/
   int ret = main(mainargs);
   halt(ret);
 }
