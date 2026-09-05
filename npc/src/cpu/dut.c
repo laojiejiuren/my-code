@@ -94,7 +94,6 @@ void difftest_step(uint32_t pc, uint32_t npc)
 
     if(is_skip_ref)
     {
-        // 同步DUT当前状态到ref, 使ref跳过本条指令(用于设备访存等ref无法处理的指令)
         npc_reg_up(&cpu);
         ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
         is_skip_ref = false;

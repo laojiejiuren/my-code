@@ -32,13 +32,13 @@ static void close_trace() { if (tfp) tfp->close(); }
 #endif
 
 #if CONFIG_DIFFTEST
-// 判断当前指令是否为设备地址(非pmem)的访存, 是则跳过ref执行
+
 static bool is_device_access(Decode *s)
 {
   uint32_t inst = s->inst;
   uint32_t opcode = inst & 0x7f;
 
-  if (opcode == 0x03 || opcode == 0x23) { // LOAD / STORE
+  if (opcode == 0x03 || opcode == 0x23) { 
     uint32_t rs1 = (inst >> 15) & 0x1f;
     int32_t imm = (opcode == 0x03) ? (int32_t)inst >> 20
                                    : (((int32_t)(inst & 0xfe000000)) >> 20) | ((inst >> 7) & 0x1f);
@@ -154,7 +154,7 @@ static void npc_exec_once(Decode *s)
 
 #if CONFIG_ITRACE
   char *p = s->logbuf;
-  p += snprintf(p,sizeof(s->logbuf), "0x%08x : ",s->pc);
+  p += snprintf(p,sizeof(s->logbuf), "0x%08x sp=0x%08x : ",s->pc, reg_gets(2));
 
   uint8_t *inst = (uint8_t *)&s->inst;
   for(int i = 3; i >= 0; --i)

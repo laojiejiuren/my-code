@@ -46,6 +46,7 @@ void pmem_write(int waddr,int wdata,char wmask)
   if(waddr == SERIAL_ADDR)
   {
     putchar(wdata);
+    fflush(stdout);
     return;
   }
 
