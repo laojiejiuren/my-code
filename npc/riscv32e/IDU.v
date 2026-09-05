@@ -214,7 +214,17 @@ module IDU(
                 csr_ren   = 1;
                 csr_addr  = imm_C;
                 alu_op    = 4'h3;
-                csr_w     = (rs1 != 5'b0); //rs1=x0时不写CSR(csrr伪指令)
+                csr_w     = (rs1 != 5'b0); 
+            end
+            `RISCV32I_csrrw:begin
+                operand1  = 32'b0;
+                operand2  = rs1_rdata;
+                reg_waddr = rd;
+                reg_wen   = 1;
+                csr_ren   = 1;
+                csr_addr  = imm_C;
+                alu_op    = 4'h0;
+                csr_w     = (rs1 != 5'b0);
             end
             default:begin end
             endcase

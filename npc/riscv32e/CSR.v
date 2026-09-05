@@ -15,14 +15,17 @@ module CSR(
     input csr_mret,
     input csr_w,
 
-    output reg [31:0] csr_mtvec,
-    output reg [31:0] csr_mepc,
+    output [31:0] csr_mtvec,
+    output [31:0] csr_mepc,
     output reg [31:0] csr_data
 );
 
     logic [31:0] mstatus,mtvec,mepc,mcause,mvendorid,marchid;
     logic [31:0] mcycle,mcycleh;
     
+    assign csr_mtvec = mtvec;
+    assign csr_mepc  = mepc;
+
     always @(*) begin//读取CSR的数据
         case (csr_addr)
         `CSR_mstatus:csr_data = mstatus;
@@ -59,12 +62,8 @@ module CSR(
         else begin
             if(csr_ecall)begin
                 mstatus <= 32'h1800;
-                mcause <= 32'h11;
+                mcause <= 32'h0b;
                 mepc <= pc;
-                csr_mtvec <= mtvec;
-            end
-            else if(csr_mret)begin
-                csr_mepc <= mepc;
             end
             else if(csr_w)begin//将数据写进CSR
                 case(csr_addr)
