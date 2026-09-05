@@ -239,7 +239,7 @@ int main(int argc,char** argv)
 
   #if CONFIG_DIFFTEST
     diff_file = argv[3];
-    npc_init_difftest(diff_file, (long)SIZE_BIN, 1234);
+    npc_init_difftest(diff_file, (long)MAX_SIZE_MEM * 4, 1234);
   #endif
   init_sdb();
   sdb_npc();
