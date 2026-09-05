@@ -35,8 +35,6 @@ typedef enum{
   CSR_Mtvec = 0x305,
   CSR_Mepc = 0x341,
   CSR_Mcause = 0x342,
-  CSR_Mvendorid = 0xF11,
-  CSR_Marchid = 0xF12,
 } CSR_ID;
 
 typedef enum {

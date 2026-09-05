@@ -1,8 +1,6 @@
 #include <am.h>
 #include <riscv/riscv.h>
 #include <klib-macros.h>
-#include <stdio.h>
-#include <string.h>
 #define SERIAL_ADDR 0x10000000
 
 extern char _heap_start;
@@ -25,19 +23,6 @@ void halt(int code) {
 }
 
 void _trm_init() {
- /* uint32_t string, id;
-
-  asm volatile ("csrr %0, mvendorid" : "=r"(string));
-  asm volatile ("csrr %0, marchid" : "=r"(id));
-
-  char *ch = (char *)&string;
-  char tmp[10];
-  for(int i = 3; i >=0 ;--i)
-    tmp[3 - i] = ch[i]; 
-
-  printf("%s_%d\n",tmp,id);
-*/
   int ret = main(mainargs);
   halt(ret);
 }
-                      
