@@ -135,12 +135,12 @@ static void npc_exec_once(Decode *s)
   s->pc = pc_gets();
   s->snpc = snpc_gets();
   s->inst = inst_gets();
-  if(s->pc == 0x80000330)
+  /*if(s->pc == 0x80000330)
   {
-    printf(">>> break at pc=0x%08x\n", (unsigned)s->pc);
-    npc_state.state = NPC_STOP;     // 停止 → 回到 sdb 提示符 
+    printf("breakpoint at pc=0x%08x\n", (unsigned)s->pc);
+    npc_state.state = NPC_STOP;    
     return;  
-  }
+  }*/
   top->clk = !top->clk;
   top->eval();
 
