@@ -117,10 +117,9 @@ static int cmd_x(char *args)
   //vaddr_t val = strtoul(arg2,NULL,16);
   for(int i = 0; i < n; ++i)
   {
-    vaddr_t next_addr = (val + i * 4) - BASE_ADDR;
+    vaddr_t next_addr = (val + i * 4);
     word_t out_data = pmem_read(next_addr, 0, 4);
-    vaddr_t real_addr = next_addr + BASE_ADDR;
-    printf("0x%08x : 0x%08x\n",real_addr,out_data);
+    printf("0x%08x : 0x%08x\n",next_addr,out_data);
   }
 
   return 0;
